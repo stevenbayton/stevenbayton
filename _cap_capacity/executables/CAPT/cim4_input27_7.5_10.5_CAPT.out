@@ -1,0 +1,199 @@
+1
+
+
+ 
+                                                           
+         HALLO!       WELCOME     TO     PC     CAPT       
+                                                           
+ 
+
+
+ 
+                                                           
+         PLEASE   TYPE   YOUR   INPUT   FILE   NAME        
+                                                           
+ 
+
+
+ ----------------------------->    
+          BEARING CAPACITY CALCULATED BY SLIP SURFACES             PAGE     1
+
+          METHOD DESCRIBED IN NGI INTERNAL REPORT 52406-49 DATED 1 DEC 1985
+
+          PROJECT : Project Information                                         
+
+          INPUT DATA REPRINT
+          ******************
+
+          UNITS USED : MN, m                           
+          WIDTH OF FOUNDATION                                 B =       3.320
+          LENGTH OF FOUNDATION                                L =       6.650
+          DEPTH OF EMBEDMENT , START VALUE                  ZSS =      10.500
+          DEPTH OF EMBEDMENT , FINAL VALUE                  ZSF =      10.500
+          DEPTH OF EMBEDMENT , STEP  VALUE               ZSSTEP =       0.000
+          SOIL TOTAL UNIT WEIGHT                           GAMS =       0.019
+          WATER UNIT WEIGHT                                GAMW =       0.010
+
+          SUBMERGED WEIGHT OF STRUCTURE , START VALUE       PVS =       1.514
+          SUBMERGED WEIGHT OF STRUCTURE , FINAL VALUE       PVF =       1.514
+          SUBMERGED WEIGHT OF STRUCTURE , STEP  VALUE    PVSTEP =       0.000
+          HORIZONTAL FORCE AT MUDLINE                        PH =       0.000
+          OVERTURNING MOMENT AT MUDLINE                       M =       0.000
+          EXCESS WATER PRESSURE OUTSIDE HEEL              DELPH =       0.000
+          EXCESS WATER PRESSURE OUTSIDE TOE               DELPT =       0.000
+          LOAD FACTORS TO BE USED                            LF =         1.0
+
+          MAXIMUM DEPTH OF SLIP SURFACE BELOW BASE         ZMAX =      13.300
+          STEP VALUE FOR SLIP SURFACE DEPTH               ZSTEP =       0.200
+          REDUCTION FACTOR SIDE, BASE/SOIL                REDBS =       0.000
+          REDUCTION FACTOR SIDE, SOIL/SOIL                REDSS =       0.500
+
+          ACTIVE SIDE CRACK ASSUMPTION :
++                                         OPEN CRACK
+          PASSIVE SIDE AREA ASSUMPTION :
++                                         BIG AREA
+
+          SHEAR STRENGTH USED :
+
+             DEPTH      TRIAXIAL     SIMPLE       TRIAXIAL     MINIMUM
+             BELOW      COMPRESSION  SHEAR        EXTENSION    HORIZONTAL
+             MUDLINE    STRENGTH     STRENGTH     STRENGTH     STRENGTH
+
+               0.000      0.007        0.007        0.007        0.007
+               0.500      0.008        0.008        0.008        0.008
+               0.500      0.008        0.008        0.008        0.008
+               1.000      0.010        0.010        0.010        0.010
+               1.000      0.010        0.010        0.010        0.010
+               2.000      0.013        0.013        0.013        0.013
+               2.000      0.013        0.013        0.013        0.013
+               3.000      0.016        0.016        0.016        0.016
+               3.000      0.016        0.016        0.016        0.016
+               4.000      0.020        0.020        0.020        0.020
+               4.000      0.020        0.020        0.020        0.020
+               6.000      0.026        0.026        0.026        0.026
+               6.000      0.026        0.026        0.026        0.026
+               8.000      0.032        0.032        0.032        0.032
+               8.000      0.032        0.032        0.032        0.032
+              10.500      0.040        0.040        0.040        0.040
+              10.510      0.040        0.040        0.040        0.040
+              11.300      0.043        0.043        0.043        0.043
+              11.300      0.006        0.006        0.006        0.006
+              12.500      0.007        0.007        0.007        0.007
+              12.500      0.044        0.044        0.044        0.044
+              13.500      0.047        0.047        0.047        0.047
+              13.500      0.047        0.047        0.047        0.047
+              14.000      0.049        0.049        0.049        0.049
+              14.000      0.049        0.049        0.049        0.049
+              15.000      0.051        0.051        0.051        0.051
+
+                                                                         1/ 4
+
+          BEARING CAPACITY CALCULATED BY SLIP SURFACES             PAGE  2/ 4
+
+          PROJECT : Project Information                                         
+          LOAD FACTOR : 1.00  SUBMERGED WEIGHT :       1.5  BASE EMB :  10.50
+
+
+          SAFETY FACTOR VERSUS DEPTH
+          **************************
+
+          DEPTH OF SLIP   BASE/SLIP   SAFETY   SF= S(A*SA)/(-S(B))
+          SURFACE BELOW   SURFACE     FACTOR
+          MUDLINE         ANGLE                    S(A*SA)    S(B) 
+                Z          ALPHA       SF
+
+              10.700       1.162    120.062    -0.1095E+02    0.9120E-01
+              10.900       2.294     61.884    -0.1129E+02    0.1824E+00
+              11.100       3.401     42.518    -0.1163E+02    0.2736E+00
+              11.300       4.485     32.854    -0.1199E+02    0.3648E+00
+              11.500       5.531     25.669    -0.1171E+02    0.4560E+00
+              11.700       6.541     20.750    -0.1136E+02    0.5472E+00
+              11.900       7.531     17.664    -0.1128E+02    0.6384E+00
+              12.100       8.519     15.825    -0.1155E+02    0.7296E+00
+              12.300       9.401     13.270    -0.1089E+02    0.8208E+00
+              12.500      10.338     12.190    -0.1112E+02    0.9120E+00
+              12.700      11.273     11.409    -0.1145E+02    0.1003E+01
+              12.900      12.300     11.513    -0.1260E+02    0.1094E+01
+              13.100      13.236     10.889    -0.1291E+02    0.1186E+01
+              13.300      14.215     10.668    -0.1362E+02    0.1277E+01
+
+
+          MINIMUM SAFETY FACTOR          SF = 10.668
+          FOUND FOR DEPTH                 Z = 13.300
+          AND SLIP SURFACE ANGLE      ALPHA = 14.215
+1
+          BEARING CAPACITY CALCULATED BY SLIP SURFACES             PAGE  3/ 4
+
+          PROJECT : Project Information                                         
+          LOAD FACTOR : 1.00  SUBMERGED WEIGHT :       1.5  BASE EMB :  10.50
+
+
+          FORCES CALCULATED FOR CRITICAL SURFACE
+          **************************************
+
+          MINIMUM SAFETY FACTOR          SF = 10.668
+          FOUND FOR DEPTH                 Z = 13.300
+          AND SLIP SURFACE ANGLE      ALPHA = 14.215
+
+
+          K(N) = A(N) * SA(N)/SF  + B(N)
+
+           N    CODE       K(N)         A(N)      SA(N)  SA(N)/SF      B(N)
+
+           1    PH     0.0000E+00   0.0000E+00    0.000    0.000   0.0000E+00
+
+           2    PA     0.0000E+00   0.0000E+00    0.023    0.002   0.0000E+00
+
+           3   -RH    -0.2897E-01  -0.7727E+01    0.040    0.004   0.0000E+00
+
+           4    HA     0.3036E+01  -0.8253E+02    0.030    0.003   0.3271E+01
+
+           5   -PA    -0.3942E+00  -0.1795E+03    0.023    0.002   0.0000E+00
+
+           6   -HP    -0.2143E+01  -0.4787E+02    0.033    0.003  -0.1994E+01
+
+           7   -RS1    0.0000E+00   0.0000E+00    0.023    0.002   0.0000E+00
+
+           8   -RS2   -0.1564E+00  -0.3199E+02    0.052    0.005   0.0000E+00
+
+           9   -RS3   -0.3126E+00  -0.1424E+03    0.023    0.002   0.0000E+00
+
+          11    DHA01  0.0000E+00   0.0000E+00    0.000    0.000   0.0000E+00
+
+          12    DHA02  0.0000E+00   0.0000E+00    0.018    0.002   0.0000E+00
+
+          15    DHA05  0.0000E+00   0.0000E+00    0.018    0.002   0.0000E+00
+
+          17    DHA07  0.0000E+00   0.0000E+00    0.018    0.002   0.0000E+00
+
+          19    DHA09  0.0000E+00   0.0000E+00    0.018    0.002   0.0000E+00
+
+          20    DHA10  0.0000E+00   0.0000E+00    0.023    0.002   0.0000E+00
+
+          20    DHA09  0.0000E+00   0.0000E+00    0.023    0.002   0.0000E+00
+
+          20    DHA10  0.0000E+00   0.0000E+00    0.023    0.002   0.0000E+00
+
+1
+          BEARING CAPACITY CALCULATED BY SLIP SURFACES             PAGE  4/ 4
+
+          PROJECT : Project Information                                         
+          SUMMARY OF RESULTS OF STABILITY CALCULATIONS
+          ********************************************
+
+          IN ADDITON THE FOLLOWING RESULTS HAVE BEEN INCLUDED : 
+
+          AVERAGE MOBILIZED SHEAR STRESS ALONG SLIP SURFACECSS = -S(B)/S(A)
+          MOBILIZED SHEAR STRESS ACCORDING TO BRINCH HANSEN FORMULA = CB  *)
+          MOBILIZED SHEAR STRESS ACCORDING TO MEYERHOF  FORMULA      = CM  *)
+
+
+          LOAD  SUBMERGED DEPTH SAFETY  DEPTH  SLIP    MOB  MOB     MOB    
+          FACT  PLATFORM  BASE  FACTOR  SLIP   SURFA   SHEAR  SHEAR   SHEAR
+          USED  WEIGHT    EMBED         SURFA  ANGLE   NGI  BR.HA   M"HOF
+
+           LF      PV      ZS     SF      Z    ALPHA    CSS   CB      CM  /
+          1.00       1.5  10.5  10.67   13.30  14.2    0.0026****************
+
+          *)
+          THE TWO MENTIONED FORMULAS ARE BASED ON THE EFFECTIVE AREA CONCEPT

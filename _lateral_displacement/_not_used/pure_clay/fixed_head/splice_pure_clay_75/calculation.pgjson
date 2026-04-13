@@ -1,0 +1,1645 @@
+{
+  "AssemblyVersion": "24.0.13.0",
+  "Description": null,
+  "Identifier": "a66ef2e8-52a7-4435-bafc-2a65e126e60c",
+  "SoilData": {
+    "Identifier": "6ab791e1-7add-43b4-abc3-14237bf0a069",
+    "SoilProfiles": [
+      {
+        "Identifier": "213186fb-28a4-4632-8d33-d78347438cae",
+        "SoilLayers": [
+          {
+            "Identifier": "b051de60-013c-426c-880a-a607ce56f41c",
+            "Name": "Layer 1",
+            "MaterialType": 0,
+            "Color": "#FFFFFFFF",
+            "LayerClassificationType": 0,
+            "TopDepth": 0.0,
+            "BottomDepth": 100.0,
+            "NumberOfSubLayers": 1,
+            "LateralSubSoilModel": 0,
+            "AxialSubSoilModel": 0,
+            "AxialTipSubSoilModel": 0
+          }
+        ],
+        "UsedSoilProperties": [
+          {
+            "Key": "SoilWeight",
+            "Value": {
+              "SoilPropertyDataSource": 0,
+              "SoilPropertyData": {
+                "SoilPropertyValues": [
+                  {
+                    "Key": "b051de60-013c-426c-880a-a607ce56f41c",
+                    "Value": {
+                      "TopValue": 20.0,
+                      "BottomValue": 20.0
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "Key": "UndrainedShearStrength",
+            "Value": {
+              "SoilPropertyDataSource": 0,
+              "SoilPropertyData": {
+                "SoilPropertyValues": [
+                  {
+                    "Key": "b051de60-013c-426c-880a-a607ce56f41c",
+                    "Value": {
+                      "TopValue": 75.0,
+                      "BottomValue": 75.0
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "Key": "StrainEpsilon50",
+            "Value": {
+              "SoilPropertyDataSource": 0,
+              "SoilPropertyData": {
+                "SoilPropertyValues": [
+                  {
+                    "Key": "b051de60-013c-426c-880a-a607ce56f41c",
+                    "Value": {
+                      "TopValue": 0.01,
+                      "BottomValue": 0.01
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "Key": "ApiJ",
+            "Value": {
+              "SoilPropertyDataSource": 0,
+              "SoilPropertyData": {
+                "SoilPropertyValues": [
+                  {
+                    "Key": "b051de60-013c-426c-880a-a607ce56f41c",
+                    "Value": {
+                      "TopValue": 0.25,
+                      "BottomValue": 0.25
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "Key": "FactorTresTmax",
+            "Value": {
+              "SoilPropertyDataSource": 0,
+              "SoilPropertyData": {
+                "SoilPropertyValues": [
+                  {
+                    "Key": "b051de60-013c-426c-880a-a607ce56f41c",
+                    "Value": {
+                      "TopValue": 1.0,
+                      "BottomValue": 1.0
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        ],
+        "MainSoilModel": 0,
+        "PacerCohesiveMethod": 0,
+        "PacerNonCohesiveMethod": 0,
+        "Name": "Soil profile 1",
+        "Color": "#FFADD8E6",
+        "LayerSubDivision": 0,
+        "SkinFrictionAndTipResistanceCalculationMethod": 1,
+        "GroundZLevel": 0.0,
+        "GroundWaterZLevel": 0.0,
+        "SoilDataInterpretationModel": null,
+        "SelectedPropertyCurves": []
+      },
+      {
+        "Identifier": "9e462476-c613-48a2-b76d-605a2d5bdf94",
+        "SoilLayers": [
+          {
+            "Identifier": "a271d5cf-17f1-4251-85c1-461648ada3c4",
+            "Name": "Layer 1",
+            "MaterialType": 1,
+            "Color": "#FFFFFFFF",
+            "LayerClassificationType": 0,
+            "TopDepth": 0.0,
+            "BottomDepth": 30.0,
+            "NumberOfSubLayers": 1,
+            "LateralSubSoilModel": 0,
+            "AxialSubSoilModel": 0,
+            "AxialTipSubSoilModel": 0
+          }
+        ],
+        "UsedSoilProperties": [
+          {
+            "Key": "SoilWeight",
+            "Value": {
+              "SoilPropertyDataSource": 0,
+              "SoilPropertyData": {
+                "SoilPropertyValues": [
+                  {
+                    "Key": "a271d5cf-17f1-4251-85c1-461648ada3c4",
+                    "Value": {
+                      "TopValue": 20.0,
+                      "BottomValue": 20.0
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "Key": "FrictionAngle",
+            "Value": {
+              "SoilPropertyDataSource": 0,
+              "SoilPropertyData": {
+                "SoilPropertyValues": [
+                  {
+                    "Key": "a271d5cf-17f1-4251-85c1-461648ada3c4",
+                    "Value": {
+                      "TopValue": 35.0,
+                      "BottomValue": 35.0
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "Key": "FactorTresTmax",
+            "Value": {
+              "SoilPropertyDataSource": 0,
+              "SoilPropertyData": {
+                "SoilPropertyValues": [
+                  {
+                    "Key": "a271d5cf-17f1-4251-85c1-461648ada3c4",
+                    "Value": {
+                      "TopValue": 1.0,
+                      "BottomValue": 1.0
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "Key": "CptTipResistance",
+            "Value": {
+              "SoilPropertyDataSource": 0,
+              "SoilPropertyData": {
+                "SoilPropertyValues": [
+                  {
+                    "Key": "a271d5cf-17f1-4251-85c1-461648ada3c4",
+                    "Value": {
+                      "TopValue": 5.0,
+                      "BottomValue": 5.0
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "Key": "RelativeDensity",
+            "Value": {
+              "SoilPropertyDataSource": 0,
+              "SoilPropertyData": {
+                "SoilPropertyValues": [
+                  {
+                    "Key": "a271d5cf-17f1-4251-85c1-461648ada3c4",
+                    "Value": {
+                      "TopValue": 0.5,
+                      "BottomValue": 0.5
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        ],
+        "MainSoilModel": 0,
+        "PacerCohesiveMethod": 0,
+        "PacerNonCohesiveMethod": 0,
+        "Name": "Soil profile 2",
+        "Color": "#FF0000FF",
+        "LayerSubDivision": 0,
+        "SkinFrictionAndTipResistanceCalculationMethod": 1,
+        "GroundZLevel": 0.0,
+        "GroundWaterZLevel": 0.0,
+        "SoilDataInterpretationModel": null,
+        "SelectedPropertyCurves": []
+      },
+      {
+        "Identifier": "16afdd03-da97-42d9-b8e0-5d32eb3f84c1",
+        "SoilLayers": [
+          {
+            "Identifier": "f053f61a-9c75-4726-b5a7-1052d26ee3ee",
+            "Name": "Layer 1",
+            "MaterialType": 1,
+            "Color": "#FFFFFFFF",
+            "LayerClassificationType": 0,
+            "TopDepth": 0.0,
+            "BottomDepth": 4.0,
+            "NumberOfSubLayers": 1,
+            "LateralSubSoilModel": 0,
+            "AxialSubSoilModel": 0,
+            "AxialTipSubSoilModel": 0
+          },
+          {
+            "Identifier": "3dff04b1-6e31-41c6-8b3f-1fdc7b144fab",
+            "Name": "Layer 2",
+            "MaterialType": 0,
+            "Color": "#FFFFFFFF",
+            "LayerClassificationType": 0,
+            "TopDepth": 4.0,
+            "BottomDepth": 30.0,
+            "NumberOfSubLayers": 1,
+            "LateralSubSoilModel": 0,
+            "AxialSubSoilModel": 0,
+            "AxialTipSubSoilModel": 0
+          }
+        ],
+        "UsedSoilProperties": [
+          {
+            "Key": "SoilWeight",
+            "Value": {
+              "SoilPropertyDataSource": 0,
+              "SoilPropertyData": {
+                "SoilPropertyValues": [
+                  {
+                    "Key": "f053f61a-9c75-4726-b5a7-1052d26ee3ee",
+                    "Value": {
+                      "TopValue": 20.0,
+                      "BottomValue": 20.0
+                    }
+                  },
+                  {
+                    "Key": "3dff04b1-6e31-41c6-8b3f-1fdc7b144fab",
+                    "Value": {
+                      "TopValue": 20.0,
+                      "BottomValue": 20.0
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "Key": "UndrainedShearStrength",
+            "Value": {
+              "SoilPropertyDataSource": 0,
+              "SoilPropertyData": {
+                "SoilPropertyValues": [
+                  {
+                    "Key": "3dff04b1-6e31-41c6-8b3f-1fdc7b144fab",
+                    "Value": {
+                      "TopValue": 75.0,
+                      "BottomValue": 75.0
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "Key": "FrictionAngle",
+            "Value": {
+              "SoilPropertyDataSource": 0,
+              "SoilPropertyData": {
+                "SoilPropertyValues": [
+                  {
+                    "Key": "f053f61a-9c75-4726-b5a7-1052d26ee3ee",
+                    "Value": {
+                      "TopValue": 35.0,
+                      "BottomValue": 35.0
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "Key": "StrainEpsilon50",
+            "Value": {
+              "SoilPropertyDataSource": 0,
+              "SoilPropertyData": {
+                "SoilPropertyValues": [
+                  {
+                    "Key": "3dff04b1-6e31-41c6-8b3f-1fdc7b144fab",
+                    "Value": {
+                      "TopValue": 0.01,
+                      "BottomValue": 0.01
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "Key": "ApiJ",
+            "Value": {
+              "SoilPropertyDataSource": 0,
+              "SoilPropertyData": {
+                "SoilPropertyValues": [
+                  {
+                    "Key": "3dff04b1-6e31-41c6-8b3f-1fdc7b144fab",
+                    "Value": {
+                      "TopValue": 0.25,
+                      "BottomValue": 0.25
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "Key": "FactorTresTmax",
+            "Value": {
+              "SoilPropertyDataSource": 0,
+              "SoilPropertyData": {
+                "SoilPropertyValues": [
+                  {
+                    "Key": "f053f61a-9c75-4726-b5a7-1052d26ee3ee",
+                    "Value": {
+                      "TopValue": 1.0,
+                      "BottomValue": 1.0
+                    }
+                  },
+                  {
+                    "Key": "3dff04b1-6e31-41c6-8b3f-1fdc7b144fab",
+                    "Value": {
+                      "TopValue": 1.0,
+                      "BottomValue": 1.0
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "Key": "CptTipResistance",
+            "Value": {
+              "SoilPropertyDataSource": 0,
+              "SoilPropertyData": {
+                "SoilPropertyValues": [
+                  {
+                    "Key": "f053f61a-9c75-4726-b5a7-1052d26ee3ee",
+                    "Value": {
+                      "TopValue": 5.0,
+                      "BottomValue": 5.0
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "Key": "RelativeDensity",
+            "Value": {
+              "SoilPropertyDataSource": 0,
+              "SoilPropertyData": {
+                "SoilPropertyValues": [
+                  {
+                    "Key": "f053f61a-9c75-4726-b5a7-1052d26ee3ee",
+                    "Value": {
+                      "TopValue": 0.5,
+                      "BottomValue": 0.5
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        ],
+        "MainSoilModel": 0,
+        "PacerCohesiveMethod": 0,
+        "PacerNonCohesiveMethod": 0,
+        "Name": "Soil profile 3",
+        "Color": "#FF00008B",
+        "LayerSubDivision": 0,
+        "SkinFrictionAndTipResistanceCalculationMethod": 1,
+        "GroundZLevel": 0.0,
+        "GroundWaterZLevel": 0.0,
+        "SoilDataInterpretationModel": null,
+        "SelectedPropertyCurves": []
+      },
+      {
+        "Identifier": "86b2b495-ab53-4c10-9905-e9f56f99dfa5",
+        "SoilLayers": [
+          {
+            "Identifier": "49dd21dc-ef8c-45bc-b42b-34d0e54bf858",
+            "Name": "Layer 1",
+            "MaterialType": 0,
+            "Color": "#FFFFFFFF",
+            "LayerClassificationType": 0,
+            "TopDepth": 0.0,
+            "BottomDepth": 4.0,
+            "NumberOfSubLayers": 1,
+            "LateralSubSoilModel": 0,
+            "AxialSubSoilModel": 0,
+            "AxialTipSubSoilModel": 0
+          },
+          {
+            "Identifier": "86fa7233-b6a9-4b04-9966-6a2f975164be",
+            "Name": "Layer 2",
+            "MaterialType": 1,
+            "Color": "#FFFFFFFF",
+            "LayerClassificationType": 0,
+            "TopDepth": 4.0,
+            "BottomDepth": 30.0,
+            "NumberOfSubLayers": 1,
+            "LateralSubSoilModel": 0,
+            "AxialSubSoilModel": 0,
+            "AxialTipSubSoilModel": 0
+          }
+        ],
+        "UsedSoilProperties": [
+          {
+            "Key": "SoilWeight",
+            "Value": {
+              "SoilPropertyDataSource": 0,
+              "SoilPropertyData": {
+                "SoilPropertyValues": [
+                  {
+                    "Key": "49dd21dc-ef8c-45bc-b42b-34d0e54bf858",
+                    "Value": {
+                      "TopValue": 20.0,
+                      "BottomValue": 20.0
+                    }
+                  },
+                  {
+                    "Key": "86fa7233-b6a9-4b04-9966-6a2f975164be",
+                    "Value": {
+                      "TopValue": 20.0,
+                      "BottomValue": 20.0
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "Key": "UndrainedShearStrength",
+            "Value": {
+              "SoilPropertyDataSource": 0,
+              "SoilPropertyData": {
+                "SoilPropertyValues": [
+                  {
+                    "Key": "49dd21dc-ef8c-45bc-b42b-34d0e54bf858",
+                    "Value": {
+                      "TopValue": 75.0,
+                      "BottomValue": 75.0
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "Key": "FrictionAngle",
+            "Value": {
+              "SoilPropertyDataSource": 0,
+              "SoilPropertyData": {
+                "SoilPropertyValues": [
+                  {
+                    "Key": "86fa7233-b6a9-4b04-9966-6a2f975164be",
+                    "Value": {
+                      "TopValue": 35.0,
+                      "BottomValue": 35.0
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "Key": "StrainEpsilon50",
+            "Value": {
+              "SoilPropertyDataSource": 0,
+              "SoilPropertyData": {
+                "SoilPropertyValues": [
+                  {
+                    "Key": "49dd21dc-ef8c-45bc-b42b-34d0e54bf858",
+                    "Value": {
+                      "TopValue": 0.01,
+                      "BottomValue": 0.01
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "Key": "ApiJ",
+            "Value": {
+              "SoilPropertyDataSource": 0,
+              "SoilPropertyData": {
+                "SoilPropertyValues": [
+                  {
+                    "Key": "49dd21dc-ef8c-45bc-b42b-34d0e54bf858",
+                    "Value": {
+                      "TopValue": 0.25,
+                      "BottomValue": 0.25
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "Key": "FactorTresTmax",
+            "Value": {
+              "SoilPropertyDataSource": 0,
+              "SoilPropertyData": {
+                "SoilPropertyValues": [
+                  {
+                    "Key": "49dd21dc-ef8c-45bc-b42b-34d0e54bf858",
+                    "Value": {
+                      "TopValue": 1.0,
+                      "BottomValue": 1.0
+                    }
+                  },
+                  {
+                    "Key": "86fa7233-b6a9-4b04-9966-6a2f975164be",
+                    "Value": {
+                      "TopValue": 1.0,
+                      "BottomValue": 1.0
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "Key": "CptTipResistance",
+            "Value": {
+              "SoilPropertyDataSource": 0,
+              "SoilPropertyData": {
+                "SoilPropertyValues": [
+                  {
+                    "Key": "86fa7233-b6a9-4b04-9966-6a2f975164be",
+                    "Value": {
+                      "TopValue": 5.0,
+                      "BottomValue": 5.0
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "Key": "RelativeDensity",
+            "Value": {
+              "SoilPropertyDataSource": 0,
+              "SoilPropertyData": {
+                "SoilPropertyValues": [
+                  {
+                    "Key": "86fa7233-b6a9-4b04-9966-6a2f975164be",
+                    "Value": {
+                      "TopValue": 0.5,
+                      "BottomValue": 0.5
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        ],
+        "MainSoilModel": 0,
+        "PacerCohesiveMethod": 0,
+        "PacerNonCohesiveMethod": 0,
+        "Name": "Soil profile 4",
+        "Color": "#FFFFFFE0",
+        "LayerSubDivision": 0,
+        "SkinFrictionAndTipResistanceCalculationMethod": 1,
+        "GroundZLevel": 0.0,
+        "GroundWaterZLevel": 0.0,
+        "SoilDataInterpretationModel": null,
+        "SelectedPropertyCurves": []
+      },
+      {
+        "Identifier": "2c618de5-8fbb-409c-9fdb-cffcee17f916",
+        "SoilLayers": [
+          {
+            "Identifier": "7f77917d-100f-4d36-b64b-425ae8fa1d20",
+            "Name": "Layer 1",
+            "MaterialType": 1,
+            "Color": "#FFFFFFFF",
+            "LayerClassificationType": 0,
+            "TopDepth": 0.0,
+            "BottomDepth": 2.0,
+            "NumberOfSubLayers": 1,
+            "LateralSubSoilModel": 0,
+            "AxialSubSoilModel": 0,
+            "AxialTipSubSoilModel": 0
+          },
+          {
+            "Identifier": "0730f89a-b022-4148-9e4c-0dc1a6d82592",
+            "Name": "Layer 2",
+            "MaterialType": 1,
+            "Color": "#FFFFFFFF",
+            "LayerClassificationType": 0,
+            "TopDepth": 2.0,
+            "BottomDepth": 2.5,
+            "NumberOfSubLayers": 1,
+            "LateralSubSoilModel": 0,
+            "AxialSubSoilModel": 0,
+            "AxialTipSubSoilModel": 0
+          },
+          {
+            "Identifier": "09f73cde-cf29-4856-b287-ac0242eb7c67",
+            "Name": "Layer 3",
+            "MaterialType": 0,
+            "Color": "#FFFFFFFF",
+            "LayerClassificationType": 0,
+            "TopDepth": 2.5,
+            "BottomDepth": 5.0,
+            "NumberOfSubLayers": 1,
+            "LateralSubSoilModel": 0,
+            "AxialSubSoilModel": 0,
+            "AxialTipSubSoilModel": 0
+          },
+          {
+            "Identifier": "fea51538-29a0-4d6a-8cfe-d183891330bd",
+            "Name": "Layer 4",
+            "MaterialType": 0,
+            "Color": "#FFFFFFFF",
+            "LayerClassificationType": 0,
+            "TopDepth": 5.0,
+            "BottomDepth": 8.0,
+            "NumberOfSubLayers": 1,
+            "LateralSubSoilModel": 0,
+            "AxialSubSoilModel": 0,
+            "AxialTipSubSoilModel": 0
+          },
+          {
+            "Identifier": "a96b200c-f0b3-4003-8291-2ade2f609cd0",
+            "Name": "Layer 5",
+            "MaterialType": 1,
+            "Color": "#FFFFFFFF",
+            "LayerClassificationType": 0,
+            "TopDepth": 8.0,
+            "BottomDepth": 9.5,
+            "NumberOfSubLayers": 1,
+            "LateralSubSoilModel": 0,
+            "AxialSubSoilModel": 0,
+            "AxialTipSubSoilModel": 0
+          },
+          {
+            "Identifier": "bfe419f2-bfe0-4ab5-935d-0af6c68df7d5",
+            "Name": "Layer 6",
+            "MaterialType": 1,
+            "Color": "#FFFFFFFF",
+            "LayerClassificationType": 0,
+            "TopDepth": 9.5,
+            "BottomDepth": 13.0,
+            "NumberOfSubLayers": 1,
+            "LateralSubSoilModel": 0,
+            "AxialSubSoilModel": 0,
+            "AxialTipSubSoilModel": 0
+          }
+        ],
+        "UsedSoilProperties": [
+          {
+            "Key": "SoilWeight",
+            "Value": {
+              "SoilPropertyDataSource": 0,
+              "SoilPropertyData": {
+                "SoilPropertyValues": [
+                  {
+                    "Key": "7f77917d-100f-4d36-b64b-425ae8fa1d20",
+                    "Value": {
+                      "TopValue": 20.0,
+                      "BottomValue": 20.0
+                    }
+                  },
+                  {
+                    "Key": "0730f89a-b022-4148-9e4c-0dc1a6d82592",
+                    "Value": {
+                      "TopValue": 20.0,
+                      "BottomValue": 20.0
+                    }
+                  },
+                  {
+                    "Key": "09f73cde-cf29-4856-b287-ac0242eb7c67",
+                    "Value": {
+                      "TopValue": 20.0,
+                      "BottomValue": 20.0
+                    }
+                  },
+                  {
+                    "Key": "fea51538-29a0-4d6a-8cfe-d183891330bd",
+                    "Value": {
+                      "TopValue": 20.0,
+                      "BottomValue": 20.0
+                    }
+                  },
+                  {
+                    "Key": "a96b200c-f0b3-4003-8291-2ade2f609cd0",
+                    "Value": {
+                      "TopValue": 20.0,
+                      "BottomValue": 20.0
+                    }
+                  },
+                  {
+                    "Key": "bfe419f2-bfe0-4ab5-935d-0af6c68df7d5",
+                    "Value": {
+                      "TopValue": 20.0,
+                      "BottomValue": 20.0
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "Key": "UndrainedShearStrength",
+            "Value": {
+              "SoilPropertyDataSource": 0,
+              "SoilPropertyData": {
+                "SoilPropertyValues": [
+                  {
+                    "Key": "09f73cde-cf29-4856-b287-ac0242eb7c67",
+                    "Value": {
+                      "TopValue": 35.0,
+                      "BottomValue": 65.0
+                    }
+                  },
+                  {
+                    "Key": "fea51538-29a0-4d6a-8cfe-d183891330bd",
+                    "Value": {
+                      "TopValue": 65.0,
+                      "BottomValue": 70.0
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "Key": "FrictionAngle",
+            "Value": {
+              "SoilPropertyDataSource": 0,
+              "SoilPropertyData": {
+                "SoilPropertyValues": [
+                  {
+                    "Key": "7f77917d-100f-4d36-b64b-425ae8fa1d20",
+                    "Value": {
+                      "TopValue": 35.0,
+                      "BottomValue": 35.0
+                    }
+                  },
+                  {
+                    "Key": "0730f89a-b022-4148-9e4c-0dc1a6d82592",
+                    "Value": {
+                      "TopValue": 35.0,
+                      "BottomValue": 35.0
+                    }
+                  },
+                  {
+                    "Key": "a96b200c-f0b3-4003-8291-2ade2f609cd0",
+                    "Value": {
+                      "TopValue": 35.0,
+                      "BottomValue": 35.0
+                    }
+                  },
+                  {
+                    "Key": "bfe419f2-bfe0-4ab5-935d-0af6c68df7d5",
+                    "Value": {
+                      "TopValue": 35.0,
+                      "BottomValue": 35.0
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "Key": "StrainEpsilon50",
+            "Value": {
+              "SoilPropertyDataSource": 0,
+              "SoilPropertyData": {
+                "SoilPropertyValues": [
+                  {
+                    "Key": "09f73cde-cf29-4856-b287-ac0242eb7c67",
+                    "Value": {
+                      "TopValue": 0.01,
+                      "BottomValue": 0.01
+                    }
+                  },
+                  {
+                    "Key": "fea51538-29a0-4d6a-8cfe-d183891330bd",
+                    "Value": {
+                      "TopValue": 0.01,
+                      "BottomValue": 0.01
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "Key": "ApiJ",
+            "Value": {
+              "SoilPropertyDataSource": 0,
+              "SoilPropertyData": {
+                "SoilPropertyValues": [
+                  {
+                    "Key": "09f73cde-cf29-4856-b287-ac0242eb7c67",
+                    "Value": {
+                      "TopValue": 0.25,
+                      "BottomValue": 0.25
+                    }
+                  },
+                  {
+                    "Key": "fea51538-29a0-4d6a-8cfe-d183891330bd",
+                    "Value": {
+                      "TopValue": 0.25,
+                      "BottomValue": 0.25
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "Key": "FactorTresTmax",
+            "Value": {
+              "SoilPropertyDataSource": 0,
+              "SoilPropertyData": {
+                "SoilPropertyValues": [
+                  {
+                    "Key": "7f77917d-100f-4d36-b64b-425ae8fa1d20",
+                    "Value": {
+                      "TopValue": 1.0,
+                      "BottomValue": 1.0
+                    }
+                  },
+                  {
+                    "Key": "0730f89a-b022-4148-9e4c-0dc1a6d82592",
+                    "Value": {
+                      "TopValue": 1.0,
+                      "BottomValue": 1.0
+                    }
+                  },
+                  {
+                    "Key": "09f73cde-cf29-4856-b287-ac0242eb7c67",
+                    "Value": {
+                      "TopValue": 1.0,
+                      "BottomValue": 1.0
+                    }
+                  },
+                  {
+                    "Key": "fea51538-29a0-4d6a-8cfe-d183891330bd",
+                    "Value": {
+                      "TopValue": 1.0,
+                      "BottomValue": 1.0
+                    }
+                  },
+                  {
+                    "Key": "a96b200c-f0b3-4003-8291-2ade2f609cd0",
+                    "Value": {
+                      "TopValue": 1.0,
+                      "BottomValue": 1.0
+                    }
+                  },
+                  {
+                    "Key": "bfe419f2-bfe0-4ab5-935d-0af6c68df7d5",
+                    "Value": {
+                      "TopValue": 1.0,
+                      "BottomValue": 1.0
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "Key": "CptTipResistance",
+            "Value": {
+              "SoilPropertyDataSource": 0,
+              "SoilPropertyData": {
+                "SoilPropertyValues": [
+                  {
+                    "Key": "7f77917d-100f-4d36-b64b-425ae8fa1d20",
+                    "Value": {
+                      "TopValue": 0.0,
+                      "BottomValue": 0.5
+                    }
+                  },
+                  {
+                    "Key": "0730f89a-b022-4148-9e4c-0dc1a6d82592",
+                    "Value": {
+                      "TopValue": 0.5,
+                      "BottomValue": 0.5
+                    }
+                  },
+                  {
+                    "Key": "a96b200c-f0b3-4003-8291-2ade2f609cd0",
+                    "Value": {
+                      "TopValue": 2.0,
+                      "BottomValue": 100.0
+                    }
+                  },
+                  {
+                    "Key": "bfe419f2-bfe0-4ab5-935d-0af6c68df7d5",
+                    "Value": {
+                      "TopValue": 100.0,
+                      "BottomValue": 55.0
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "Key": "RelativeDensity",
+            "Value": {
+              "SoilPropertyDataSource": 0,
+              "SoilPropertyData": {
+                "SoilPropertyValues": [
+                  {
+                    "Key": "7f77917d-100f-4d36-b64b-425ae8fa1d20",
+                    "Value": {
+                      "TopValue": 0.2,
+                      "BottomValue": 0.2
+                    }
+                  },
+                  {
+                    "Key": "0730f89a-b022-4148-9e4c-0dc1a6d82592",
+                    "Value": {
+                      "TopValue": 0.2,
+                      "BottomValue": 0.2
+                    }
+                  },
+                  {
+                    "Key": "a96b200c-f0b3-4003-8291-2ade2f609cd0",
+                    "Value": {
+                      "TopValue": 1.0,
+                      "BottomValue": 1.0
+                    }
+                  },
+                  {
+                    "Key": "bfe419f2-bfe0-4ab5-935d-0af6c68df7d5",
+                    "Value": {
+                      "TopValue": 1.0,
+                      "BottomValue": 1.0
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        ],
+        "MainSoilModel": 0,
+        "PacerCohesiveMethod": 0,
+        "PacerNonCohesiveMethod": 0,
+        "Name": "Soil profile 5",
+        "Color": "#FFFFFF00",
+        "LayerSubDivision": 0,
+        "SkinFrictionAndTipResistanceCalculationMethod": 1,
+        "GroundZLevel": 0.0,
+        "GroundWaterZLevel": 0.0,
+        "SoilDataInterpretationModel": null,
+        "SelectedPropertyCurves": []
+      },
+      {
+        "Identifier": "4a905792-715b-4c97-a9f0-66093605e7c1",
+        "SoilLayers": [
+          {
+            "Identifier": "ebb554e2-3c5d-4a19-beb0-cdb940cf167a",
+            "Name": "Layer 1",
+            "MaterialType": 1,
+            "Color": "#FFFFFFFF",
+            "LayerClassificationType": 0,
+            "TopDepth": 0.0,
+            "BottomDepth": 2.0,
+            "NumberOfSubLayers": 1,
+            "LateralSubSoilModel": 0,
+            "AxialSubSoilModel": 0,
+            "AxialTipSubSoilModel": 0
+          },
+          {
+            "Identifier": "c02ac560-3142-4319-bc8c-91f00d23dabe",
+            "Name": "Layer 2",
+            "MaterialType": 1,
+            "Color": "#FFFFFFFF",
+            "LayerClassificationType": 0,
+            "TopDepth": 2.0,
+            "BottomDepth": 2.5,
+            "NumberOfSubLayers": 1,
+            "LateralSubSoilModel": 0,
+            "AxialSubSoilModel": 0,
+            "AxialTipSubSoilModel": 0
+          },
+          {
+            "Identifier": "8db39261-b920-4487-9523-710bbd75f83e",
+            "Name": "Layer 3",
+            "MaterialType": 0,
+            "Color": "#FFFFFFFF",
+            "LayerClassificationType": 0,
+            "TopDepth": 2.5,
+            "BottomDepth": 5.0,
+            "NumberOfSubLayers": 1,
+            "LateralSubSoilModel": 0,
+            "AxialSubSoilModel": 0,
+            "AxialTipSubSoilModel": 0
+          },
+          {
+            "Identifier": "ee2ca353-2f83-475d-86e2-dfc2819267e4",
+            "Name": "Layer 4",
+            "MaterialType": 0,
+            "Color": "#FFFFFFFF",
+            "LayerClassificationType": 0,
+            "TopDepth": 5.0,
+            "BottomDepth": 8.0,
+            "NumberOfSubLayers": 1,
+            "LateralSubSoilModel": 0,
+            "AxialSubSoilModel": 0,
+            "AxialTipSubSoilModel": 0
+          },
+          {
+            "Identifier": "fef04db3-45eb-41fc-9b30-ae5a33c33667",
+            "Name": "Layer 5",
+            "MaterialType": 1,
+            "Color": "#FFFFFFFF",
+            "LayerClassificationType": 0,
+            "TopDepth": 8.0,
+            "BottomDepth": 9.5,
+            "NumberOfSubLayers": 1,
+            "LateralSubSoilModel": 0,
+            "AxialSubSoilModel": 0,
+            "AxialTipSubSoilModel": 0
+          },
+          {
+            "Identifier": "692f1912-ea2d-44e6-99d4-8dadce858e03",
+            "Name": "Layer 6",
+            "MaterialType": 1,
+            "Color": "#FFFFFFFF",
+            "LayerClassificationType": 0,
+            "TopDepth": 9.5,
+            "BottomDepth": 13.0,
+            "NumberOfSubLayers": 1,
+            "LateralSubSoilModel": 0,
+            "AxialSubSoilModel": 0,
+            "AxialTipSubSoilModel": 0
+          }
+        ],
+        "UsedSoilProperties": [
+          {
+            "Key": "SoilWeight",
+            "Value": {
+              "SoilPropertyDataSource": 0,
+              "SoilPropertyData": {
+                "SoilPropertyValues": [
+                  {
+                    "Key": "ebb554e2-3c5d-4a19-beb0-cdb940cf167a",
+                    "Value": {
+                      "TopValue": 20.3,
+                      "BottomValue": 20.3
+                    }
+                  },
+                  {
+                    "Key": "c02ac560-3142-4319-bc8c-91f00d23dabe",
+                    "Value": {
+                      "TopValue": 20.3,
+                      "BottomValue": 20.3
+                    }
+                  },
+                  {
+                    "Key": "8db39261-b920-4487-9523-710bbd75f83e",
+                    "Value": {
+                      "TopValue": 21.5,
+                      "BottomValue": 21.5
+                    }
+                  },
+                  {
+                    "Key": "ee2ca353-2f83-475d-86e2-dfc2819267e4",
+                    "Value": {
+                      "TopValue": 21.5,
+                      "BottomValue": 21.5
+                    }
+                  },
+                  {
+                    "Key": "fef04db3-45eb-41fc-9b30-ae5a33c33667",
+                    "Value": {
+                      "TopValue": 21.3,
+                      "BottomValue": 21.3
+                    }
+                  },
+                  {
+                    "Key": "692f1912-ea2d-44e6-99d4-8dadce858e03",
+                    "Value": {
+                      "TopValue": 21.3,
+                      "BottomValue": 21.3
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "Key": "UndrainedShearStrength",
+            "Value": {
+              "SoilPropertyDataSource": 0,
+              "SoilPropertyData": {
+                "SoilPropertyValues": [
+                  {
+                    "Key": "8db39261-b920-4487-9523-710bbd75f83e",
+                    "Value": {
+                      "TopValue": 35.0,
+                      "BottomValue": 65.0
+                    }
+                  },
+                  {
+                    "Key": "ee2ca353-2f83-475d-86e2-dfc2819267e4",
+                    "Value": {
+                      "TopValue": 65.0,
+                      "BottomValue": 70.0
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "Key": "FrictionAngle",
+            "Value": {
+              "SoilPropertyDataSource": 0,
+              "SoilPropertyData": {
+                "SoilPropertyValues": [
+                  {
+                    "Key": "ebb554e2-3c5d-4a19-beb0-cdb940cf167a",
+                    "Value": {
+                      "TopValue": 33.7,
+                      "BottomValue": 33.7
+                    }
+                  },
+                  {
+                    "Key": "c02ac560-3142-4319-bc8c-91f00d23dabe",
+                    "Value": {
+                      "TopValue": 33.7,
+                      "BottomValue": 33.7
+                    }
+                  },
+                  {
+                    "Key": "fef04db3-45eb-41fc-9b30-ae5a33c33667",
+                    "Value": {
+                      "TopValue": 46.6,
+                      "BottomValue": 46.6
+                    }
+                  },
+                  {
+                    "Key": "692f1912-ea2d-44e6-99d4-8dadce858e03",
+                    "Value": {
+                      "TopValue": 46.6,
+                      "BottomValue": 46.6
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "Key": "StrainEpsilon50",
+            "Value": {
+              "SoilPropertyDataSource": 0,
+              "SoilPropertyData": {
+                "SoilPropertyValues": [
+                  {
+                    "Key": "8db39261-b920-4487-9523-710bbd75f83e",
+                    "Value": {
+                      "TopValue": 0.01,
+                      "BottomValue": 0.01
+                    }
+                  },
+                  {
+                    "Key": "ee2ca353-2f83-475d-86e2-dfc2819267e4",
+                    "Value": {
+                      "TopValue": 0.01,
+                      "BottomValue": 0.01
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "Key": "ApiJ",
+            "Value": {
+              "SoilPropertyDataSource": 0,
+              "SoilPropertyData": {
+                "SoilPropertyValues": [
+                  {
+                    "Key": "8db39261-b920-4487-9523-710bbd75f83e",
+                    "Value": {
+                      "TopValue": 0.25,
+                      "BottomValue": 0.25
+                    }
+                  },
+                  {
+                    "Key": "ee2ca353-2f83-475d-86e2-dfc2819267e4",
+                    "Value": {
+                      "TopValue": 0.25,
+                      "BottomValue": 0.25
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "Key": "FactorTresTmax",
+            "Value": {
+              "SoilPropertyDataSource": 0,
+              "SoilPropertyData": {
+                "SoilPropertyValues": [
+                  {
+                    "Key": "ebb554e2-3c5d-4a19-beb0-cdb940cf167a",
+                    "Value": {
+                      "TopValue": 1.0,
+                      "BottomValue": 1.0
+                    }
+                  },
+                  {
+                    "Key": "c02ac560-3142-4319-bc8c-91f00d23dabe",
+                    "Value": {
+                      "TopValue": 1.0,
+                      "BottomValue": 1.0
+                    }
+                  },
+                  {
+                    "Key": "8db39261-b920-4487-9523-710bbd75f83e",
+                    "Value": {
+                      "TopValue": 1.0,
+                      "BottomValue": 1.0
+                    }
+                  },
+                  {
+                    "Key": "ee2ca353-2f83-475d-86e2-dfc2819267e4",
+                    "Value": {
+                      "TopValue": 1.0,
+                      "BottomValue": 1.0
+                    }
+                  },
+                  {
+                    "Key": "fef04db3-45eb-41fc-9b30-ae5a33c33667",
+                    "Value": {
+                      "TopValue": 1.0,
+                      "BottomValue": 1.0
+                    }
+                  },
+                  {
+                    "Key": "692f1912-ea2d-44e6-99d4-8dadce858e03",
+                    "Value": {
+                      "TopValue": 1.0,
+                      "BottomValue": 1.0
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "Key": "CptTipResistance",
+            "Value": {
+              "SoilPropertyDataSource": 0,
+              "SoilPropertyData": {
+                "SoilPropertyValues": [
+                  {
+                    "Key": "ebb554e2-3c5d-4a19-beb0-cdb940cf167a",
+                    "Value": {
+                      "TopValue": 0.0,
+                      "BottomValue": 0.5
+                    }
+                  },
+                  {
+                    "Key": "c02ac560-3142-4319-bc8c-91f00d23dabe",
+                    "Value": {
+                      "TopValue": 0.5,
+                      "BottomValue": 0.5
+                    }
+                  },
+                  {
+                    "Key": "fef04db3-45eb-41fc-9b30-ae5a33c33667",
+                    "Value": {
+                      "TopValue": 2.0,
+                      "BottomValue": 100.0
+                    }
+                  },
+                  {
+                    "Key": "692f1912-ea2d-44e6-99d4-8dadce858e03",
+                    "Value": {
+                      "TopValue": 100.0,
+                      "BottomValue": 55.0
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "Key": "RelativeDensity",
+            "Value": {
+              "SoilPropertyDataSource": 0,
+              "SoilPropertyData": {
+                "SoilPropertyValues": [
+                  {
+                    "Key": "ebb554e2-3c5d-4a19-beb0-cdb940cf167a",
+                    "Value": {
+                      "TopValue": 0.2,
+                      "BottomValue": 0.2
+                    }
+                  },
+                  {
+                    "Key": "c02ac560-3142-4319-bc8c-91f00d23dabe",
+                    "Value": {
+                      "TopValue": 0.2,
+                      "BottomValue": 0.2
+                    }
+                  },
+                  {
+                    "Key": "fef04db3-45eb-41fc-9b30-ae5a33c33667",
+                    "Value": {
+                      "TopValue": 1.0,
+                      "BottomValue": 1.0
+                    }
+                  },
+                  {
+                    "Key": "692f1912-ea2d-44e6-99d4-8dadce858e03",
+                    "Value": {
+                      "TopValue": 1.0,
+                      "BottomValue": 1.0
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        ],
+        "MainSoilModel": 0,
+        "PacerCohesiveMethod": 0,
+        "PacerNonCohesiveMethod": 0,
+        "Name": "Soil profile 6",
+        "Color": "#FFFFFF00",
+        "LayerSubDivision": 0,
+        "SkinFrictionAndTipResistanceCalculationMethod": 1,
+        "GroundZLevel": 0.0,
+        "GroundWaterZLevel": 0.0,
+        "SoilDataInterpretationModel": null,
+        "SelectedPropertyCurves": []
+      }
+    ]
+  },
+  "LoadData": {
+    "Identifier": "a7644f12-cbf3-4a52-b194-2782ac6327ad",
+    "Loads": [
+      {
+        "Identifier": "607876e2-3d9a-4323-9a5e-c27468bbb1e0",
+        "LoadSteps": [
+          5.0,
+          10.0,
+          15.0,
+          20.0,
+          25.0,
+          30.0,
+          35.0,
+          40.0,
+          45.0,
+          50.0,
+          60.0,
+          70.0,
+          80.0,
+          90.0,
+          100.0,
+          150.0,
+          200.0,
+          250.0,
+          300.0,
+          400.0
+        ],
+        "Id": 1,
+        "Label": "Load1",
+        "ForceX": 500.0,
+        "ForceY": 0.0,
+        "ForceZ": 0.0,
+        "MomentX": 0.0,
+        "MomentY": 0.0,
+        "MomentZ": 0.0
+      }
+    ]
+  },
+  "PileData": {
+    "Identifier": "ccd6cb18-ddde-430c-954f-727866b68d4b",
+    "PileCenter": {
+      "X": 0.0,
+      "Y": 0.0
+    },
+    "Piles": [
+      {
+        "Identifier": "964ebd95-fbf1-4abf-bf2e-50f02e7282ae",
+        "PileSegments": [
+          {
+            "Identifier": "ed23fc5c-fe0a-4ef8-93db-24902d81568c",
+            "PileSegmentType": 0,
+            "CrossSectionType": 0,
+            "PileType": 0,
+            "Name": null,
+            "Number": 1,
+            "Length": 10.0,
+            "SingleCrossSectionTop": {
+              "PileSegmentPart": 0,
+              "Eccentricity": 0.0,
+              "Identifier": "1bd0336a-58fc-4a41-8e82-249ec9aae80c",
+              "Weight": 0.0,
+              "Diameter": 1.0,
+              "Thickness": 0.02,
+              "YieldStrength": 355000.0,
+              "TemperatureStrain": 1.2E-05,
+              "WeightFluid": 0.0,
+              "Width": null,
+              "OverrideEquivalentDiameterWidthRatio": false,
+              "EquivalentDiameterWidthRatio": null,
+              "ElasticityModulus": 210000000.0,
+              "OverrideEquivalentElasticityModulus": false,
+              "EquivalentElasticityModulus": null,
+              "OverrideBendingMomentAxialStiffness": false,
+              "BendingMoment": 1552988.5229972897,
+              "AxialStiffness": 12930795.362175593
+            },
+            "SingleCrossSectionBottom": null,
+            "CompositeCrossSection": null,
+            "MomentForceCurves": [],
+            "IsFromDatabase": false
+          }
+        ],
+        "Number": 1,
+        "Label": "001",
+        "SoilProfileIdentifier": "213186fb-28a4-4632-8d33-d78347438cae",
+        "PileGeometryType": 0,
+        "WallMaterialType": 0,
+        "HeadCondition": 2,
+        "PileSpringStiffness": {
+          "SpringStiffnessX": 100000.0,
+          "SpringStiffnessY": 100000.0,
+          "SpringStiffnessZ": 100000.0,
+          "SpringStiffnessXx": 1E+50,
+          "SpringStiffnessYy": 10000000000000.0,
+          "SpringStiffnessZz": 100000.0
+        },
+        "TipCode": 0,
+        "TipCodeZ": null,
+        "X": 0.0,
+        "Y": 0.0,
+        "Z": 0.0,
+        "IsVertical": true,
+        "Slope": null,
+        "Azimuth": null,
+        "IsTipAtSoilProfileBottom": false,
+        "Length": 10.0,
+        "LocalScour": 0.0,
+        "GlobalScour": 0.0,
+        "PyPfactor": 1.0,
+        "TzTfactor": 1.0,
+        "QzQfactor": 1.0,
+        "SoilPlugZ": null,
+        "SoilPlugUnitWeight": null,
+        "SoilPlugFrictionRatio": null,
+        "SoilPlugDrivingTipCondition": null,
+        "SoilPlugTipCondition": null
+      },
+      {
+        "Identifier": "89329aa3-d799-4d13-9e32-a826a17e1d95",
+        "PileSegments": [
+          {
+            "Identifier": "8e9d3de2-0b88-4af7-813c-0c5edf5762f7",
+            "PileSegmentType": 0,
+            "CrossSectionType": 0,
+            "PileType": 0,
+            "Name": null,
+            "Number": 1,
+            "Length": 10.0,
+            "SingleCrossSectionTop": {
+              "PileSegmentPart": 0,
+              "Eccentricity": 0.0,
+              "Identifier": "44e46e0c-a988-43ba-8a65-693f73ea5499",
+              "Weight": 0.0,
+              "Diameter": 1.0,
+              "Thickness": 0.02,
+              "YieldStrength": 355000.0,
+              "TemperatureStrain": 1.2E-05,
+              "WeightFluid": 0.0,
+              "Width": null,
+              "OverrideEquivalentDiameterWidthRatio": false,
+              "EquivalentDiameterWidthRatio": null,
+              "ElasticityModulus": 210000000.0,
+              "OverrideEquivalentElasticityModulus": false,
+              "EquivalentElasticityModulus": null,
+              "OverrideBendingMomentAxialStiffness": false,
+              "BendingMoment": 1552988.5229972897,
+              "AxialStiffness": 12930795.362175593
+            },
+            "SingleCrossSectionBottom": null,
+            "CompositeCrossSection": null,
+            "MomentForceCurves": [],
+            "IsFromDatabase": false
+          }
+        ],
+        "Number": 2,
+        "Label": "002",
+        "SoilProfileIdentifier": "213186fb-28a4-4632-8d33-d78347438cae",
+        "PileGeometryType": 0,
+        "WallMaterialType": 0,
+        "HeadCondition": 2,
+        "PileSpringStiffness": {
+          "SpringStiffnessX": 100000.0,
+          "SpringStiffnessY": 100000.0,
+          "SpringStiffnessZ": 100000.0,
+          "SpringStiffnessXx": 100000.0,
+          "SpringStiffnessYy": 10000000000000.0,
+          "SpringStiffnessZz": 100000.0
+        },
+        "TipCode": 0,
+        "TipCodeZ": null,
+        "X": 20.0,
+        "Y": 0.0,
+        "Z": 0.0,
+        "IsVertical": true,
+        "Slope": null,
+        "Azimuth": null,
+        "IsTipAtSoilProfileBottom": false,
+        "Length": 10.0,
+        "LocalScour": 0.0,
+        "GlobalScour": 0.0,
+        "PyPfactor": 1.0,
+        "TzTfactor": 1.0,
+        "QzQfactor": 1.0,
+        "SoilPlugZ": null,
+        "SoilPlugUnitWeight": null,
+        "SoilPlugFrictionRatio": null,
+        "SoilPlugDrivingTipCondition": null,
+        "SoilPlugTipCondition": null
+      }
+    ]
+  },
+  "SoilSpringData": {
+    "Identifier": "8b7b7418-6191-4aa6-a026-1931bb72ac7e",
+    "GensodSoilProfiles": []
+  },
+  "AdvancedLoadData": {
+    "Identifier": "d91549bd-85d5-4075-8136-edfbe3a57a76",
+    "PileForces": [],
+    "PileSpringDeflections": [],
+    "SoilDeflections": [],
+    "VerticalStressAtGroundLevel": 0.0
+  },
+  "SettingPropertiesData": {
+    "Identifier": "e4c705d3-6807-4a43-9f21-1f907a56462f",
+    "SensitivityAnalysisProperties": {
+      "MaterialCoefficients": {
+        "FrictionAngle": 1.0,
+        "UndrainedShearStrength": 1.0,
+        "SkinFriction": 1.0,
+        "TipResistance": 1.0
+      },
+      "Multipliers": {
+        "LoadVector": 1.0,
+        "SoilDisplacement": 1.0
+      }
+    },
+    "GroupActionProperties": {
+      "UseGroupAction": false,
+      "HorizontalElasticModulusAtZ0": null,
+      "EModulusDepthGradient": null,
+      "EModulusVerticalHorizontalRatio": 1.0,
+      "MaxInteractionDistance": null
+    },
+    "AnalysisKernelSettingsProperties": {
+      "SpliceSettings": {
+        "IncludeSecondOrderMoments": true,
+        "GravityLoadingRatio": {
+          "DirectionX": 0.0,
+          "DirectionY": 0.0,
+          "DirectionZ": 1.0
+        },
+        "ConvergenceCriterion": 0.01,
+        "NumberOfIterations": 500,
+        "UtilizationRatioCalculationMethod": 0
+      },
+      "GensodSettings": {
+        "ClayStiffLimit": 96.0,
+        "LocalScourHoleSlope": 20.0
+      }
+    },
+    "MinHorizontalDistanceAllowed": 0.0,
+    "MaxElementLength": 0.1
+  }
+}

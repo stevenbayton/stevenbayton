@@ -1,0 +1,1514 @@
+#
+          ECHO PRINT OF INPUT DATA TO PROGRAM "SPLICE"
+
+          00000000011111111112222222222333333333344444444445555555555666666666677777777778
+          12345678901234567890123456789012345678901234567890123456789012345678901234567890
+
+    1---- Header: 36-1.57_pile at Eirin_LE soil_horizontal_API_pile group_LC04_Future dril
+    2---- *                                                                               
+    3---- SPLICE Version: 2009-09-01                                                      
+    4---- *                                                                               
+    5---- * Date         Sign    Log of Corrections                                       
+    6---- * 14 Jul 2009  cjfc    New input file for SPLICE revision 5                     
+    7---- *                                                                               
+    8----                                                                                 
+    9----  ****************** CONTROL SECTION                                             
+   10----   1.0    CONFRC    Old-force-unit  = CONFRC * New-force-unit  1MN  = 1000*1KN   
+   11----   1.0    CONLTH    Old-length-unit = CONLTH * New-length-unit  1M  = 3.28*1FT   
+   12----   5      NPH       Number of pile heads including dummy piles (max is 300)      
+   13----   1      NLPH      Number of pile heads with given loads (max is 5)             
+   14----   0      JACK      Superstructure code (0=None 1=Present 2=Generate)            
+   15----   2      NUMVEC    Number of load vectors to be analysed (limit is 75 by Splice,
+   16----   00     ISTART    Code 'IJ' for save/read of re-start values (I=Save J=Read)   
+   17----   1      ISECM     Code for second order moments (0=Neglect 1=Include)          
+   18----   0      NURCHK    Cross section strength UR check (0=No 1=NORSOK 2=ISO-19902)  
+   19----   1111   IPRT1     Print code 'IJKL' (L=Piles K=Loads J=Soil I=Soil.disp)       
+   20----   1      JECHO     Echo print of input file NF5 to file NF14 (0=No 1=Yes)       
+   21----   0 0 0 100 0        Misc(1) - Misc(5)  Special purpose parameters              
+   22----                                                                                 
+   23----  ****************** PILE/SOIL/PILE INTERACTION, SOIL PROFILES AND SCOUR SECTION 
+   24----   0     INTER     Mindlin interaction code (0=No 1=Dif.piles 2=Full -1=Avail)   
+   25----   0.0   DISTIN    Maximum interaction distance                                  
+   26----  Pile1 Pile2 Soil.profile  Z.scour P-Y.pfact  T-Z.tfact  Q-Z.qfact              
+   27----   1 1 Soil1 2.000 1.0 1.0 1.0                                                   
+   28----   2 2 Soil1 2.000 1.0 1.0 1.0                                                   
+   29----   3 3 Soil1 2.000 1.0 1.0 1.0                                                   
+   30----   4 4 Soil1 2.000 1.0 1.0 1.0                                                   
+   31----   5 5 Soil1 9999.000 1.0 1.0 1.0                                                
+   32----                                                                                 
+   33----  ****************** POINT FORCES SECTION                                        
+   34----     0     IFRC      Number of given point forces                                
+   35----   Force    X-coord  Y-coord  Z-coord     X-FORCE  Y-FORCE  Z-FORCE              
+   36----                                                                                 
+   37----  ****************** LOAD APPLICATION SECTION                                    
+   38----   0.000 0.000 1.000   ACCX,ACCY,ACCZ   Gravity loading ratio in X- Y- AND Z-dir 
+   39----  VECTOR  NUMINC  KEEP  VECMLT  SOLMLT  FRCMLT                                   
+   40----   1 1 0 1.000 1.000 1.000                                                       
+   41----   2 1 0 1.000 1.000 1.000                                                       
+   42----  VECTOR  INCR  MAXIT  IPRT2  IPRT3  NPTRC   QTOT  CONV    Misc(6,7,8,9,10,11)   
+   43----   1 1 500 1111 1111 1 1.000 0.000010 1 0 0 8 0 0                                
+   44----   2 1 500 1111 1111 1 1.000 0.000010 1 0 0 8 0 0                                
+   45---- C                                                                               
+   46---- C VECTOR : LOAD VECTOR NUMBER  1,2,3,...,NUMVEC                                 
+   47---- C NUMINC : NUMBER OF LOAD INCREMENTS FOR EACH VECTOR                            
+   48---- C KEEP   : START CONDITION (0=ZERO 1=RESULTING CONDITION AFTER LAST VECTOR)     
+   49---- C VECMLT : LOAD VECTOR MULTIPLIER FOR LOAD VALUES READ FROM FILE 'NF9'          
+   50---- C SOLMLT : SOIL DISPL MULTIPLIER FOR VALUES READ FROM FILE 'NF10'               
+   51---- C FRCMLT : POINT FORCE MULTIPLIER FOR POINT FORCES GIVEN ABOVE                  
+   52---- C                                                                               
+   53---- C VECTOR : LOAD VECTOR NUMBER  1,2,3,...,NUMVEC                                 
+   54---- C INCR   : LOAD INCREMENT NUMBER FOR PRESENT VECTOR  1,2,3,...,NUMINC           
+   55---- C MAXIT  : MAXIMUM NUMBER OF ITERATIONS                                         
+   56---- C IPRT2  : PRINT CODE 'IJKL' (L=RES.DSP K=RES.FRC J=INC.DSP I=INC.FRC)          
+   57---- C IPRT3  : PRINT CODE 'IJKL' (L=MATRIX  K=PIL.RES J=SUMMARY I=NF15.SAVING)      
+   58---- C          K=2 GIVES LIMITED PILE OUTPUT WITH DEPTH                             
+   59---- C          I=1 SAVES INTERFACE DISPL AND FORCES                                 
+   60---- C          I=2 SAVES ALL DATA IN COMMON BLOCK /PILPRP/ , I=3 DOES BOTH          
+   61---- C NPTRC  : TRACE PRINT OF PILE 'NPTRC' DURING ITERATIONS                        
+   62---- C QTOT   : TOTAL LOAD (DISP) AFTER PRESENT INCR  (INCR=VECT*(QTOTNOW-QTOTLAST)) 
+   63---- C CONV   : CONVERGENCE CRITERION (LENGTH)                                       
+   64---- C                                                                               
+   65---- C MISC(1) - MISC(11) ARE SPECIAL PURPOSE PARAMETERS                             
+   66---- C                                                                               
+   67---- C MISC(1) :  1=CHECK EQUATION SOLVER   2=PRINT VECTOR AND SUB-MATRICES          
+   68---- C MISC(2) :  1=SKIP STIFFNESS MATRIX SYMMETRY ENFORCEMENT AT PILE HEADS         
+   69---- C MISC(3) :  CONVERGENCE FACTOR DISPL  ( NEXT=(OLD*F+NEW)/(1+F)  F=MISC3/100 )  
+   70---- C MISC(4) :  CONVERGENCE FACTOR FORCS  ( NEXT=(OLD*F+NEW)/(1+F)  F=MISC4/100 )  
+   71---- C MISC(5) :  CONVERGENCE FACTOR STFNS  ( NEXT=(OLD*F+NEW)/(1+F)  F=MISC5/100 )  
+   72---- C MISC(6) = 0  COMPUTE NEW SOIL DISPL DUE TO GROUP EFFECTS AFTER EACH ITERTN    
+   73---- C         = 1  COMPUTE SOIL DISPL ONCE ONLY  (SHOULD SECURE CONVERGENCE)        
+   74---- C MISC(7) = 1  PRINT INCR DSP AND FRC TO SCREEN AFTER EACH ITERATION            
+   75---- C MISC(8) = 1  PRINT STIFFNESS VALUES TO SCREEN AFTER EACH ITERATION            
+   76---- C MISC(9) = 9  PRINT PROGRAM CONTROL FLOW TO SCREEN                             
+   77---- C MISC(9) = 8  SKIP AUTOMATIC DIVERGENCE CHECK                                  
+   78---- C MISC(10)= NPND  TRACE PRINT OF VALUES FOR NODE 'ND' ON PILE 'NP' TO SCREEN    
+   79---- C MISC(11)= NF DETAILED ELEMENT DATA TRACE SAVED ON UNIT 'NF'                   
+   80----                                                                                 
+
+          00000000011111111112222222222333333333344444444445555555555666666666677777777778
+          12345678901234567890123456789012345678901234567890123456789012345678901234567890
+
+#
+
+
+
+
+
+
+
+
+
+
+         ***********************************************************
+         I                                                         I
+         I    PROGRAM SPLICE    STRUCTURE/PILE/SOIL INTERACTION    I
+         I                                                         I
+         I       VERSION : 04 Feb 2014     DOUBLE PRECISION        I
+         I                                                         I
+         ***********************************************************
+
+
+              (C) COPYRIGHT : NORWEGIAN GEOTECHNICAL INSTITUTE
+              (C) COPYRIGHT : CARL J FRIMANN CLAUSEN
+
+
+
+     AUTHORIZED USER :                            DELIVERED AND SERVICED BY :
+
+     ViaNova GeoSuite AB                          Carl J Frimann Clausen                  
+     Ynglingagatan 6, 6 tr                        Cidex 424 Bis                           
+     SE 113 47 Stockholm, Sweden                  F-06330 Roquefort-les-Pins              
+     Phone  : (+46) (0)8276990                    Phone  : (+33) 493 775 275              
+     Fax    : (+46) (0)8276950                    Fax    : (+33) 493 771 979              
+     www.vianova.se                               E-mail : cjfc@gf-net.com                
+#
+ SPLICE Output   Program Version = 04 Feb 2014    Time = 15 Oct 2025  12:32:13
+
+ Header: 36-1.57_pile at Eirin_LE soil_horizontal_API_pile group_LC04_Future dril            PAGE:    1
+
+
+ EXECUTION OF THIS RUN STARTED :  15 Oct 2025  AT   12:32:13 HOURS
+
+
+ NUMBER OF PILE HEADS                  5
+ NUMBER OF LOADED PILE HEADS           1
+ JACKET CODE                           0  NO JACKET PRESENT   
+
+ NUMBER OF LOAD VECTORS                2
+
+ RE-START CODE                         0  NO RESTART          
+ SECOND ORDER MOMENTS CODE             1  INCLUDE             
+
+ MINDLIN INTERACTION CODE              0  NO INTERACTION      
+ START CONDITION OUTPUT CODE        1111
+
+ MISC(1-5)     0     0     0   100     0
+
+ FILE UNIT NUMBERS USED BY SPLICE:
+ 
+ NF05 = 25  Input file with comments    NF15 = 15  Calculated results, bin 
+ NF07 =  7  Pile data input, bin        NF16 = 16  User terminal output    
+ NF08 =  8  Jacket stiffness, bin       NF17 = 17  Re-start values, bin    
+ NF09 =  9  Pile head loads, bin        NF18 = 18  Scratch storage, bin    
+ NF10 = 10  Soil data, bin              NF19 = 19  Scratch storage, bin    
+ NF11 = 11  Mindlin influence, bin      NF20 = 20  Pile head load vector(s)
+ NF12 = 12  Pile data storage 1, bin    NF21 = 21  Jacket stiffness input  
+ NF13 = 13  Pile data storage 1, bin    NF26 = 26  Input file without cmnts
+ NF14 = 14  Printed output file     
+#
+ SPLICE Output   Program Version = 04 Feb 2014    Time = 15 Oct 2025  12:32:13
+
+ Header: 36-1.57_pile at Eirin_LE soil_horizontal_API_pile group_LC04_Future dril            PAGE:    2
+
+
+ NUMBER OF SINGLE POINT FORCES         0
+
+ MAXIMUM INTERACTION DISTANCE      0.000
+
+ SCOUR LEVEL                    9999.000
+
+ X-ACCELERATION RATIO              0.000
+ Y-ACCELERATION RATIO              0.000
+ Z-ACCELERATION RATIO              1.000
+
+
+ SOIL DATA FILE USED : 
+ Header: 36-1.57_pile at Eirin_LE soil_horizontal_API_pile group_LC04_Future dril
+
+ PILE DATA FILE USED : 
+ Header: 36-1.57_pile at Eirin_LE soil_horizontal_API_pile group_LC04_Future dril
+#
+ SPLICE Output   Program Version = 04 Feb 2014    Time = 15 Oct 2025  12:32:13
+
+ Header: 36-1.57_pile at Eirin_LE soil_horizontal_API_pile group_LC04_Future dril            PAGE:    3
+
+
+ SUMMARY OF PILE GEOMETRY VALUES
+ *******************************
+
+  PIL CNCT NUM  TIP      PILE HEAD COORDINATES       PILE TIP COORDINATES   MAX PILE TIP
+  NUM  TO  ELM  CODE      X        Y        Z         X        Y        Z      STRESS
+ 
+   1    5   28  FREE    -7.500   -7.335   -1.240    -7.500   -7.335   10.000  4.539E+03
+   2    5   28  FREE     7.500   -7.335   -1.240     7.500   -7.335   10.000  4.539E+03
+   3    5   28  FREE    -7.500    7.335   -1.240    -7.500    7.335   10.000  4.539E+03
+   4    5   28  FREE     7.500    7.335   -1.240     7.500    7.335   10.000  4.539E+03
+   5    5    0           0.000    0.000   -1.240     0.000    0.000   -1.240  0.000E+00
+ 
+#
+ SPLICE Output   Program Version = 04 Feb 2014    Time = 15 Oct 2025  12:32:13
+
+ Header: 36-1.57_pile at Eirin_LE soil_horizontal_API_pile group_LC04_Future dril            PAGE:    4
+
+
+ SUMMARY OF CROSS SECTION DATA
+ *****************************
+
+ SCT  DIAM  WALL  E.MODLS   G.MODLS   SIG.YLD    EA        EI        GIP      G.WALL  G.FLUID TEMP.COEF
+ 
+  1  0.914 0.040 2.100E+08 8.077E+07 3.550E+05 2.307E+07 2.210E+06 1.700E+06 6.70E+01 0.00E+00 1.20E-05
+ All cross sections are linearly elastic
+#
+ SPLICE Output   Program Version = 04 Feb 2014    Time = 15 Oct 2025  12:32:13
+
+ Header: 36-1.57_pile at Eirin_LE soil_horizontal_API_pile group_LC04_Future dril            PAGE:    5
+
+
+ SUMMARY OF SOIL LAYER DATA
+ **************************
+
+ LAYER  Z-BOTTOM NPY NTZ REV-CODE E-MODULUS POIS G-MODULUS  MAX-AXIAL MAX-LTRL(1) STF-AXIAL STF-LTRL(1)
+                                   F/L**2         F/L**2     F/L**2     F/L**2     F/L**3     F/L**3
+ 
+   1      0.381   29  29   CLOS   0.000E+00 0.30 0.000E+00  0.000E+00  0.000E+00  0.000E+00  0.000E+00
+   2      0.786   29  29   CLOS   0.000E+00 0.30 0.000E+00  0.000E+00  0.000E+00  0.000E+00  0.000E+00
+   3      1.191   29  29   CLOS   0.000E+00 0.30 0.000E+00  0.000E+00  0.000E+00  0.000E+00  0.000E+00
+   4      1.596   29  29   CLOS   0.000E+00 0.30 0.000E+00  0.000E+00  0.000E+00  0.000E+00  0.000E+00
+   5      2.001   29  29   CLOS   6.812E+02 0.30 2.620E+02  4.511E-03  9.914E-02  1.776E+00  1.936E+01
+ 
+   6      2.351   29  29   CLOS   1.276E+04 0.30 4.909E+03  1.583E+00  4.112E+01  6.235E+02  6.797E+03
+   7      2.701   29  29   CLOS   1.804E+04 0.30 6.937E+03  3.162E+00  9.026E+01  1.245E+03  1.357E+04
+   8      3.161   29  29   CLOS   6.151E+03 0.50 2.050E+03  1.524E+01  1.485E+02  3.126E+03  3.250E+03
+   9      3.621   29  29   CLOS   7.052E+03 0.50 2.351E+03  1.844E+01  1.797E+02  3.782E+03  3.932E+03
+  10      4.081   29  29   CLOS   7.952E+03 0.50 2.651E+03  2.153E+01  2.123E+02  4.418E+03  4.646E+03
+ 
+  11      4.541   29  29   CLOS   8.853E+03 0.50 2.951E+03  2.457E+01  2.465E+02  5.041E+03  5.393E+03
+  12      5.001   29  29   CLOS   9.750E+03 0.50 3.250E+03  2.757E+01  2.820E+02  5.656E+03  6.171E+03
+  13      5.461   29  29   CLOS   9.865E+03 0.50 3.288E+03  2.885E+01  2.985E+02  5.918E+03  6.532E+03
+  14      5.921   29  29   CLOS   1.065E+04 0.50 3.551E+03  3.004E+01  3.152E+02  6.163E+03  6.897E+03
+  15      6.381   29  29   CLOS   1.421E+04 0.50 4.738E+03  3.117E+01  3.321E+02  6.394E+03  7.267E+03
+ 
+  16      6.841   29  29   CLOS   1.731E+04 0.50 5.769E+03  3.224E+01  3.492E+02  6.614E+03  7.640E+03
+  17      7.301   29  29   CLOS   2.005E+04 0.50 6.682E+03  3.327E+01  3.664E+02  6.826E+03  8.018E+03
+  18      7.651   29  29   CLOS   2.194E+04 0.50 7.313E+03  3.403E+01  3.797E+02  6.981E+03  8.309E+03
+  19      8.001   29  29   CLOS   2.370E+04 0.50 7.900E+03  3.477E+01  3.931E+02  7.133E+03  8.601E+03
+  20      8.376   29  29   CLOS   9.057E+04 0.30 3.483E+04  4.056E+01  4.249E+03  1.597E+04  3.937E+05
+ 
+  21      8.751   29  29   CLOS   9.318E+04 0.30 3.584E+04  4.293E+01  4.737E+03  1.691E+04  4.168E+05
+  22      9.126   29  29   CLOS   9.572E+04 0.30 3.682E+04  4.531E+01  5.252E+03  1.784E+04  4.400E+05
+  23      9.501   29  29   CLOS   9.820E+04 0.30 3.777E+04  4.768E+01  5.793E+03  1.878E+04  4.631E+05
+  24      9.751   29  29   CLOS   9.981E+04 0.30 3.839E+04  4.926E+01  6.168E+03  1.940E+04  4.786E+05
+  25     10.001   29  29   CLOS   1.014E+05 0.30 3.900E+04  5.085E+01  6.556E+03  2.002E+04  4.940E+05
+ 
+  26     12.800   29  29   CLOS   1.178E+05 0.30 4.529E+04  6.856E+01  1.170E+04  2.700E+04  6.668E+05
+  27     20.000   29  29   CLOS   5.250E+04 0.50 1.750E+04  1.530E+02  2.145E+03  3.139E+04  1.177E+06
+  28     25.000   29  29   CLOS   9.154E+04 0.50 3.051E+04  1.304E+02  1.593E+03  2.674E+04  8.746E+05
+  29     39.100   29  29   CLOS   1.382E+05 0.50 4.608E+04  1.657E+02  1.593E+03  3.398E+04  8.746E+05
+
+ PILE DIAMETER(S) USED TO GENERATE P-Y DATA
+    0.9140
+
+ ABOVE SOIL VALUES WERE GENERATED WITH SCOUR LINE AT ELEVATION =    2.000
+
+
+ SOIL MODULUS FOR MINDLIN INTERACTION VALUES :  E = E0 + E1 * Z
+
+    E0   =   0.000E+00
+    E1   =   0.000E+00
+    POIS =   0.500
+#
+ SPLICE Output   Program Version = 04 Feb 2014    Time = 15 Oct 2025  12:32:13
+
+ Header: 36-1.57_pile at Eirin_LE soil_horizontal_API_pile group_LC04_Future dril            PAGE:    6
+
+
+ SUMMARY OF PILE AXIAL CAPACITIES
+ ********************************
+
+ PILE  SELF WGHT     SKIN FRICTION        TIP RESISTANCE    RESULTING CAPACITY
+                   COMPRESN  TENSION    COMPRESN  TENSION    COMPRESN  TENSION
+
+   1   8.275E+01  6.531E+02 6.531E+02  2.980E+03 0.000E+00  3.551E+03 7.358E+02
+
+   2   8.275E+01  6.531E+02 6.531E+02  2.980E+03 0.000E+00  3.551E+03 7.358E+02
+
+   3   8.275E+01  6.531E+02 6.531E+02  2.980E+03 0.000E+00  3.551E+03 7.358E+02
+
+   4   8.275E+01  6.531E+02 6.531E+02  2.980E+03 0.000E+00  3.551E+03 7.358E+02
+#
+ SPLICE Output   Program Version = 04 Feb 2014    Time = 15 Oct 2025  12:32:13
+
+ Header: 36-1.57_pile at Eirin_LE soil_horizontal_API_pile group_LC04_Future dril            PAGE:    7
+
+ ------------------------
+ LOAD VECTOR NUMBER =   1
+ ------------------------
+
+ LOAD VECTOR LABEL  : Load: 04_ALS                                                                    
+
+ NUMBER OF LOAD INCREMENTS =      1
+
+ START CONDITION CODE      =      0
+
+ LOAD VECTOR MULTIPLIER    =    1.000
+
+ SOIL DISPL  MULTIPLIER    =    1.000
+
+ POINT FORCE MULTIPLIER    =    1.000
+
+
+ FIXED INTERFACE LOAD VECTOR
+ ***************************
+
+  PILE     X          Y          Z         XX         YY         ZZ
+ 
+   1   0.000E+00  0.000E+00  0.000E+00  0.000E+00  0.000E+00  0.000E+00
+   2   0.000E+00  0.000E+00  0.000E+00  0.000E+00  0.000E+00  0.000E+00
+   3   0.000E+00  0.000E+00  0.000E+00  0.000E+00  0.000E+00  0.000E+00
+   4   0.000E+00  0.000E+00  0.000E+00  0.000E+00  0.000E+00  0.000E+00
+   5   4.330E+02  1.458E+03  4.339E+03  2.023E+04 -5.196E+03 -7.720E+02
+ 
+
+       SUM OF FIXED FORCES AND MOMENTS WITH RESPECT TO ORIGIN
+
+       4.330E+02  1.458E+03  4.339E+03  2.204E+04 -5.733E+03 -7.720E+02
+#
+ SPLICE Output   Program Version = 04 Feb 2014    Time = 15 Oct 2025  12:32:13
+
+ Header: 36-1.57_pile at Eirin_LE soil_horizontal_API_pile group_LC04_Future dril            PAGE:    8
+
+ Load: 04_ALS                                                                    
+
+
+ LOAD INCREMENT NUMBER  =    1      MAX ITERATIONS        500
+
+ OUTPUT CODE 2            1111      TOTAL LOAD/DISP     1.000
+ OUTPUT CODE 3            1111      INCREMENT           1.000
+ TRACE PILE HEAD             1      CONVERGENCE CRIT  0.00001
+
+ N,MISC(N)=         6    1
+
+ N,MISC(N)=         9    8
+
+
+ TRACE OF COMPUTED INCREMENTAL GLOBAL DISPLACEMENTS AND FORCES AT PILE HEAD   1
+
+ IT   DSPX     DSPY     DSPZ     ROTXX    ROTYY    ROTZZ    FRCX     FRCY     FRCZ    MOMXX    MMOMYY    MOMZZ  ICONV
+ 
+  1  5.56E-03 2.18E-02-6.34E-05 2.73E-04-7.00E-05-8.99E-05 9.61E+01 3.77E+02-1.03E+02-1.91E+03 4.87E+02-1.02E+01 116
+  2  6.70E-03 2.61E-02-7.88E-04 4.32E-04-1.28E-04-1.10E-04 9.58E+01 3.80E+02-2.13E+02-2.07E+03 5.18E+02-1.24E+01 116
+  3  7.00E-03 2.73E-02-1.12E-03 5.68E-04-1.58E-04-1.12E-04 9.62E+01 3.80E+02-2.69E+02-2.07E+03 5.19E+02-1.27E+01 116
+  4  7.07E-03 2.80E-02-1.19E-03 6.67E-04-1.66E-04-1.12E-04 9.62E+01 3.81E+02-2.82E+02-2.05E+03 5.20E+02-1.27E+01 116
+  5  7.15E-03 2.85E-02-1.33E-03 7.49E-04-1.79E-04-1.12E-04 9.63E+01 3.81E+02-3.05E+02-2.04E+03 5.18E+02-1.27E+01 116
+  6  7.24E-03 2.89E-02-1.48E-03 8.13E-04-1.93E-04-1.12E-04 9.63E+01 3.81E+02-3.30E+02-2.03E+03 5.15E+02-1.27E+01 116
+  7  7.30E-03 2.93E-02-1.57E-03 8.73E-04-2.02E-04-1.12E-04 9.64E+01 3.81E+02-3.46E+02-2.01E+03 5.14E+02-1.27E+01 116
+  8  7.36E-03 2.96E-02-1.68E-03 9.36E-04-2.12E-04-1.12E-04 9.64E+01 3.81E+02-3.63E+02-2.00E+03 5.12E+02-1.27E+01 116
+  9  7.43E-03 3.00E-02-1.80E-03 1.00E-03-2.23E-04-1.12E-04 9.64E+01 3.81E+02-3.81E+02-1.99E+03 5.10E+02-1.27E+01 116
+ 10  7.50E-03 3.05E-02-1.92E-03 1.07E-03-2.34E-04-1.12E-04 9.65E+01 3.81E+02-3.99E+02-1.98E+03 5.09E+02-1.27E+01 116
+ 11  7.54E-03 3.09E-02-1.98E-03 1.15E-03-2.40E-04-1.12E-04 9.65E+01 3.81E+02-4.07E+02-1.97E+03 5.08E+02-1.27E+01 116
+ 12  7.57E-03 3.15E-02-2.01E-03 1.24E-03-2.43E-04-1.12E-04 9.65E+01 3.82E+02-4.10E+02-1.95E+03 5.08E+02-1.27E+01 116
+ 13  7.54E-03 3.21E-02-1.92E-03 1.34E-03-2.35E-04-1.13E-04 9.65E+01 3.82E+02-3.95E+02-1.93E+03 5.10E+02-1.27E+01 116
+ 14  7.45E-03 3.27E-02-1.72E-03 1.44E-03-2.18E-04-1.13E-04 9.65E+01 3.82E+02-3.63E+02-1.91E+03 5.15E+02-1.27E+01 116
+ 15  7.36E-03 3.33E-02-1.52E-03 1.53E-03-2.01E-04-1.13E-04 9.65E+01 3.82E+02-3.33E+02-1.90E+03 5.18E+02-1.28E+01 116
+ 16  7.33E-03 3.37E-02-1.44E-03 1.60E-03-1.94E-04-1.13E-04 9.65E+01 3.82E+02-3.23E+02-1.88E+03 5.19E+02-1.28E+01 116
+ 17  7.31E-03 3.40E-02-1.41E-03 1.65E-03-1.92E-04-1.13E-04 9.65E+01 3.82E+02-3.19E+02-1.88E+03 5.20E+02-1.27E+01 112
+ 18  7.31E-03 3.42E-02-1.40E-03 1.69E-03-1.91E-04-1.13E-04 9.65E+01 3.82E+02-3.16E+02-1.87E+03 5.20E+02-1.27E+01 111
+ 19  7.31E-03 3.44E-02-1.39E-03 1.71E-03-1.91E-04-1.13E-04 9.65E+01 3.82E+02-3.15E+02-1.87E+03 5.20E+02-1.27E+01 102
+ 20  7.30E-03 3.45E-02-1.39E-03 1.73E-03-1.91E-04-1.13E-04 9.65E+01 3.82E+02-3.14E+02-1.86E+03 5.20E+02-1.27E+01  98
+ 21  7.30E-03 3.46E-02-1.38E-03 1.74E-03-1.90E-04-1.13E-04 9.65E+01 3.82E+02-3.14E+02-1.86E+03 5.20E+02-1.27E+01  94
+ 22  7.30E-03 3.46E-02-1.38E-03 1.75E-03-1.90E-04-1.13E-04 9.65E+01 3.82E+02-3.13E+02-1.86E+03 5.20E+02-1.27E+01  90
+ 23  7.30E-03 3.46E-02-1.38E-03 1.75E-03-1.90E-04-1.13E-04 9.65E+01 3.82E+02-3.13E+02-1.86E+03 5.20E+02-1.27E+01  84
+ 24  7.30E-03 3.47E-02-1.38E-03 1.75E-03-1.90E-04-1.13E-04 9.65E+01 3.82E+02-3.13E+02-1.86E+03 5.20E+02-1.27E+01  77
+ 25  7.30E-03 3.47E-02-1.38E-03 1.76E-03-1.90E-04-1.13E-04 9.65E+01 3.82E+02-3.13E+02-1.86E+03 5.20E+02-1.27E+01  66
+ 26  7.30E-03 3.47E-02-1.38E-03 1.76E-03-1.90E-04-1.13E-04 9.65E+01 3.82E+02-3.13E+02-1.86E+03 5.20E+02-1.27E+01  58
+ 27  7.30E-03 3.47E-02-1.38E-03 1.76E-03-1.90E-04-1.13E-04 9.65E+01 3.82E+02-3.13E+02-1.86E+03 5.20E+02-1.27E+01  58
+ 28  7.30E-03 3.47E-02-1.38E-03 1.76E-03-1.90E-04-1.13E-04 9.65E+01 3.82E+02-3.13E+02-1.86E+03 5.20E+02-1.27E+01   0
+
+
+ CONV CRIT SATISFIED AFTER    28 ITERATIONS
+
+
+ PILE HEAD GLOBAL RESULTING DISPLACEMENTS
+ ****************************************
+
+ PILE CON     X        Y        Z         X-DSP       Y-DSP       Z-DSP      XX-ROT      YY-ROT      ZZ-ROT
+ 
+   1   5    -7.50    -7.33    -1.24     7.3010E-03  3.4684E-02 -1.3771E-03  1.7580E-03 -1.8993E-04 -1.1250E-04
+   2   5     7.50    -7.33    -1.24     7.3010E-03  3.2996E-02  1.4718E-03  1.7580E-03 -1.8993E-04 -1.1250E-04
+   3   5    -7.50     7.33    -1.24     8.9514E-03  3.4684E-02  2.4412E-02  1.7580E-03 -1.8993E-04 -1.1250E-04
+   4   5     7.50     7.33    -1.24     8.9514E-03  3.2996E-02  2.7261E-02  1.7580E-03 -1.8993E-04 -1.1250E-04
+   5   5     0.00     0.00    -1.24     8.1262E-03  3.3840E-02  1.2942E-02  1.7580E-03 -1.8993E-04 -1.1250E-04
+ 
+
+
+ PILE HEAD GLOBAL RESULTING FORCES
+ *********************************
+
+ PILE CON     X        Y        Z         X-FRC       Y-FRC       Z-FRC      XX-MOM      YY-MOM      ZZ-MOM
+ 
+   1   5    -7.50    -7.33    -1.24     9.6530E+01  3.8179E+02 -3.1274E+02 -1.8575E+03  5.2042E+02 -1.2734E+01
+   2   5     7.50    -7.33    -1.24     9.6288E+01  3.5439E+02  6.1783E+02 -1.7090E+03  5.2093E+02 -1.2734E+01
+   3   5    -7.50     7.33    -1.24     1.1988E+02  3.7311E+02  1.9775E+03 -1.8519E+03  6.6644E+02 -5.3526E+00
+   4   5     7.50     7.33    -1.24     1.2030E+02  3.4872E+02  2.0564E+03 -1.7044E+03  6.6753E+02 -5.3526E+00
+   5   5     0.00     0.00    -1.24     4.3300E+02  1.4580E+03  4.3390E+03  2.0228E+04 -5.1960E+03 -7.7200E+02
+ 
+
+                                     SUM OF FORCES AND MOMENTS WITH RESPECT TO ORIGIN. DUMMY PILES NOT INCLUDED
+
+                                        4.3300E+02  1.4580E+03  4.3390E+03  2.2036E+04 -5.7329E+03 -7.7200E+02
+
+
+ PILE HEAD GLOBAL INCREMENTAL DISPLACEMENTS
+ ******************************************
+
+ PILE CON     X        Y        Z         X-DSP       Y-DSP       Z-DSP      XX-ROT      YY-ROT      ZZ-ROT
+ 
+   1   5    -7.50    -7.33    -1.24     7.3010E-03  3.4684E-02 -1.3771E-03  1.7580E-03 -1.8993E-04 -1.1250E-04
+   2   5     7.50    -7.33    -1.24     7.3010E-03  3.2996E-02  1.4718E-03  1.7580E-03 -1.8993E-04 -1.1250E-04
+   3   5    -7.50     7.33    -1.24     8.9514E-03  3.4684E-02  2.4412E-02  1.7580E-03 -1.8993E-04 -1.1250E-04
+   4   5     7.50     7.33    -1.24     8.9514E-03  3.2996E-02  2.7261E-02  1.7580E-03 -1.8993E-04 -1.1250E-04
+   5   5     0.00     0.00    -1.24     8.1262E-03  3.3840E-02  1.2942E-02  1.7580E-03 -1.8993E-04 -1.1250E-04
+ 
+
+
+ PILE HEAD GLOBAL INCREMENTAL FORCES
+ ***********************************
+
+ PILE CON     X        Y        Z         X-FRC       Y-FRC       Z-FRC      XX-MOM      YY-MOM      ZZ-MOM
+ 
+   1   5    -7.50    -7.33    -1.24     9.6530E+01  3.8179E+02 -3.1274E+02 -1.8575E+03  5.2042E+02 -1.2734E+01
+   2   5     7.50    -7.33    -1.24     9.6288E+01  3.5439E+02  6.1783E+02 -1.7090E+03  5.2093E+02 -1.2734E+01
+   3   5    -7.50     7.33    -1.24     1.1988E+02  3.7311E+02  1.9775E+03 -1.8519E+03  6.6644E+02 -5.3526E+00
+   4   5     7.50     7.33    -1.24     1.2030E+02  3.4872E+02  2.0564E+03 -1.7044E+03  6.6753E+02 -5.3526E+00
+   5   5     0.00     0.00    -1.24     4.3300E+02  1.4580E+03  4.3390E+03  2.0228E+04 -5.1960E+03 -7.7200E+02
+ 
+
+                                     SUM OF FORCES AND MOMENTS WITH RESPECT TO ORIGIN. DUMMY PILES NOT INCLUDED
+
+                                        4.3300E+02  1.4580E+03  4.3390E+03  2.2036E+04 -5.7329E+03 -7.7200E+02
+#
+ SPLICE Output   Program Version = 04 Feb 2014    Time = 15 Oct 2025  12:32:15
+
+ Header: 36-1.57_pile at Eirin_LE soil_horizontal_API_pile group_LC04_Future dril            PAGE:    9
+
+ Load: 04_ALS                                                                    
+
+
+ PILE HEAD GLOBAL STIFFNESS MATRICES AND LOAD CORRECTION VECTORS
+ ***************************************************************
+
+               K-X        K-Y        K-Z        K-XX       K-YY       K-ZZ           LOAD CORR
+ 
+
+  PILE:  1   1.835E+04 -6.294E+02  0.000E+00  1.472E+03  9.653E+04  0.000E+00        1.691E-01
+            -6.294E+02  1.569E+04  0.000E+00 -9.032E+04 -1.472E+03  0.000E+00        7.970E-01
+             0.000E+00  0.000E+00  1.693E+05  0.000E+00  0.000E+00  0.000E+00       -7.961E+01
+             1.472E+03 -9.032E+04  0.000E+00  7.195E+05  3.434E+03  0.000E+00        2.043E-01
+             9.653E+04 -1.472E+03  0.000E+00  3.434E+03  7.340E+05  0.000E+00        2.941E-02
+             0.000E+00  0.000E+00  0.000E+00  0.000E+00  0.000E+00  1.132E+05        0.000E+00
+
+  PILE:  2   1.833E+04 -6.487E+02  0.000E+00  1.517E+03  9.650E+04  0.000E+00       -4.909E-01
+            -6.487E+02  1.576E+04  0.000E+00 -9.049E+04 -1.517E+03  0.000E+00       -2.156E+00
+             0.000E+00  0.000E+00  4.697E+05  0.000E+00  0.000E+00  0.000E+00       -7.353E+01
+             1.517E+03 -9.049E+04  0.000E+00  7.199E+05  3.539E+03  0.000E+00        1.092E+00
+             9.650E+04 -1.517E+03  0.000E+00  3.539E+03  7.339E+05  0.000E+00       -4.395E-01
+             0.000E+00  0.000E+00  0.000E+00  0.000E+00  0.000E+00  1.132E+05        0.000E+00
+
+  PILE:  3   1.827E+04 -7.653E+02  0.000E+00  1.790E+03  9.637E+04  0.000E+00       -1.990E+00
+            -7.653E+02  1.574E+04  0.000E+00 -9.045E+04 -1.790E+03  0.000E+00       -7.451E+00
+             0.000E+00  0.000E+00  8.432E+04  0.000E+00  0.000E+00  0.000E+00       -8.105E+01
+             1.790E+03 -9.045E+04  0.000E+00  7.198E+05  4.176E+03  0.000E+00        4.847E+00
+             9.637E+04 -1.790E+03  0.000E+00  4.176E+03  7.336E+05  0.000E+00       -2.112E+00
+             0.000E+00  0.000E+00  0.000E+00  0.000E+00  0.000E+00  4.758E+04        0.000E+00
+
+  PILE:  4   1.825E+04 -7.872E+02  0.000E+00  1.841E+03  9.632E+04  0.000E+00       -2.068E+00
+            -7.872E+02  1.582E+04  0.000E+00 -9.064E+04 -1.841E+03  0.000E+00       -7.343E+00
+             0.000E+00  0.000E+00  7.841E+04  0.000E+00  0.000E+00  0.000E+00       -8.117E+01
+             1.841E+03 -9.064E+04  0.000E+00  7.202E+05  4.295E+03  0.000E+00        4.486E+00
+             9.632E+04 -1.841E+03  0.000E+00  4.295E+03  7.335E+05  0.000E+00       -2.190E+00
+             0.000E+00  0.000E+00  0.000E+00  0.000E+00  0.000E+00  4.758E+04        0.000E+00
+
+  PILE:  5   7.321E+04 -2.831E+03  0.000E+00  6.619E+03  3.857E+05  7.946E+02       -4.380E+00
+            -2.831E+03  6.302E+04  0.000E+00 -3.619E+05 -6.619E+03  3.160E+03       -1.615E+01
+             0.000E+00  0.000E+00  8.018E+05 -3.494E+06 -2.209E+06  0.000E+00       -3.154E+02
+             6.619E+03 -3.619E+05 -3.494E+06  4.602E+07  1.687E+07 -7.394E+03       -5.595E+01
+             3.857E+05 -6.619E+03 -2.209E+06  1.687E+07  4.803E+07  1.860E+03       -4.941E+01
+             7.946E+02  3.160E+03  0.000E+00 -7.394E+03  1.860E+03  7.805E+06        6.068E+00
+#
+ SPLICE Output   Program Version = 04 Feb 2014    Time = 15 Oct 2025  12:32:15
+
+ Header: 36-1.57_pile at Eirin_LE soil_horizontal_API_pile group_LC04_Future dril            PAGE:   10
+
+ Load: 04_ALS                                                                    
+
+
+ CONDITIONS ALONG PILE   1   AFTER LOAD INCREMENT   1    RESULTING DISPLACEMENTS AND MOMENTS
+
+ ND LR CR PY  Z-GLB     PILE DISPLACEMENTS GLOBAL      SOIL DISPLACEMENTS GLOBAL     MOMENTS BELOW  NODE     AXIAL
+                         X          Y          Z         X         Y         Z       XX-LOCAL   YY-LOCAL    FORCE
+ 
+  1  1  1 20  -1.24  7.301E-03  3.468E-02 -1.377E-03  0.00E+00  0.00E+00  0.00E+00 -1.858E+03  5.204E+02 -3.13E+02
+  2  1  1 20  -0.83  7.199E-03  3.388E-02 -1.372E-03  0.00E+00  0.00E+00  0.00E+00 -1.703E+03  4.814E+02 -3.10E+02
+  3  1  1 20  -0.43  7.061E-03  3.295E-02 -1.366E-03  0.00E+00  0.00E+00  0.00E+00 -1.549E+03  4.423E+02 -3.07E+02
+  4  1  1 20  -0.03  6.890E-03  3.190E-02 -1.361E-03  0.00E+00  0.00E+00  0.00E+00 -1.395E+03  4.033E+02 -3.04E+02
+  5  1  1 20   0.38  6.689E-03  3.075E-02 -1.356E-03  0.00E+00  0.00E+00  0.00E+00 -1.240E+03  3.643E+02 -3.01E+02
+                                                                                                                        
+  6  2  1 20   0.78  6.461E-03  2.951E-02 -1.350E-03  0.00E+00  0.00E+00  0.00E+00 -1.086E+03  3.252E+02 -2.98E+02
+  7  3  1 20   1.19  6.209E-03  2.819E-02 -1.345E-03  0.00E+00  0.00E+00  0.00E+00 -9.320E+02  2.862E+02 -2.95E+02
+  8  4  1 20   1.60  5.936E-03  2.679E-02 -1.340E-03  0.00E+00  0.00E+00  0.00E+00 -7.779E+02  2.472E+02 -2.92E+02
+  9  5  1 20   2.00  5.644E-03  2.534E-02 -1.335E-03  0.00E+00  0.00E+00  0.00E+00 -6.237E+02  2.082E+02 -2.89E+02
+ 10  6  1 20   2.35  5.380E-03  2.405E-02 -1.331E-03  0.00E+00  0.00E+00  0.00E+00 -4.912E+02  1.747E+02 -2.86E+02
+                                                                                                                        
+ 11  7  1 20   2.70  5.106E-03  2.274E-02 -1.326E-03  0.00E+00  0.00E+00  0.00E+00 -3.634E+02  1.422E+02 -2.82E+02
+ 12  8  1 20   3.16  4.734E-03  2.098E-02 -1.321E-03  0.00E+00  0.00E+00  0.00E+00 -2.086E+02  1.024E+02 -2.75E+02
+ 13  9  1 20   3.62  4.353E-03  1.920E-02 -1.315E-03  0.00E+00  0.00E+00  0.00E+00 -6.784E+01  6.579E+01 -2.65E+02
+ 14 10  1 20   4.08  3.967E-03  1.742E-02 -1.310E-03  0.00E+00  0.00E+00  0.00E+00  5.839E+01  3.248E+01 -2.55E+02
+ 15 11  1 20   4.54  3.578E-03  1.565E-02 -1.305E-03  0.00E+00  0.00E+00  0.00E+00  1.690E+02  2.722E+00 -2.43E+02
+                                                                                                                        
+ 16 12  1 20   5.00  3.189E-03  1.390E-02 -1.300E-03  0.00E+00  0.00E+00  0.00E+00  2.635E+02 -2.333E+01 -2.31E+02
+ 17 13  1 20   5.46  2.804E-03  1.218E-02 -1.296E-03  0.00E+00  0.00E+00  0.00E+00  3.415E+02 -4.563E+01 -2.17E+02
+ 18 14  1 20   5.92  2.423E-03  1.049E-02 -1.292E-03  0.00E+00  0.00E+00  0.00E+00  4.043E+02 -6.440E+01 -2.04E+02
+ 19 15  1 20   6.38  2.049E-03  8.837E-03 -1.288E-03  0.00E+00  0.00E+00  0.00E+00  4.531E+02 -7.996E+01 -1.90E+02
+ 20 16  1 20   6.84  1.683E-03  7.233E-03 -1.284E-03  0.00E+00  0.00E+00  0.00E+00  4.896E+02 -9.264E+01 -1.75E+02
+                                                                                                                        
+ 21 17  1 20   7.30  1.326E-03  5.679E-03 -1.281E-03  0.00E+00  0.00E+00  0.00E+00  5.154E+02 -1.029E+02 -1.60E+02
+ 22 18  1 20   7.65  1.061E-03  4.530E-03 -1.278E-03  0.00E+00  0.00E+00  0.00E+00  5.291E+02 -1.092E+02 -1.49E+02
+ 23 19  1 20   8.00  8.028E-04  3.411E-03 -1.276E-03  0.00E+00  0.00E+00  0.00E+00  5.386E+02 -1.146E+02 -1.37E+02
+ 24 20  1 20   8.38  5.342E-04  2.250E-03 -1.274E-03  0.00E+00  0.00E+00  0.00E+00  5.266E+02 -1.152E+02 -1.19E+02
+ 25 21  1 20   8.75  2.757E-04  1.135E-03 -1.272E-03  0.00E+00  0.00E+00  0.00E+00  4.280E+02 -9.505E+01 -9.35E+01
+                                                                                                                        
+ 26 22  1 20   9.12  2.567E-05  5.667E-05 -1.271E-03  0.00E+00  0.00E+00  0.00E+00  2.693E+02 -6.036E+01 -6.69E+01
+ 27 23  1 20   9.50 -2.203E-04 -1.004E-03 -1.270E-03  0.00E+00  0.00E+00  0.00E+00  1.083E+02 -2.443E+01 -3.91E+01
+ 28 24  1 20   9.75 -3.843E-04 -1.711E-03 -1.270E-03  0.00E+00  0.00E+00  0.00E+00  3.064E+01 -6.929E+00 -1.98E+01
+ 29 25  1 20  10.00 -5.499E-04 -2.426E-03 -1.270E-03  0.00E+00  0.00E+00  0.00E+00  7.078E-03 -1.641E-03  0.00E+00
+#
+ SPLICE Output   Program Version = 04 Feb 2014    Time = 15 Oct 2025  12:32:15
+
+ Header: 36-1.57_pile at Eirin_LE soil_horizontal_API_pile group_LC04_Future dril            PAGE:   11
+
+ Load: 04_ALS                                                                    
+
+
+ CONDITIONS ALONG PILE   2   AFTER LOAD INCREMENT   1    RESULTING DISPLACEMENTS AND MOMENTS
+
+ ND LR CR PY  Z-GLB     PILE DISPLACEMENTS GLOBAL      SOIL DISPLACEMENTS GLOBAL     MOMENTS BELOW  NODE     AXIAL
+                         X          Y          Z         X         Y         Z       XX-LOCAL   YY-LOCAL    FORCE
+ 
+  1  1  1 20  -1.24  7.301E-03  3.300E-02  1.472E-03  0.00E+00  0.00E+00  0.00E+00 -1.709E+03  5.209E+02  6.18E+02
+  2  1  1 20  -0.83  7.199E-03  3.220E-02  1.461E-03  0.00E+00  0.00E+00  0.00E+00 -1.565E+03  4.819E+02  6.21E+02
+  3  1  1 20  -0.43  7.061E-03  3.128E-02  1.450E-03  0.00E+00  0.00E+00  0.00E+00 -1.421E+03  4.428E+02  6.24E+02
+  4  1  1 20  -0.03  6.890E-03  3.026E-02  1.439E-03  0.00E+00  0.00E+00  0.00E+00 -1.277E+03  4.037E+02  6.27E+02
+  5  1  1 20   0.38  6.689E-03  2.915E-02  1.428E-03  0.00E+00  0.00E+00  0.00E+00 -1.133E+03  3.646E+02  6.30E+02
+                                                                                                                        
+  6  2  1 20   0.78  6.461E-03  2.795E-02  1.417E-03  0.00E+00  0.00E+00  0.00E+00 -9.884E+02  3.255E+02  6.33E+02
+  7  3  1 20   1.19  6.208E-03  2.668E-02  1.406E-03  0.00E+00  0.00E+00  0.00E+00 -8.441E+02  2.863E+02  6.36E+02
+  8  4  1 20   1.60  5.935E-03  2.535E-02  1.395E-03  0.00E+00  0.00E+00  0.00E+00 -6.998E+02  2.471E+02  6.39E+02
+  9  5  1 20   2.00  5.643E-03  2.396E-02  1.383E-03  0.00E+00  0.00E+00  0.00E+00 -5.554E+02  2.080E+02  6.42E+02
+ 10  6  1 20   2.35  5.378E-03  2.273E-02  1.374E-03  0.00E+00  0.00E+00  0.00E+00 -4.314E+02  1.743E+02  6.44E+02
+                                                                                                                        
+ 11  7  1 20   2.70  5.104E-03  2.147E-02  1.364E-03  0.00E+00  0.00E+00  0.00E+00 -3.120E+02  1.417E+02  6.45E+02
+ 12  8  1 20   3.16  4.733E-03  1.980E-02  1.351E-03  0.00E+00  0.00E+00  0.00E+00 -1.680E+02  1.019E+02  6.45E+02
+ 13  9  1 20   3.62  4.352E-03  1.811E-02  1.338E-03  0.00E+00  0.00E+00  0.00E+00 -3.745E+01  6.530E+01  6.42E+02
+ 14 10  1 20   4.08  3.966E-03  1.643E-02  1.325E-03  0.00E+00  0.00E+00  0.00E+00  7.937E+01  3.200E+01  6.38E+02
+ 15 11  1 20   4.54  3.577E-03  1.475E-02  1.313E-03  0.00E+00  0.00E+00  0.00E+00  1.815E+02  2.261E+00  6.33E+02
+                                                                                                                        
+ 16 12  1 20   5.00  3.188E-03  1.309E-02  1.300E-03  0.00E+00  0.00E+00  0.00E+00  2.682E+02 -2.376E+01  6.27E+02
+ 17 13  1 20   5.46  2.802E-03  1.146E-02  1.288E-03  0.00E+00  0.00E+00  0.00E+00  3.395E+02 -4.603E+01  6.21E+02
+ 18 14  1 20   5.92  2.421E-03  9.865E-03  1.275E-03  0.00E+00  0.00E+00  0.00E+00  3.964E+02 -6.477E+01  6.14E+02
+ 19 15  1 20   6.38  2.047E-03  8.309E-03  1.263E-03  0.00E+00  0.00E+00  0.00E+00  4.401E+02 -8.026E+01  6.07E+02
+ 20 16  1 20   6.84  1.681E-03  6.798E-03  1.251E-03  0.00E+00  0.00E+00  0.00E+00  4.720E+02 -9.289E+01  5.99E+02
+                                                                                                                        
+ 21 17  1 20   7.30  1.325E-03  5.334E-03  1.239E-03  0.00E+00  0.00E+00  0.00E+00  4.939E+02 -1.030E+02  5.92E+02
+ 22 18  1 20   7.65  1.060E-03  4.252E-03  1.230E-03  0.00E+00  0.00E+00  0.00E+00  5.049E+02 -1.093E+02  5.86E+02
+ 23 19  1 20   8.00  8.016E-04  3.199E-03  1.222E-03  0.00E+00  0.00E+00  0.00E+00  5.120E+02 -1.146E+02  5.80E+02
+ 24 20  1 20   8.38  5.331E-04  2.107E-03  1.212E-03  0.00E+00  0.00E+00  0.00E+00  4.987E+02 -1.151E+02  5.67E+02
+ 25 21  1 20   8.75  2.747E-04  1.057E-03  1.203E-03  0.00E+00  0.00E+00  0.00E+00  4.043E+02 -9.493E+01  5.49E+02
+                                                                                                                        
+ 26 22  1 20   9.12  2.465E-05  4.299E-05  1.194E-03  0.00E+00  0.00E+00  0.00E+00  2.539E+02 -6.022E+01  5.29E+02
+ 27 23  1 20   9.50 -2.213E-04 -9.551E-04  1.186E-03  0.00E+00  0.00E+00  0.00E+00  1.018E+02 -2.432E+01  5.08E+02
+ 28 24  1 20   9.75 -3.854E-04 -1.621E-03  1.181E-03  0.00E+00  0.00E+00  0.00E+00  2.864E+01 -6.861E+00  4.94E+02
+ 29 25  1 20  10.00 -5.510E-04 -2.293E-03  1.175E-03  0.00E+00  0.00E+00  0.00E+00 -3.270E-01  8.056E-02  4.79E+02
+#
+ SPLICE Output   Program Version = 04 Feb 2014    Time = 15 Oct 2025  12:32:15
+
+ Header: 36-1.57_pile at Eirin_LE soil_horizontal_API_pile group_LC04_Future dril            PAGE:   12
+
+ Load: 04_ALS                                                                    
+
+
+ CONDITIONS ALONG PILE   3   AFTER LOAD INCREMENT   1    RESULTING DISPLACEMENTS AND MOMENTS
+
+ ND LR CR PY  Z-GLB     PILE DISPLACEMENTS GLOBAL      SOIL DISPLACEMENTS GLOBAL     MOMENTS BELOW  NODE     AXIAL
+                         X          Y          Z         X         Y         Z       XX-LOCAL   YY-LOCAL    FORCE
+ 
+  1  1  1 20  -1.24  8.951E-03  3.468E-02  2.441E-02  0.00E+00  0.00E+00  0.00E+00 -1.852E+03  6.664E+02  1.98E+03
+  2  1  1 20  -0.83  8.842E-03  3.388E-02  2.438E-02  0.00E+00  0.00E+00  0.00E+00 -1.699E+03  6.177E+02  1.98E+03
+  3  1  1 20  -0.43  8.687E-03  3.295E-02  2.434E-02  0.00E+00  0.00E+00  0.00E+00 -1.546E+03  5.688E+02  1.98E+03
+  4  1  1 20  -0.03  8.490E-03  3.190E-02  2.431E-02  0.00E+00  0.00E+00  0.00E+00 -1.393E+03  5.199E+02  1.99E+03
+  5  1  1 20   0.38  8.254E-03  3.075E-02  2.427E-02  0.00E+00  0.00E+00  0.00E+00 -1.240E+03  4.709E+02  1.99E+03
+                                                                                                                        
+  6  2  1 20   0.78  7.983E-03  2.951E-02  2.424E-02  0.00E+00  0.00E+00  0.00E+00 -1.086E+03  4.218E+02  1.99E+03
+  7  3  1 20   1.19  7.681E-03  2.819E-02  2.420E-02  0.00E+00  0.00E+00  0.00E+00 -9.326E+02  3.727E+02  2.00E+03
+  8  4  1 20   1.60  7.351E-03  2.680E-02  2.417E-02  0.00E+00  0.00E+00  0.00E+00 -7.788E+02  3.234E+02  2.00E+03
+  9  5  1 20   2.00  6.997E-03  2.535E-02  2.413E-02  0.00E+00  0.00E+00  0.00E+00 -6.248E+02  2.742E+02  2.00E+03
+ 10  6  1 20   2.35  6.674E-03  2.406E-02  2.410E-02  0.00E+00  0.00E+00  0.00E+00 -4.924E+02  2.318E+02  2.00E+03
+                                                                                                                        
+ 11  7  1 20   2.70  6.339E-03  2.275E-02  2.407E-02  0.00E+00  0.00E+00  0.00E+00 -3.646E+02  1.907E+02  2.00E+03
+ 12  8  1 20   3.16  5.884E-03  2.099E-02  2.403E-02  0.00E+00  0.00E+00  0.00E+00 -2.095E+02  1.401E+02  2.00E+03
+ 13  9  1 20   3.62  5.415E-03  1.921E-02  2.399E-02  0.00E+00  0.00E+00  0.00E+00 -6.843E+01  9.354E+01  2.01E+03
+ 14 10  1 20   4.08  4.939E-03  1.743E-02  2.395E-02  0.00E+00  0.00E+00  0.00E+00  5.809E+01  5.101E+01  2.01E+03
+ 15 11  1 20   4.54  4.458E-03  1.566E-02  2.391E-02  0.00E+00  0.00E+00  0.00E+00  1.690E+02  1.290E+01  2.01E+03
+                                                                                                                        
+ 16 12  1 20   5.00  3.976E-03  1.391E-02  2.387E-02  0.00E+00  0.00E+00  0.00E+00  2.636E+02 -2.058E+01  2.02E+03
+ 17 13  1 20   5.46  3.498E-03  1.218E-02  2.383E-02  0.00E+00  0.00E+00  0.00E+00  3.418E+02 -4.939E+01  2.02E+03
+ 18 14  1 20   5.92  3.024E-03  1.049E-02  2.379E-02  0.00E+00  0.00E+00  0.00E+00  4.046E+02 -7.377E+01  2.02E+03
+ 19 15  1 20   6.38  2.559E-03  8.839E-03  2.375E-02  0.00E+00  0.00E+00  0.00E+00  4.533E+02 -9.411E+01  2.03E+03
+ 20 16  1 20   6.84  2.102E-03  7.234E-03  2.371E-02  0.00E+00  0.00E+00  0.00E+00  4.895E+02 -1.108E+02  2.03E+03
+                                                                                                                        
+ 21 17  1 20   7.30  1.657E-03  5.677E-03  2.367E-02  0.00E+00  0.00E+00  0.00E+00  5.150E+02 -1.245E+02  2.03E+03
+ 22 18  1 20   7.65  1.327E-03  4.527E-03  2.364E-02  0.00E+00  0.00E+00  0.00E+00  5.283E+02 -1.330E+02  2.03E+03
+ 23 19  1 20   8.00  1.004E-03  3.406E-03  2.361E-02  0.00E+00  0.00E+00  0.00E+00  5.374E+02 -1.404E+02  2.04E+03
+ 24 20  1 20   8.38  6.680E-04  2.244E-03  2.358E-02  0.00E+00  0.00E+00  0.00E+00  5.249E+02 -1.417E+02  2.02E+03
+ 25 21  1 20   8.75  3.447E-04  1.126E-03  2.354E-02  0.00E+00  0.00E+00  0.00E+00  4.258E+02 -1.171E+02  1.97E+03
+                                                                                                                        
+ 26 22  1 20   9.12  3.181E-05  4.581E-05  2.351E-02  0.00E+00  0.00E+00  0.00E+00  2.671E+02 -7.425E+01  1.93E+03
+ 27 23  1 20   9.50 -2.762E-04 -1.018E-03  2.348E-02  0.00E+00  0.00E+00  0.00E+00  1.066E+02 -2.983E+01  1.88E+03
+ 28 24  1 20   9.75 -4.815E-04 -1.727E-03  2.346E-02  0.00E+00  0.00E+00  0.00E+00  2.955E+01 -8.297E+00  1.85E+03
+ 29 25  1 20  10.00 -6.888E-04 -2.443E-03  2.344E-02  0.00E+00  0.00E+00  0.00E+00 -1.313E+00  3.800E-01  1.82E+03
+#
+ SPLICE Output   Program Version = 04 Feb 2014    Time = 15 Oct 2025  12:32:15
+
+ Header: 36-1.57_pile at Eirin_LE soil_horizontal_API_pile group_LC04_Future dril            PAGE:   13
+
+ Load: 04_ALS                                                                    
+
+
+ CONDITIONS ALONG PILE   4   AFTER LOAD INCREMENT   1    RESULTING DISPLACEMENTS AND MOMENTS
+
+ ND LR CR PY  Z-GLB     PILE DISPLACEMENTS GLOBAL      SOIL DISPLACEMENTS GLOBAL     MOMENTS BELOW  NODE     AXIAL
+                         X          Y          Z         X         Y         Z       XX-LOCAL   YY-LOCAL    FORCE
+ 
+  1  1  1 20  -1.24  8.951E-03  3.300E-02  2.726E-02  0.00E+00  0.00E+00  0.00E+00 -1.704E+03  6.675E+02  2.06E+03
+  2  1  1 20  -0.83  8.842E-03  3.220E-02  2.723E-02  0.00E+00  0.00E+00  0.00E+00 -1.562E+03  6.186E+02  2.06E+03
+  3  1  1 20  -0.43  8.687E-03  3.129E-02  2.719E-02  0.00E+00  0.00E+00  0.00E+00 -1.419E+03  5.696E+02  2.06E+03
+  4  1  1 20  -0.03  8.489E-03  3.027E-02  2.715E-02  0.00E+00  0.00E+00  0.00E+00 -1.275E+03  5.204E+02  2.07E+03
+  5  1  1 20   0.38  8.253E-03  2.915E-02  2.712E-02  0.00E+00  0.00E+00  0.00E+00 -1.132E+03  4.712E+02  2.07E+03
+                                                                                                                        
+  6  2  1 20   0.78  7.982E-03  2.796E-02  2.708E-02  0.00E+00  0.00E+00  0.00E+00 -9.881E+02  4.220E+02  2.07E+03
+  7  3  1 20   1.19  7.679E-03  2.669E-02  2.704E-02  0.00E+00  0.00E+00  0.00E+00 -8.443E+02  3.726E+02  2.07E+03
+  8  4  1 20   1.60  7.349E-03  2.535E-02  2.701E-02  0.00E+00  0.00E+00  0.00E+00 -7.004E+02  3.232E+02  2.08E+03
+  9  5  1 20   2.00  6.995E-03  2.397E-02  2.697E-02  0.00E+00  0.00E+00  0.00E+00 -5.563E+02  2.738E+02  2.08E+03
+ 10  6  1 20   2.35  6.673E-03  2.273E-02  2.694E-02  0.00E+00  0.00E+00  0.00E+00 -4.325E+02  2.312E+02  2.08E+03
+                                                                                                                        
+ 11  7  1 20   2.70  6.337E-03  2.148E-02  2.691E-02  0.00E+00  0.00E+00  0.00E+00 -3.131E+02  1.900E+02  2.08E+03
+ 12  8  1 20   3.16  5.882E-03  1.981E-02  2.687E-02  0.00E+00  0.00E+00  0.00E+00 -1.691E+02  1.395E+02  2.08E+03
+ 13  9  1 20   3.62  5.413E-03  1.812E-02  2.682E-02  0.00E+00  0.00E+00  0.00E+00 -3.846E+01  9.295E+01  2.09E+03
+ 14 10  1 20   4.08  4.937E-03  1.643E-02  2.678E-02  0.00E+00  0.00E+00  0.00E+00  7.847E+01  5.050E+01  2.09E+03
+ 15 11  1 20   4.54  4.456E-03  1.476E-02  2.674E-02  0.00E+00  0.00E+00  0.00E+00  1.807E+02  1.245E+01  2.09E+03
+                                                                                                                        
+ 16 12  1 20   5.00  3.974E-03  1.310E-02  2.670E-02  0.00E+00  0.00E+00  0.00E+00  2.675E+02 -2.097E+01  2.10E+03
+ 17 13  1 20   5.46  3.496E-03  1.147E-02  2.666E-02  0.00E+00  0.00E+00  0.00E+00  3.389E+02 -4.971E+01  2.10E+03
+ 18 14  1 20   5.92  3.023E-03  9.870E-03  2.662E-02  0.00E+00  0.00E+00  0.00E+00  3.957E+02 -7.403E+01  2.10E+03
+ 19 15  1 20   6.38  2.557E-03  8.313E-03  2.657E-02  0.00E+00  0.00E+00  0.00E+00  4.394E+02 -9.431E+01  2.10E+03
+ 20 16  1 20   6.84  2.101E-03  6.801E-03  2.653E-02  0.00E+00  0.00E+00  0.00E+00  4.712E+02 -1.110E+02  2.11E+03
+                                                                                                                        
+ 21 17  1 20   7.30  1.656E-03  5.335E-03  2.649E-02  0.00E+00  0.00E+00  0.00E+00  4.930E+02 -1.245E+02  2.11E+03
+ 22 18  1 20   7.65  1.326E-03  4.252E-03  2.646E-02  0.00E+00  0.00E+00  0.00E+00  5.038E+02 -1.331E+02  2.11E+03
+ 23 19  1 20   8.00  1.003E-03  3.197E-03  2.643E-02  0.00E+00  0.00E+00  0.00E+00  5.107E+02 -1.404E+02  2.12E+03
+ 24 20  1 20   8.38  6.674E-04  2.104E-03  2.639E-02  0.00E+00  0.00E+00  0.00E+00  4.972E+02 -1.416E+02  2.10E+03
+ 25 21  1 20   8.75  3.443E-04  1.053E-03  2.636E-02  0.00E+00  0.00E+00  0.00E+00  4.026E+02 -1.170E+02  2.05E+03
+                                                                                                                        
+ 26 22  1 20   9.12  3.154E-05  3.620E-05  2.632E-02  0.00E+00  0.00E+00  0.00E+00  2.522E+02 -7.419E+01  2.01E+03
+ 27 23  1 20   9.50 -2.763E-04 -9.641E-04  2.629E-02  0.00E+00  0.00E+00  0.00E+00  1.005E+02 -2.980E+01  1.96E+03
+ 28 24  1 20   9.75 -4.815E-04 -1.631E-03  2.627E-02  0.00E+00  0.00E+00  0.00E+00  2.784E+01 -8.280E+00  1.93E+03
+ 29 25  1 20  10.00 -6.888E-04 -2.305E-03  2.625E-02  0.00E+00  0.00E+00  0.00E+00 -1.288E+00  3.961E-01  1.89E+03
+#
+ SPLICE Output   Program Version = 04 Feb 2014    Time = 15 Oct 2025  12:32:15
+
+ Header: 36-1.57_pile at Eirin_LE soil_horizontal_API_pile group_LC04_Future dril            PAGE:   14
+
+ Load: 04_ALS                                                                    
+
+
+ CONDITIONS ALONG PILE   1   AFTER LOAD INCREMENT   1    RESULTING SHEAR AND STRESSES
+
+ NODE LAY Z-GLB    SHEAR BELOW NODE      MAX     CONTACT STRESSES BETWEEN PILE AND SOIL    SECANT STIFFNESS  UTILZN
+                  X-LOCAL    Y-LOCAL    STRESS     X-LOCAL   Y-LOCAL    AXIAL    TORSION    LATERAL  AXIAL    RATIO
+ 
+   1   1  -1.24  9.651E+01  3.817E+02 -8.665E+04   0.00E+00  0.00E+00  0.00E+00  0.00E+00  0.00E+00 0.00E+00  0.244
+   2   1  -0.83  9.651E+01  3.817E+02 -7.971E+04   0.00E+00  0.00E+00  0.00E+00  0.00E+00  0.00E+00 0.00E+00  0.225
+   3   1  -0.43  9.651E+01  3.817E+02 -7.278E+04   0.00E+00  0.00E+00  0.00E+00  0.00E+00  0.00E+00 0.00E+00  0.205
+   4   1  -0.03  9.651E+01  3.817E+02 -6.584E+04   0.00E+00  0.00E+00  0.00E+00  0.00E+00  0.00E+00 0.00E+00  0.185
+   5   1   0.38  9.651E+01  3.817E+02 -5.890E+04   0.00E+00  0.00E+00  0.00E+00  0.00E+00  0.00E+00 0.00E+00  0.166
+                                                                                                                        
+   6   2   0.78  9.651E+01  3.817E+02 -5.197E+04   0.00E+00  0.00E+00  0.00E+00  0.00E+00  0.00E+00 0.00E+00  0.146
+   7   3   1.19  9.651E+01  3.817E+02 -4.504E+04   0.00E+00  0.00E+00  0.00E+00  0.00E+00  0.00E+00 0.00E+00  0.127
+   8   4   1.60  9.651E+01  3.817E+02 -3.812E+04   0.00E+00  0.00E+00  0.00E+00  0.00E+00  0.00E+00 0.00E+00  0.107
+   9   5   2.00  9.651E+01  3.817E+02 -3.120E+04   0.00E+00  0.00E+00  0.00E+00  0.00E+00  0.00E+00 0.00E+00  0.088
+  10   6   2.35  9.508E+01  3.753E+02 -2.525E+04   8.97E+00  4.01E+01 -8.30E-01 -8.41E-01  1.52E+03 1.79E+03  0.071
+                                                                                                                        
+  11   7   2.70  9.050E+01  3.548E+02 -1.952E+04   1.98E+01  8.80E+01 -1.65E+00 -1.15E+00  3.54E+03 3.58E+03  0.055
+  12   8   3.16  8.316E+01  3.219E+02 -1.260E+04   1.54E+01  6.82E+01 -4.13E+00 -3.28E-01  2.97E+03 8.98E+03  0.035
+  13   9   3.62  7.632E+01  2.917E+02 -6.522E+03   1.71E+01  7.55E+01 -4.97E+00 -3.61E-01  3.60E+03 1.09E+04  0.018
+  14  10   4.08  6.885E+01  2.588E+02 -5.239E+03   1.84E+01  8.10E+01 -5.79E+00 -3.91E-01  4.25E+03 1.27E+04  0.015
+  15  11   4.54  6.091E+01  2.240E+02 -9.579E+03   1.93E+01  8.44E+01 -6.58E+00 -4.17E-01  4.93E+03 1.45E+04  0.027
+                                                                                                                        
+  16  12   5.00  5.272E+01  1.882E+02 -1.361E+04   1.97E+01  8.58E+01 -7.36E+00 -4.41E-01  5.64E+03 1.62E+04  0.038
+  17  13   5.46  4.472E+01  1.534E+02 -1.697E+04   1.83E+01  7.95E+01 -7.67E+00 -4.27E-01  5.97E+03 1.70E+04  0.048
+  18  14   5.92  3.736E+01  1.215E+02 -1.966E+04   1.67E+01  7.23E+01 -7.96E+00 -4.41E-01  6.31E+03 1.77E+04  0.055
+  19  15   6.38  3.071E+01  9.278E+01 -2.173E+04   1.49E+01  6.42E+01 -8.23E+00 -5.63E-01  6.64E+03 1.84E+04  0.061
+  20  16   6.84  2.488E+01  6.766E+01 -2.326E+04   1.29E+01  5.53E+01 -8.49E+00 -6.55E-01  6.99E+03 1.90E+04  0.066
+                                                                                                                        
+  21  17   7.30  1.994E+01  4.646E+01 -2.431E+04   1.06E+01  4.55E+01 -8.74E+00 -7.25E-01  7.33E+03 1.96E+04  0.068
+  22  18   7.65  1.683E+01  3.315E+01 -2.484E+04   8.82E+00  3.76E+01 -8.93E+00 -7.67E-01  7.60E+03 2.01E+04  0.070
+  23  19   8.00  1.431E+01  2.243E+01 -2.518E+04   6.90E+00  2.93E+01 -9.10E+00 -8.01E-01  7.86E+03 2.05E+04  0.071
+  24  20   8.38 -2.293E+01 -1.345E+02 -2.451E+04   2.10E+02  8.86E+02 -2.04E+01 -3.41E+00  3.60E+05 4.59E+04  0.069
+  25  21   8.75 -7.868E+01 -3.674E+02 -1.990E+04   1.15E+02  4.73E+02 -2.15E+01 -3.40E+00  3.81E+05 4.86E+04  0.056
+                                                                                                                        
+  26  22   9.12 -1.003E+02 -4.528E+02 -1.260E+04   1.13E+01  2.49E+01 -2.27E+01 -3.42E+00  4.02E+05 5.13E+04  0.036
+  27  23   9.50 -8.476E+01 -3.773E+02 -5.183E+03  -1.02E+02 -4.65E+02 -2.38E+01 -3.45E+00  4.23E+05 5.39E+04  0.015
+  28  24   9.75 -5.207E+01 -2.306E+02 -1.546E+03  -1.84E+02 -8.19E+02 -2.46E+01 -3.49E+00  4.38E+05 5.57E+04  0.004
+  29  25  10.00  0.000E+00  0.000E+00  3.157E-01  -2.72E+02 -1.20E+03 -2.54E+01 -3.54E+00  4.52E+05 5.75E+04  0.000
+#
+ SPLICE Output   Program Version = 04 Feb 2014    Time = 15 Oct 2025  12:32:15
+
+ Header: 36-1.57_pile at Eirin_LE soil_horizontal_API_pile group_LC04_Future dril            PAGE:   15
+
+ Load: 04_ALS                                                                    
+
+
+ CONDITIONS ALONG PILE   2   AFTER LOAD INCREMENT   1    RESULTING SHEAR AND STRESSES
+
+ NODE LAY Z-GLB    SHEAR BELOW NODE      MAX     CONTACT STRESSES BETWEEN PILE AND SOIL    SECANT STIFFNESS  UTILZN
+                  X-LOCAL    Y-LOCAL    STRESS     X-LOCAL   Y-LOCAL    AXIAL    TORSION    LATERAL  AXIAL    RATIO
+ 
+   1   1  -1.24  9.627E+01  3.543E+02  8.324E+04   0.00E+00  0.00E+00  0.00E+00  0.00E+00  0.00E+00 0.00E+00  0.234
+   2   1  -0.83  9.627E+01  3.543E+02  7.681E+04   0.00E+00  0.00E+00  0.00E+00  0.00E+00  0.00E+00 0.00E+00  0.216
+   3   1  -0.43  9.627E+01  3.543E+02  7.036E+04   0.00E+00  0.00E+00  0.00E+00  0.00E+00  0.00E+00 0.00E+00  0.198
+   4   1  -0.03  9.627E+01  3.543E+02  6.391E+04   0.00E+00  0.00E+00  0.00E+00  0.00E+00  0.00E+00 0.00E+00  0.180
+   5   1   0.38  9.627E+01  3.543E+02  5.746E+04   0.00E+00  0.00E+00  0.00E+00  0.00E+00  0.00E+00 0.00E+00  0.162
+                                                                                                                        
+   6   2   0.78  9.627E+01  3.543E+02  5.100E+04   0.00E+00  0.00E+00  0.00E+00  0.00E+00  0.00E+00 0.00E+00  0.144
+   7   3   1.19  9.627E+01  3.543E+02  4.455E+04   0.00E+00  0.00E+00  0.00E+00  0.00E+00  0.00E+00 0.00E+00  0.125
+   8   4   1.60  9.627E+01  3.543E+02  3.809E+04   0.00E+00  0.00E+00  0.00E+00  0.00E+00  0.00E+00 0.00E+00  0.107
+   9   5   2.00  9.627E+01  3.543E+02  3.165E+04   0.00E+00  0.00E+00  0.00E+00  0.00E+00  0.00E+00 0.00E+00  0.089
+  10   6   2.35  9.476E+01  3.479E+02  2.611E+04   9.46E+00  4.00E+01  8.56E-01 -8.41E-01  1.61E+03 1.79E+03  0.074
+                                                                                                                        
+  11   7   2.70  8.993E+01  3.274E+02  2.079E+04   2.08E+01  8.77E+01  1.70E+00 -1.15E+00  3.73E+03 3.58E+03  0.059
+  12   8   3.16  8.236E+01  2.955E+02  1.445E+04   1.54E+01  6.44E+01  4.22E+00 -3.28E-01  2.97E+03 8.98E+03  0.041
+  13   9   3.62  7.553E+01  2.669E+02  9.145E+03   1.71E+01  7.12E+01  5.06E+00 -3.61E-01  3.60E+03 1.09E+04  0.026
+  14  10   4.08  6.806E+01  2.359E+02  9.525E+03   1.84E+01  7.63E+01  5.86E+00 -3.91E-01  4.25E+03 1.27E+04  0.027
+  15  11   4.54  6.013E+01  2.031E+02  1.365E+04   1.93E+01  7.95E+01  6.62E+00 -4.17E-01  4.93E+03 1.45E+04  0.038
+                                                                                                                        
+  16  12   5.00  5.193E+01  1.694E+02  1.741E+04   1.97E+01  8.08E+01  7.35E+00 -4.41E-01  5.64E+03 1.62E+04  0.049
+  17  13   5.46  4.395E+01  1.367E+02  2.054E+04   1.83E+01  7.49E+01  7.62E+00 -4.27E-01  5.97E+03 1.70E+04  0.058
+  18  14   5.92  3.658E+01  1.066E+02  2.304E+04   1.67E+01  6.80E+01  7.86E+00 -4.41E-01  6.31E+03 1.77E+04  0.065
+  19  15   6.38  2.994E+01  7.962E+01  2.496E+04   1.49E+01  6.04E+01  8.08E+00 -5.63E-01  6.64E+03 1.84E+04  0.070
+  20  16   6.84  2.411E+01  5.600E+01  2.636E+04   1.28E+01  5.19E+01  8.28E+00 -6.55E-01  6.99E+03 1.90E+04  0.074
+                                                                                                                        
+  21  17   7.30  1.918E+01  3.608E+01  2.731E+04   1.06E+01  4.28E+01  8.46E+00 -7.25E-01  7.33E+03 1.96E+04  0.077
+  22  18   7.65  1.607E+01  2.359E+01  2.778E+04   8.81E+00  3.53E+01  8.59E+00 -7.67E-01  7.60E+03 2.01E+04  0.078
+  23  19   8.00  1.356E+01  1.353E+01  2.807E+04   6.89E+00  2.75E+01  8.71E+00 -8.01E-01  7.86E+03 2.05E+04  0.079
+  24  20   8.38 -2.361E+01 -1.334E+02  2.740E+04   2.10E+02  8.29E+02  1.94E+01 -3.41E+00  3.60E+05 4.59E+04  0.077
+  25  21   8.75 -7.921E+01 -3.511E+02  2.304E+04   1.14E+02  4.41E+02  2.03E+01 -3.40E+00  3.81E+05 4.86E+04  0.065
+                                                                                                                        
+  26  22   9.12 -1.007E+02 -4.299E+02  1.615E+04   1.08E+01  1.89E+01  2.13E+01 -3.42E+00  4.02E+05 5.13E+04  0.045
+  27  23   9.50 -8.499E+01 -3.573E+02  9.174E+03  -1.03E+02 -4.42E+02  2.23E+01 -3.45E+00  4.23E+05 5.39E+04  0.026
+  28  24   9.75 -5.219E+01 -2.181E+02  5.774E+03  -1.84E+02 -7.76E+02  2.29E+01 -3.49E+00  4.38E+05 5.57E+04  0.016
+  29  25  10.00  0.000E+00  0.000E+00  4.374E+03  -2.72E+02 -1.13E+03  2.35E+01 -3.54E+00  4.52E+05 5.75E+04  0.012
+#
+ SPLICE Output   Program Version = 04 Feb 2014    Time = 15 Oct 2025  12:32:15
+
+ Header: 36-1.57_pile at Eirin_LE soil_horizontal_API_pile group_LC04_Future dril            PAGE:   16
+
+ Load: 04_ALS                                                                    
+
+
+ CONDITIONS ALONG PILE   3   AFTER LOAD INCREMENT   1    RESULTING SHEAR AND STRESSES
+
+ NODE LAY Z-GLB    SHEAR BELOW NODE      MAX     CONTACT STRESSES BETWEEN PILE AND SOIL    SECANT STIFFNESS  UTILZN
+                  X-LOCAL    Y-LOCAL    STRESS     X-LOCAL   Y-LOCAL    AXIAL    TORSION    LATERAL  AXIAL    RATIO
+ 
+   1   1  -1.24  1.199E+02  3.730E+02  1.035E+05   0.00E+00  0.00E+00  0.00E+00  0.00E+00  0.00E+00 0.00E+00  0.292
+   2   1  -0.83  1.199E+02  3.730E+02  9.664E+04   0.00E+00  0.00E+00  0.00E+00  0.00E+00  0.00E+00 0.00E+00  0.272
+   3   1  -0.43  1.199E+02  3.730E+02  8.971E+04   0.00E+00  0.00E+00  0.00E+00  0.00E+00  0.00E+00 0.00E+00  0.253
+   4   1  -0.03  1.199E+02  3.730E+02  8.277E+04   0.00E+00  0.00E+00  0.00E+00  0.00E+00  0.00E+00 0.00E+00  0.233
+   5   1   0.38  1.199E+02  3.730E+02  7.582E+04   0.00E+00  0.00E+00  0.00E+00  0.00E+00  0.00E+00 0.00E+00  0.214
+                                                                                                                        
+   6   2   0.78  1.199E+02  3.730E+02  6.887E+04   0.00E+00  0.00E+00  0.00E+00  0.00E+00  0.00E+00 0.00E+00  0.194
+   7   3   1.19  1.199E+02  3.730E+02  6.191E+04   0.00E+00  0.00E+00  0.00E+00  0.00E+00  0.00E+00 0.00E+00  0.174
+   8   4   1.60  1.199E+02  3.730E+02  5.495E+04   0.00E+00  0.00E+00  0.00E+00  0.00E+00  0.00E+00 0.00E+00  0.155
+   9   5   2.00  1.199E+02  3.730E+02  4.799E+04   0.00E+00  0.00E+00  0.00E+00  0.00E+00  0.00E+00 0.00E+00  0.135
+  10   6   2.35  1.181E+02  3.667E+02  4.199E+04   1.10E+01  3.96E+01  1.58E+00  0.00E+00  1.50E+03 1.89E+02  0.118
+                                                                                                                        
+  11   7   2.70  1.125E+02  3.464E+02  3.622E+04   2.42E+01  8.69E+01  3.16E+00  0.00E+00  3.49E+03 3.78E+02  0.102
+  12   8   3.16  1.035E+02  3.138E+02  2.934E+04   1.91E+01  6.82E+01  1.52E-01 -4.05E-01  2.97E+03 1.82E+01  0.083
+  13   9   3.62  9.496E+01  2.835E+02  2.343E+04   2.13E+01  7.55E+01  1.84E-01 -4.57E-01  3.60E+03 2.21E+01  0.066
+  14  10   4.08  8.565E+01  2.506E+02  2.166E+04   2.29E+01  8.10E+01  2.15E-01 -5.09E-01  4.25E+03 2.58E+01  0.061
+  15  11   4.54  7.577E+01  2.158E+02  2.569E+04   2.40E+01  8.45E+01  2.46E-01 -5.59E-01  4.93E+03 2.95E+01  0.072
+                                                                                                                        
+  16  12   5.00  6.555E+01  1.800E+02  2.984E+04   2.45E+01  8.58E+01  2.76E-01 -6.09E-01  5.64E+03 3.32E+01  0.084
+  17  13   5.46  5.559E+01  1.452E+02  3.339E+04   2.28E+01  7.96E+01  2.89E-01 -6.09E-01  5.97E+03 3.48E+01  0.094
+  18  14   5.92  4.640E+01  1.133E+02  3.628E+04   2.09E+01  7.23E+01  3.01E-01 -6.51E-01  6.31E+03 3.63E+01  0.102
+  19  15   6.38  3.810E+01  8.457E+01  3.855E+04   1.86E+01  6.42E+01  3.12E-01 -8.61E-01  6.64E+03 3.77E+01  0.109
+  20  16   6.84  3.081E+01  5.944E+01  4.027E+04   1.61E+01  5.53E+01  3.23E-01 -1.04E+00  6.99E+03 3.91E+01  0.113
+                                                                                                                        
+  21  17   7.30  2.464E+01  3.824E+01  4.151E+04   1.33E+01  4.55E+01  3.33E-01 -1.20E+00  7.33E+03 4.04E+01  0.117
+  22  18   7.65  2.075E+01  2.494E+01  4.218E+04   1.10E+01  3.76E+01  3.40E-01 -1.31E+00  7.60E+03 4.14E+01  0.119
+  23  19   8.00  1.760E+01  1.423E+01  4.266E+04   8.63E+00  2.93E+01  3.48E-01 -1.41E+00  7.86E+03 4.23E+01  0.120
+  24  20   8.38 -2.896E+01 -1.422E+02  4.198E+04   2.63E+02  8.83E+02  4.06E+01  0.00E+00  3.60E+05 4.94E+03  0.118
+  25  21   8.75 -9.868E+01 -3.742E+02  3.716E+04   1.44E+02  4.69E+02  4.30E+01  0.00E+00  3.81E+05 5.24E+03  0.105
+                                                                                                                        
+  26  22   9.12 -1.257E+02 -4.581E+02  2.961E+04   1.40E+01  2.02E+01  4.53E+01  0.00E+00  4.02E+05 5.54E+03  0.083
+  27  23   9.50 -1.062E+02 -3.808E+02  2.194E+04  -1.28E+02 -4.71E+02  4.77E+01  0.00E+00  4.23E+05 5.84E+03  0.062
+  28  24   9.75 -6.523E+01 -2.324E+02  1.817E+04  -2.30E+02 -8.26E+02  4.93E+01  0.00E+00  4.38E+05 6.03E+03  0.051
+  29  25  10.00  0.000E+00  0.000E+00  1.658E+04  -3.40E+02 -1.21E+03  5.09E+01 -6.96E-04  4.52E+05 6.23E+03  0.047
+#
+ SPLICE Output   Program Version = 04 Feb 2014    Time = 15 Oct 2025  12:32:15
+
+ Header: 36-1.57_pile at Eirin_LE soil_horizontal_API_pile group_LC04_Future dril            PAGE:   17
+
+ Load: 04_ALS                                                                    
+
+
+ CONDITIONS ALONG PILE   4   AFTER LOAD INCREMENT   1    RESULTING SHEAR AND STRESSES
+
+ NODE LAY Z-GLB    SHEAR BELOW NODE      MAX     CONTACT STRESSES BETWEEN PILE AND SOIL    SECANT STIFFNESS  UTILZN
+                  X-LOCAL    Y-LOCAL    STRESS     X-LOCAL   Y-LOCAL    AXIAL    TORSION    LATERAL  AXIAL    RATIO
+ 
+   1   1  -1.24  1.203E+02  3.486E+02  9.824E+04   0.00E+00  0.00E+00  0.00E+00  0.00E+00  0.00E+00 0.00E+00  0.277
+   2   1  -0.83  1.203E+02  3.486E+02  9.179E+04   0.00E+00  0.00E+00  0.00E+00  0.00E+00  0.00E+00 0.00E+00  0.259
+   3   1  -0.43  1.203E+02  3.486E+02  8.526E+04   0.00E+00  0.00E+00  0.00E+00  0.00E+00  0.00E+00 0.00E+00  0.240
+   4   1  -0.03  1.203E+02  3.486E+02  7.873E+04   0.00E+00  0.00E+00  0.00E+00  0.00E+00  0.00E+00 0.00E+00  0.222
+   5   1   0.38  1.203E+02  3.486E+02  7.219E+04   0.00E+00  0.00E+00  0.00E+00  0.00E+00  0.00E+00 0.00E+00  0.203
+                                                                                                                        
+   6   2   0.78  1.203E+02  3.486E+02  6.564E+04   0.00E+00  0.00E+00  0.00E+00  0.00E+00  0.00E+00 0.00E+00  0.185
+   7   3   1.19  1.203E+02  3.486E+02  5.909E+04   0.00E+00  0.00E+00  0.00E+00  0.00E+00  0.00E+00 0.00E+00  0.166
+   8   4   1.60  1.203E+02  3.486E+02  5.254E+04   0.00E+00  0.00E+00  0.00E+00  0.00E+00  0.00E+00 0.00E+00  0.148
+   9   5   2.00  1.203E+02  3.486E+02  4.600E+04   0.00E+00  0.00E+00  0.00E+00  0.00E+00  0.00E+00 0.00E+00  0.130
+  10   6   2.35  1.184E+02  3.423E+02  4.037E+04   1.16E+01  3.94E+01  1.58E+00  0.00E+00  1.59E+03 1.69E+02  0.114
+                                                                                                                        
+  11   7   2.70  1.125E+02  3.221E+02  3.497E+04   2.55E+01  8.64E+01  3.16E+00  0.00E+00  3.68E+03 3.38E+02  0.099
+  12   8   3.16  1.032E+02  2.904E+02  2.863E+04   1.91E+01  6.44E+01  1.52E-01 -4.05E-01  2.97E+03 1.63E+01  0.081
+  13   9   3.62  9.472E+01  2.619E+02  2.346E+04   2.13E+01  7.12E+01  1.84E-01 -4.57E-01  3.60E+03 1.98E+01  0.066
+  14  10   4.08  8.542E+01  2.308E+02  2.307E+04   2.29E+01  7.63E+01  2.15E-01 -5.09E-01  4.25E+03 2.31E+01  0.065
+  15  11   4.54  7.555E+01  1.980E+02  2.691E+04   2.40E+01  7.96E+01  2.46E-01 -5.59E-01  4.93E+03 2.64E+01  0.076
+                                                                                                                        
+  16  12   5.00  6.533E+01  1.643E+02  3.073E+04   2.45E+01  8.08E+01  2.76E-01 -6.09E-01  5.64E+03 2.97E+01  0.087
+  17  13   5.46  5.537E+01  1.316E+02  3.398E+04   2.28E+01  7.49E+01  2.89E-01 -6.09E-01  5.97E+03 3.11E+01  0.096
+  18  14   5.92  4.619E+01  1.015E+02  3.662E+04   2.08E+01  6.81E+01  3.01E-01 -6.51E-01  6.31E+03 3.24E+01  0.103
+  19  15   6.38  3.789E+01  7.448E+01  3.868E+04   1.86E+01  6.04E+01  3.12E-01 -8.61E-01  6.64E+03 3.37E+01  0.109
+  20  16   6.84  3.061E+01  5.084E+01  4.022E+04   1.61E+01  5.20E+01  3.23E-01 -1.04E+00  6.99E+03 3.49E+01  0.113
+                                                                                                                        
+  21  17   7.30  2.444E+01  3.092E+01  4.130E+04   1.33E+01  4.28E+01  3.33E-01 -1.20E+00  7.33E+03 3.61E+01  0.116
+  22  18   7.65  2.055E+01  1.842E+01  4.187E+04   1.10E+01  3.53E+01  3.40E-01 -1.31E+00  7.60E+03 3.70E+01  0.118
+  23  19   8.00  1.741E+01  8.367E+00  4.226E+04   8.63E+00  2.75E+01  3.48E-01 -1.41E+00  7.86E+03 3.78E+01  0.119
+  24  20   8.38 -2.912E+01 -1.383E+02  4.154E+04   2.63E+02  8.28E+02  4.06E+01  0.00E+00  3.60E+05 4.42E+03  0.117
+  25  21   8.75 -9.876E+01 -3.555E+02  3.691E+04   1.44E+02  4.39E+02  4.29E+01  0.00E+00  3.81E+05 4.68E+03  0.104
+                                                                                                                        
+  26  22   9.12 -1.257E+02 -4.335E+02  2.970E+04   1.39E+01  1.59E+01  4.53E+01  0.00E+00  4.02E+05 4.95E+03  0.084
+  27  23   9.50 -1.062E+02 -3.597E+02  2.241E+04  -1.28E+02 -4.46E+02  4.77E+01  0.00E+00  4.23E+05 5.21E+03  0.063
+  28  24   9.75 -6.523E+01 -2.194E+02  1.881E+04  -2.30E+02 -7.81E+02  4.93E+01  0.00E+00  4.38E+05 5.39E+03  0.053
+  29  25  10.00  0.000E+00  0.000E+00  1.730E+04  -3.40E+02 -1.14E+03  5.09E+01 -6.96E-04  4.52E+05 5.57E+03  0.049
+#
+ SPLICE Output   Program Version = 04 Feb 2014    Time = 15 Oct 2025  12:32:15
+
+ Header: 36-1.57_pile at Eirin_LE soil_horizontal_API_pile group_LC04_Future dril            PAGE:   18
+
+ Load: 04_ALS                                                                    
+
+ =========================
+ SUMMARY OF PILE SOLUTIONS   After load vector =  1    Load increment =  1   Iterations = 28
+ =========================
+
+
+ PILE CON    LOCAL PILE HEAD FORCES AND MOMENTS      HEAD     2.MAX     AT      LOCAL PILE HEAD DISPL. AND ROTATIONS
+            AXL-FRC   LAT-FRC   LAT-MOM   AXL-MOM   STRESS    STRESS  Z-LEVEL  AXL-DSP   LAT-DSP   LAT-ROT   AXL-ROT
+ 
+
+   1   5  -3.13E+02  3.94E+02  1.93E+03 -1.27E+01 -8.67E+04 -2.52E+04   8.00 -1.38E-03  3.54E-02  1.77E-03 -1.13E-04
+
+   2   5   6.18E+02  3.67E+02  1.79E+03 -1.27E+01  8.32E+04  2.81E+04   8.00  1.47E-03  3.38E-02  1.77E-03 -1.13E-04
+
+   3   5   1.98E+03  3.92E+02  1.97E+03 -5.35E+00  1.04E+05  4.27E+04   8.00  2.44E-02  3.58E-02  1.77E-03 -1.13E-04
+
+   4   5   2.06E+03  3.69E+02  1.83E+03 -5.35E+00  9.82E+04  4.23E+04   8.00  2.73E-02  3.42E-02  1.77E-03 -1.13E-04
+
+
+        MAXIMUM PILE STRESSES    MAXIMUM X-SCTN UTILIZATION RATIO   RESERVE AXIAL FACTOR OF SAFETY
+ Pile   Node     Z     Sigma        Node     Z    UR(----)             Force    Capacity    FoS
+
+   1      1    -1.240  -86.7          1    -1.240   0.244           -3.127E+02 -7.358E+02   2.35
+
+   2      1    -1.240   83.2          1    -1.240   0.234            6.178E+02  3.551E+03   5.75
+
+   3      1    -1.240  103.5          1    -1.240   0.292            1.977E+03  3.551E+03   1.80
+
+   4      1    -1.240   98.2          1    -1.240   0.277            2.056E+03  3.551E+03   1.73
+
+ Max/min values =      103.5 (MPa)                  0.292     Comp   2.056E+03  3.551E+03   1.73
+                                                              Tens  -3.127E+02 -7.358E+02   2.35
+#
+ SPLICE Output   Program Version = 04 Feb 2014    Time = 15 Oct 2025  12:32:15
+
+ Header: 36-1.57_pile at Eirin_LE soil_horizontal_API_pile group_LC04_Future dril            PAGE:   20
+
+ ------------------------
+ LOAD VECTOR NUMBER =   2
+ ------------------------
+
+ LOAD VECTOR LABEL  : Load: 04_ALS_max torsion                                                        
+
+ NUMBER OF LOAD INCREMENTS =      1
+
+ START CONDITION CODE      =      0
+
+ LOAD VECTOR MULTIPLIER    =    1.000
+
+ SOIL DISPL  MULTIPLIER    =    1.000
+
+ POINT FORCE MULTIPLIER    =    1.000
+
+
+ FIXED INTERFACE LOAD VECTOR
+ ***************************
+
+  PILE     X          Y          Z         XX         YY         ZZ
+ 
+   1   0.000E+00  0.000E+00  0.000E+00  0.000E+00  0.000E+00  0.000E+00
+   2   0.000E+00  0.000E+00  0.000E+00  0.000E+00  0.000E+00  0.000E+00
+   3   0.000E+00  0.000E+00  0.000E+00  0.000E+00  0.000E+00  0.000E+00
+   4   0.000E+00  0.000E+00  0.000E+00  0.000E+00  0.000E+00  0.000E+00
+   5  -4.330E+02  3.000E+01  4.339E+03  1.168E+04 -1.928E+04  9.145E+03
+ 
+
+       SUM OF FIXED FORCES AND MOMENTS WITH RESPECT TO ORIGIN
+
+      -4.330E+02  3.000E+01  4.339E+03  1.172E+04 -1.874E+04  9.145E+03
+#
+ SPLICE Output   Program Version = 04 Feb 2014    Time = 15 Oct 2025  12:32:15
+
+ Header: 36-1.57_pile at Eirin_LE soil_horizontal_API_pile group_LC04_Future dril            PAGE:   21
+
+ Load: 04_ALS_max torsion                                                        
+
+
+ LOAD INCREMENT NUMBER  =    1      MAX ITERATIONS        500
+
+ OUTPUT CODE 2            1111      TOTAL LOAD/DISP     1.000
+ OUTPUT CODE 3            1111      INCREMENT           1.000
+ TRACE PILE HEAD             1      CONVERGENCE CRIT  0.00001
+
+ N,MISC(N)=         6    1
+
+ N,MISC(N)=         9    8
+
+
+ TRACE OF COMPUTED INCREMENTAL GLOBAL DISPLACEMENTS AND FORCES AT PILE HEAD   1
+
+ IT   DSPX     DSPY     DSPZ     ROTXX    ROTYY    ROTZZ    FRCX     FRCY     FRCZ    MOMXX    MMOMYY    MOMZZ  ICONV
+ 
+  1  2.79E-03-6.97E-03 4.18E-04 1.16E-04-1.60E-04 1.06E-03 3.61E+01-1.40E+02 1.23E+02 7.60E+02 1.53E+02 1.20E+02 116
+  2  3.26E-03-7.41E-03 6.33E-05 1.68E-04-2.30E-04 1.18E-03 3.61E+01-1.47E+02-4.38E+01 8.28E+02 1.43E+02 1.27E+02 116
+  3  3.62E-03-7.38E-03-7.39E-05 1.96E-04-2.84E-04 1.20E-03 3.72E+01-1.49E+02-1.08E+02 8.43E+02 1.37E+02 1.29E+02 116
+  4  3.89E-03-7.30E-03-1.73E-04 2.14E-04-3.27E-04 1.20E-03 3.77E+01-1.49E+02-1.09E+02 8.48E+02 1.30E+02 1.30E+02 116
+  5  4.06E-03-7.27E-03-1.75E-04 2.20E-04-3.55E-04 1.20E-03 3.81E+01-1.49E+02-1.09E+02 8.51E+02 1.27E+02 1.30E+02 116
+  6  4.19E-03-7.28E-03-1.63E-04 2.23E-04-3.73E-04 1.21E-03 3.85E+01-1.49E+02-1.07E+02 8.53E+02 1.25E+02 1.30E+02 116
+  7  4.26E-03-7.27E-03-1.51E-04 2.25E-04-3.85E-04 1.21E-03 3.87E+01-1.49E+02-1.05E+02 8.54E+02 1.23E+02 1.30E+02 116
+  8  4.31E-03-7.27E-03-1.41E-04 2.25E-04-3.92E-04 1.21E-03 3.87E+01-1.49E+02-1.04E+02 8.54E+02 1.22E+02 1.30E+02 116
+  9  4.34E-03-7.27E-03-1.34E-04 2.26E-04-3.96E-04 1.21E-03 3.88E+01-1.49E+02-1.02E+02 8.54E+02 1.22E+02 1.30E+02 116
+ 10  4.35E-03-7.27E-03-1.29E-04 2.26E-04-3.99E-04 1.21E-03 3.89E+01-1.49E+02-1.02E+02 8.54E+02 1.22E+02 1.30E+02 116
+ 11  4.36E-03-7.27E-03-1.26E-04 2.26E-04-4.00E-04 1.21E-03 3.89E+01-1.49E+02-1.01E+02 8.55E+02 1.22E+02 1.31E+02 116
+ 12  4.37E-03-7.27E-03-1.24E-04 2.27E-04-4.01E-04 1.21E-03 3.89E+01-1.49E+02-1.01E+02 8.55E+02 1.21E+02 1.31E+02 105
+ 13  4.37E-03-7.27E-03-1.23E-04 2.27E-04-4.02E-04 1.21E-03 3.89E+01-1.49E+02-1.00E+02 8.55E+02 1.21E+02 1.31E+02  73
+ 14  4.38E-03-7.27E-03-1.22E-04 2.27E-04-4.02E-04 1.21E-03 3.89E+01-1.49E+02-1.00E+02 8.55E+02 1.21E+02 1.31E+02  28
+ 15  4.38E-03-7.27E-03-1.22E-04 2.27E-04-4.02E-04 1.21E-03 3.90E+01-1.49E+02-1.00E+02 8.55E+02 1.21E+02 1.31E+02  28
+ 16  4.38E-03-7.27E-03-1.21E-04 2.27E-04-4.02E-04 1.21E-03 3.90E+01-1.49E+02-1.00E+02 8.55E+02 1.21E+02 1.31E+02  27
+ 17  4.38E-03-7.27E-03-1.21E-04 2.27E-04-4.03E-04 1.21E-03 3.90E+01-1.49E+02-1.00E+02 8.55E+02 1.21E+02 1.31E+02  26
+ 18  4.38E-03-7.27E-03-1.21E-04 2.27E-04-4.03E-04 1.21E-03 3.90E+01-1.49E+02-1.00E+02 8.55E+02 1.21E+02 1.31E+02  24
+ 19  4.38E-03-7.27E-03-1.21E-04 2.27E-04-4.03E-04 1.21E-03 3.90E+01-1.49E+02-1.00E+02 8.55E+02 1.21E+02 1.31E+02  20
+ 20  4.38E-03-7.27E-03-1.21E-04 2.27E-04-4.03E-04 1.21E-03 3.90E+01-1.49E+02-1.00E+02 8.55E+02 1.21E+02 1.31E+02  14
+ 21  4.38E-03-7.27E-03-1.21E-04 2.27E-04-4.03E-04 1.21E-03 3.90E+01-1.49E+02-1.00E+02 8.55E+02 1.21E+02 1.31E+02   0
+
+
+ CONV CRIT SATISFIED AFTER    21 ITERATIONS
+
+
+ PILE HEAD GLOBAL RESULTING DISPLACEMENTS
+ ****************************************
+
+ PILE CON     X        Y        Z         X-DSP       Y-DSP       Z-DSP      XX-ROT      YY-ROT      ZZ-ROT
+ 
+   1   5    -7.50    -7.33    -1.24     4.3810E-03 -7.2740E-03 -1.2095E-04  2.2668E-04 -4.0262E-04  1.2097E-03
+   2   5     7.50    -7.33    -1.24     4.3810E-03  1.0872E-02  5.9184E-03  2.2668E-04 -4.0262E-04  1.2097E-03
+   3   5    -7.50     7.33    -1.24    -1.3365E-02 -7.2740E-03  3.2045E-03  2.2668E-04 -4.0262E-04  1.2097E-03
+   4   5     7.50     7.33    -1.24    -1.3365E-02  1.0872E-02  9.2438E-03  2.2668E-04 -4.0262E-04  1.2097E-03
+   5   5     0.00     0.00    -1.24    -4.4921E-03  1.7988E-03  4.5614E-03  2.2668E-04 -4.0262E-04  1.2097E-03
+ 
+
+
+ PILE HEAD GLOBAL RESULTING FORCES
+ *********************************
+
+ PILE CON     X        Y        Z         X-FRC       Y-FRC       Z-FRC      XX-MOM      YY-MOM      ZZ-MOM
+ 
+   1   5    -7.50    -7.33    -1.24     3.8966E+01 -1.4948E+02 -1.0009E+02  8.5487E+02  1.2140E+02  1.3058E+02
+   2   5     7.50    -7.33    -1.24     3.7063E+01  1.6433E+02  1.4733E+03 -8.5470E+02  1.1866E+02  5.7554E+01
+   3   5    -7.50     7.33    -1.24    -2.5593E+02 -1.3998E+02  1.1709E+03  8.3343E+02 -1.5213E+03  5.7554E+01
+   4   5     7.50     7.33    -1.24    -2.5310E+02  1.5513E+02  1.7949E+03 -8.3369E+02 -1.5154E+03  4.1012E+01
+   5   5     0.00     0.00    -1.24    -4.3300E+02  3.0000E+01  4.3390E+03  1.1681E+04 -1.9277E+04  9.1450E+03
+ 
+
+                                     SUM OF FORCES AND MOMENTS WITH RESPECT TO ORIGIN. DUMMY PILES NOT INCLUDED
+
+                                       -4.3300E+02  3.0000E+01  4.3390E+03  1.1718E+04 -1.8740E+04  9.1450E+03
+
+
+ PILE HEAD GLOBAL INCREMENTAL DISPLACEMENTS
+ ******************************************
+
+ PILE CON     X        Y        Z         X-DSP       Y-DSP       Z-DSP      XX-ROT      YY-ROT      ZZ-ROT
+ 
+   1   5    -7.50    -7.33    -1.24     4.3810E-03 -7.2740E-03 -1.2095E-04  2.2668E-04 -4.0262E-04  1.2097E-03
+   2   5     7.50    -7.33    -1.24     4.3810E-03  1.0872E-02  5.9184E-03  2.2668E-04 -4.0262E-04  1.2097E-03
+   3   5    -7.50     7.33    -1.24    -1.3365E-02 -7.2740E-03  3.2045E-03  2.2668E-04 -4.0262E-04  1.2097E-03
+   4   5     7.50     7.33    -1.24    -1.3365E-02  1.0872E-02  9.2438E-03  2.2668E-04 -4.0262E-04  1.2097E-03
+   5   5     0.00     0.00    -1.24    -4.4921E-03  1.7988E-03  4.5614E-03  2.2668E-04 -4.0262E-04  1.2097E-03
+ 
+
+
+ PILE HEAD GLOBAL INCREMENTAL FORCES
+ ***********************************
+
+ PILE CON     X        Y        Z         X-FRC       Y-FRC       Z-FRC      XX-MOM      YY-MOM      ZZ-MOM
+ 
+   1   5    -7.50    -7.33    -1.24     3.8966E+01 -1.4948E+02 -1.0009E+02  8.5487E+02  1.2140E+02  1.3058E+02
+   2   5     7.50    -7.33    -1.24     3.7063E+01  1.6433E+02  1.4733E+03 -8.5470E+02  1.1866E+02  5.7554E+01
+   3   5    -7.50     7.33    -1.24    -2.5593E+02 -1.3998E+02  1.1709E+03  8.3343E+02 -1.5213E+03  5.7554E+01
+   4   5     7.50     7.33    -1.24    -2.5310E+02  1.5513E+02  1.7949E+03 -8.3369E+02 -1.5154E+03  4.1012E+01
+   5   5     0.00     0.00    -1.24    -4.3300E+02  3.0000E+01  4.3390E+03  1.1681E+04 -1.9277E+04  9.1450E+03
+ 
+
+                                     SUM OF FORCES AND MOMENTS WITH RESPECT TO ORIGIN. DUMMY PILES NOT INCLUDED
+
+                                       -4.3300E+02  3.0000E+01  4.3390E+03  1.1718E+04 -1.8740E+04  9.1450E+03
+#
+ SPLICE Output   Program Version = 04 Feb 2014    Time = 15 Oct 2025  12:32:17
+
+ Header: 36-1.57_pile at Eirin_LE soil_horizontal_API_pile group_LC04_Future dril            PAGE:   22
+
+ Load: 04_ALS_max torsion                                                        
+
+
+ PILE HEAD GLOBAL STIFFNESS MATRICES AND LOAD CORRECTION VECTORS
+ ***************************************************************
+
+               K-X        K-Y        K-Z        K-XX       K-YY       K-ZZ           LOAD CORR
+ 
+
+  PILE:  1   1.834E+04  3.278E+02  0.000E+00 -7.642E+02  9.653E+04  0.000E+00        2.418E-02
+             3.278E+02  1.774E+04  0.000E+00 -9.511E+04  7.642E+02  0.000E+00       -3.941E-02
+             0.000E+00  0.000E+00  1.693E+05  0.000E+00  0.000E+00  0.000E+00       -7.961E+01
+            -7.642E+02 -9.511E+04  0.000E+00  7.306E+05 -1.779E+03  0.000E+00        3.155E-02
+             9.653E+04  7.642E+02  0.000E+00 -1.779E+03  7.340E+05  0.000E+00       -4.165E-02
+             0.000E+00  0.000E+00  0.000E+00  0.000E+00  0.000E+00  1.079E+05        0.000E+00
+
+  PILE:  2   1.836E+04 -3.754E+02  0.000E+00  8.753E+02  9.658E+04  0.000E+00       -6.192E-01
+            -3.754E+02  1.735E+04  0.000E+00 -9.421E+04 -8.753E+02  0.000E+00       -1.646E+00
+             0.000E+00  0.000E+00  2.621E+05  0.000E+00  0.000E+00  0.000E+00       -7.764E+01
+             8.753E+02 -9.421E+04  0.000E+00  7.286E+05  2.038E+03  0.000E+00        1.373E+00
+             9.658E+04 -8.753E+02  0.000E+00  2.038E+03  7.341E+05  0.000E+00        1.537E-01
+             0.000E+00  0.000E+00  0.000E+00  0.000E+00  0.000E+00  4.758E+04        0.000E+00
+
+  PILE:  3   1.696E+04 -8.352E+02  0.000E+00  1.951E+03  9.329E+04  0.000E+00        1.733E+00
+            -8.352E+02  1.803E+04  0.000E+00 -9.580E+04 -1.951E+03  0.000E+00        9.443E-01
+             0.000E+00  0.000E+00  3.888E+05  0.000E+00  0.000E+00  0.000E+00       -7.513E+01
+             1.951E+03 -9.580E+04  0.000E+00  7.322E+05  4.548E+03  0.000E+00       -1.500E+00
+             9.329E+04 -1.951E+03  0.000E+00  4.548E+03  7.264E+05  0.000E+00        2.731E+00
+             0.000E+00  0.000E+00  0.000E+00  0.000E+00  0.000E+00  4.758E+04        0.000E+00
+
+  PILE:  4   1.709E+04  1.006E+03  0.000E+00 -2.351E+03  9.360E+04  0.000E+00        2.574E+00
+             1.006E+03  1.776E+04  0.000E+00 -9.517E+04  2.351E+03  0.000E+00       -1.999E+00
+             0.000E+00  0.000E+00  2.027E+05  0.000E+00  0.000E+00  0.000E+00       -7.880E+01
+            -2.351E+03 -9.517E+04  0.000E+00  7.308E+05 -5.481E+03  0.000E+00        1.701E+00
+             9.360E+04  2.351E+03  0.000E+00 -5.481E+03  7.271E+05  0.000E+00        3.979E+00
+             0.000E+00  0.000E+00  0.000E+00  0.000E+00  0.000E+00  3.390E+04        0.000E+00
+
+  PILE:  5   7.075E+04  1.235E+02  0.000E+00 -2.886E+02  3.800E+05  2.806E+04        3.713E+00
+             1.235E+02  7.088E+04  0.000E+00 -3.803E+05  2.886E+02 -6.511E+03       -2.740E+00
+             0.000E+00  0.000E+00  1.023E+06  1.175E+06  7.003E+05  0.000E+00       -3.112E+02
+            -2.886E+02 -3.803E+05  1.175E+06  5.796E+07  1.534E+07  1.520E+04        2.595E+01
+             3.800E+05  2.886E+02  7.003E+05  1.534E+07  6.046E+07  6.560E+04        1.958E+01
+             2.806E+04 -6.511E+03  0.000E+00  1.520E+04  6.560E+04  7.751E+06       -7.009E+01
+#
+ SPLICE Output   Program Version = 04 Feb 2014    Time = 15 Oct 2025  12:32:17
+
+ Header: 36-1.57_pile at Eirin_LE soil_horizontal_API_pile group_LC04_Future dril            PAGE:   23
+
+ Load: 04_ALS_max torsion                                                        
+
+
+ CONDITIONS ALONG PILE   1   AFTER LOAD INCREMENT   1    RESULTING DISPLACEMENTS AND MOMENTS
+
+ ND LR CR PY  Z-GLB     PILE DISPLACEMENTS GLOBAL      SOIL DISPLACEMENTS GLOBAL     MOMENTS BELOW  NODE     AXIAL
+                         X          Y          Z         X         Y         Z       XX-LOCAL   YY-LOCAL    FORCE
+ 
+  1  1  1 20  -1.24  4.381E-03 -7.274E-03 -1.209E-04  0.00E+00  0.00E+00  0.00E+00  8.549E+02  1.214E+02 -1.00E+02
+  2  1  1 20  -0.83  4.211E-03 -7.325E-03 -1.192E-04  0.00E+00  0.00E+00  0.00E+00  7.943E+02  1.056E+02 -9.71E+01
+  3  1  1 20  -0.43  4.033E-03 -7.316E-03 -1.175E-04  0.00E+00  0.00E+00  0.00E+00  7.338E+02  8.989E+01 -9.41E+01
+  4  1  1 20  -0.03  3.849E-03 -7.253E-03 -1.159E-04  0.00E+00  0.00E+00  0.00E+00  6.732E+02  7.413E+01 -9.11E+01
+  5  1  1 20   0.38  3.659E-03 -7.141E-03 -1.143E-04  0.00E+00  0.00E+00  0.00E+00  6.127E+02  5.838E+01 -8.82E+01
+                                                                                                                        
+  6  2  1 20   0.78  3.464E-03 -6.982E-03 -1.128E-04  0.00E+00  0.00E+00  0.00E+00  5.522E+02  4.262E+01 -8.52E+01
+  7  3  1 20   1.19  3.267E-03 -6.783E-03 -1.113E-04  0.00E+00  0.00E+00  0.00E+00  4.917E+02  2.686E+01 -8.22E+01
+  8  4  1 20   1.60  3.067E-03 -6.547E-03 -1.099E-04  0.00E+00  0.00E+00  0.00E+00  4.311E+02  1.111E+01 -7.92E+01
+  9  5  1 20   2.00  2.867E-03 -6.280E-03 -1.086E-04  0.00E+00  0.00E+00  0.00E+00  3.706E+02 -4.651E+00 -7.62E+01
+ 10  6  1 20   2.35  2.694E-03 -6.026E-03 -1.074E-04  0.00E+00  0.00E+00  0.00E+00  3.189E+02 -1.802E+01 -7.36E+01
+                                                                                                                        
+ 11  7  1 20   2.70  2.522E-03 -5.755E-03 -1.063E-04  0.00E+00  0.00E+00  0.00E+00  2.706E+02 -2.986E+01 -7.09E+01
+ 12  8  1 20   3.16  2.300E-03 -5.378E-03 -1.050E-04  0.00E+00  0.00E+00  0.00E+00  2.154E+02 -4.175E+01 -6.73E+01
+ 13  9  1 20   3.62  2.082E-03 -4.982E-03 -1.037E-04  0.00E+00  0.00E+00  0.00E+00  1.651E+02 -5.154E+01 -6.34E+01
+ 14 10  1 20   4.08  1.869E-03 -4.570E-03 -1.024E-04  0.00E+00  0.00E+00  0.00E+00  1.186E+02 -5.976E+01 -5.95E+01
+ 15 11  1 20   4.54  1.662E-03 -4.147E-03 -1.013E-04  0.00E+00  0.00E+00  0.00E+00  7.621E+01 -6.630E+01 -5.54E+01
+                                                                                                                        
+ 16 12  1 20   5.00  1.462E-03 -3.718E-03 -1.002E-04  0.00E+00  0.00E+00  0.00E+00  3.811E+01 -7.112E+01 -5.13E+01
+ 17 13  1 20   5.46  1.269E-03 -3.286E-03 -9.924E-05  0.00E+00  0.00E+00  0.00E+00  4.381E+00 -7.421E+01 -4.72E+01
+ 18 14  1 20   5.92  1.083E-03 -2.854E-03 -9.834E-05  0.00E+00  0.00E+00  0.00E+00 -2.521E+01 -7.571E+01 -4.30E+01
+ 19 15  1 20   6.38  9.047E-04 -2.425E-03 -9.752E-05  0.00E+00  0.00E+00  0.00E+00 -5.100E+01 -7.577E+01 -3.88E+01
+ 20 16  1 20   6.84  7.339E-04 -2.002E-03 -9.679E-05  0.00E+00  0.00E+00  0.00E+00 -7.339E+01 -7.455E+01 -3.46E+01
+                                                                                                                        
+ 21 17  1 20   7.30  5.704E-04 -1.586E-03 -9.614E-05  0.00E+00  0.00E+00  0.00E+00 -9.284E+01 -7.226E+01 -3.03E+01
+ 22 18  1 20   7.65  4.508E-04 -1.275E-03 -9.571E-05  0.00E+00  0.00E+00  0.00E+00 -1.060E+02 -6.991E+01 -2.71E+01
+ 23 19  1 20   8.00  3.350E-04 -9.712E-04 -9.532E-05  0.00E+00  0.00E+00  0.00E+00 -1.179E+02 -6.714E+01 -2.38E+01
+ 24 20  1 20   8.38  2.157E-04 -6.540E-04 -9.497E-05  0.00E+00  0.00E+00  0.00E+00 -1.243E+02 -6.205E+01 -1.99E+01
+ 25 21  1 20   8.75  1.014E-04 -3.482E-04 -9.468E-05  0.00E+00  0.00E+00  0.00E+00 -1.053E+02 -4.870E+01 -1.55E+01
+                                                                                                                        
+ 26 22  1 20   9.12 -8.917E-06 -5.204E-05 -9.446E-05  0.00E+00  0.00E+00  0.00E+00 -6.785E+01 -3.000E+01 -1.09E+01
+ 27 23  1 20   9.50 -1.174E-04  2.393E-04 -9.432E-05  0.00E+00  0.00E+00  0.00E+00 -2.772E+01 -1.190E+01 -6.31E+00
+ 28 24  1 20   9.75 -1.898E-04  4.335E-04 -9.427E-05  0.00E+00  0.00E+00  0.00E+00 -7.901E+00 -3.341E+00 -3.17E+00
+ 29 25  1 20  10.00 -2.630E-04  6.295E-04 -9.425E-05  0.00E+00  0.00E+00  0.00E+00 -3.111E-04 -1.162E-04  0.00E+00
+#
+ SPLICE Output   Program Version = 04 Feb 2014    Time = 15 Oct 2025  12:32:17
+
+ Header: 36-1.57_pile at Eirin_LE soil_horizontal_API_pile group_LC04_Future dril            PAGE:   24
+
+ Load: 04_ALS_max torsion                                                        
+
+
+ CONDITIONS ALONG PILE   2   AFTER LOAD INCREMENT   1    RESULTING DISPLACEMENTS AND MOMENTS
+
+ ND LR CR PY  Z-GLB     PILE DISPLACEMENTS GLOBAL      SOIL DISPLACEMENTS GLOBAL     MOMENTS BELOW  NODE     AXIAL
+                         X          Y          Z         X         Y         Z       XX-LOCAL   YY-LOCAL    FORCE
+ 
+  1  1  1 20  -1.24  4.381E-03  1.087E-02  5.918E-03  0.00E+00  0.00E+00  0.00E+00 -8.547E+02  1.187E+02  1.47E+03
+  2  1  1 20  -0.83  4.211E-03  1.074E-02  5.892E-03  0.00E+00  0.00E+00  0.00E+00 -7.880E+02  1.034E+02  1.48E+03
+  3  1  1 20  -0.43  4.034E-03  1.055E-02  5.867E-03  0.00E+00  0.00E+00  0.00E+00 -7.211E+02  8.814E+01  1.48E+03
+  4  1  1 20  -0.03  3.850E-03  1.030E-02  5.841E-03  0.00E+00  0.00E+00  0.00E+00 -6.542E+02  7.287E+01  1.48E+03
+  5  1  1 20   0.38  3.660E-03  1.000E-02  5.814E-03  0.00E+00  0.00E+00  0.00E+00 -5.872E+02  5.758E+01  1.49E+03
+                                                                                                                        
+  6  2  1 20   0.78  3.466E-03  9.666E-03  5.788E-03  0.00E+00  0.00E+00  0.00E+00 -5.202E+02  4.229E+01  1.49E+03
+  7  3  1 20   1.19  3.270E-03  9.290E-03  5.762E-03  0.00E+00  0.00E+00  0.00E+00 -4.531E+02  2.700E+01  1.49E+03
+  8  4  1 20   1.60  3.071E-03  8.879E-03  5.736E-03  0.00E+00  0.00E+00  0.00E+00 -3.859E+02  1.170E+01  1.49E+03
+  9  5  1 20   2.00  2.871E-03  8.440E-03  5.710E-03  0.00E+00  0.00E+00  0.00E+00 -3.187E+02 -3.604E+00  1.50E+03
+ 10  6  1 20   2.35  2.698E-03  8.042E-03  5.687E-03  0.00E+00  0.00E+00  0.00E+00 -2.613E+02 -1.661E+01  1.50E+03
+                                                                                                                        
+ 11  7  1 20   2.70  2.527E-03  7.629E-03  5.664E-03  0.00E+00  0.00E+00  0.00E+00 -2.078E+02 -2.828E+01  1.50E+03
+ 12  8  1 20   3.16  2.305E-03  7.071E-03  5.635E-03  0.00E+00  0.00E+00  0.00E+00 -1.473E+02 -4.032E+01  1.49E+03
+ 13  9  1 20   3.62  2.087E-03  6.501E-03  5.605E-03  0.00E+00  0.00E+00  0.00E+00 -9.304E+01 -5.034E+01  1.48E+03
+ 14 10  1 20   4.08  1.874E-03  5.922E-03  5.576E-03  0.00E+00  0.00E+00  0.00E+00 -4.367E+01 -5.876E+01  1.46E+03
+ 15 11  1 20   4.54  1.667E-03  5.340E-03  5.547E-03  0.00E+00  0.00E+00  0.00E+00  3.858E-01 -6.549E+01  1.44E+03
+                                                                                                                        
+ 16 12  1 20   5.00  1.466E-03  4.758E-03  5.518E-03  0.00E+00  0.00E+00  0.00E+00  3.888E+01 -7.047E+01  1.42E+03
+ 17 13  1 20   5.46  1.273E-03  4.182E-03  5.490E-03  0.00E+00  0.00E+00  0.00E+00  7.176E+01 -7.372E+01  1.39E+03
+ 18 14  1 20   5.92  1.087E-03  3.612E-03  5.463E-03  0.00E+00  0.00E+00  0.00E+00  9.934E+01 -7.535E+01  1.37E+03
+ 19 15  1 20   6.38  9.078E-04  3.054E-03  5.436E-03  0.00E+00  0.00E+00  0.00E+00  1.221E+02 -7.551E+01  1.34E+03
+ 20 16  1 20   6.84  7.364E-04  2.507E-03  5.409E-03  0.00E+00  0.00E+00  0.00E+00  1.405E+02 -7.438E+01  1.31E+03
+                                                                                                                        
+ 21 17  1 20   7.30  5.724E-04  1.975E-03  5.383E-03  0.00E+00  0.00E+00  0.00E+00  1.552E+02 -7.215E+01  1.28E+03
+ 22 18  1 20   7.65  4.523E-04  1.580E-03  5.364E-03  0.00E+00  0.00E+00  0.00E+00  1.643E+02 -6.984E+01  1.26E+03
+ 23 19  1 20   8.00  3.361E-04  1.194E-03  5.345E-03  0.00E+00  0.00E+00  0.00E+00  1.719E+02 -6.711E+01  1.23E+03
+ 24 20  1 20   8.38  2.162E-04  7.932E-04  5.326E-03  0.00E+00  0.00E+00  0.00E+00  1.721E+02 -6.203E+01  1.20E+03
+ 25 21  1 20   8.75  1.015E-04  4.076E-04  5.306E-03  0.00E+00  0.00E+00  0.00E+00  1.418E+02 -4.867E+01  1.16E+03
+                                                                                                                        
+ 26 22  1 20   9.12 -9.351E-06  3.446E-05  5.288E-03  0.00E+00  0.00E+00  0.00E+00  8.980E+01 -2.994E+01  1.11E+03
+ 27 23  1 20   9.50 -1.184E-04 -3.327E-04  5.270E-03  0.00E+00  0.00E+00  0.00E+00  3.616E+01 -1.183E+01  1.07E+03
+ 28 24  1 20   9.75 -1.911E-04 -5.775E-04  5.259E-03  0.00E+00  0.00E+00  0.00E+00  1.014E+01 -3.287E+00  1.03E+03
+ 29 25  1 20  10.00 -2.647E-04 -8.247E-04  5.248E-03  0.00E+00  0.00E+00  0.00E+00 -2.511E-01  7.469E-02  9.99E+02
+#
+ SPLICE Output   Program Version = 04 Feb 2014    Time = 15 Oct 2025  12:32:17
+
+ Header: 36-1.57_pile at Eirin_LE soil_horizontal_API_pile group_LC04_Future dril            PAGE:   25
+
+ Load: 04_ALS_max torsion                                                        
+
+
+ CONDITIONS ALONG PILE   3   AFTER LOAD INCREMENT   1    RESULTING DISPLACEMENTS AND MOMENTS
+
+ ND LR CR PY  Z-GLB     PILE DISPLACEMENTS GLOBAL      SOIL DISPLACEMENTS GLOBAL     MOMENTS BELOW  NODE     AXIAL
+                         X          Y          Z         X         Y         Z       XX-LOCAL   YY-LOCAL    FORCE
+ 
+  1  1  1 20  -1.24 -1.337E-02 -7.274E-03  3.204E-03  0.00E+00  0.00E+00  0.00E+00  8.334E+02 -1.521E+03  1.17E+03
+  2  1  1 20  -0.83 -1.346E-02 -7.326E-03  3.184E-03  0.00E+00  0.00E+00  0.00E+00  7.768E+02 -1.418E+03  1.17E+03
+  3  1  1 20  -0.43 -1.344E-02 -7.320E-03  3.163E-03  0.00E+00  0.00E+00  0.00E+00  7.201E+02 -1.314E+03  1.18E+03
+  4  1  1 20  -0.03 -1.333E-02 -7.261E-03  3.143E-03  0.00E+00  0.00E+00  0.00E+00  6.633E+02 -1.210E+03  1.18E+03
+  5  1  1 20   0.38 -1.313E-02 -7.153E-03  3.122E-03  0.00E+00  0.00E+00  0.00E+00  6.065E+02 -1.106E+03  1.18E+03
+                                                                                                                        
+  6  2  1 20   0.78 -1.284E-02 -7.000E-03  3.101E-03  0.00E+00  0.00E+00  0.00E+00  5.496E+02 -1.002E+03  1.19E+03
+  7  3  1 20   1.19 -1.248E-02 -6.805E-03  3.080E-03  0.00E+00  0.00E+00  0.00E+00  4.927E+02 -8.983E+02  1.19E+03
+  8  4  1 20   1.60 -1.206E-02 -6.575E-03  3.059E-03  0.00E+00  0.00E+00  0.00E+00  4.357E+02 -7.942E+02  1.19E+03
+  9  5  1 20   2.00 -1.157E-02 -6.312E-03  3.038E-03  0.00E+00  0.00E+00  0.00E+00  3.787E+02 -6.899E+02  1.19E+03
+ 10  6  1 20   2.35 -1.111E-02 -6.061E-03  3.020E-03  0.00E+00  0.00E+00  0.00E+00  3.298E+02 -6.004E+02  1.20E+03
+                                                                                                                        
+ 11  7  1 20   2.70 -1.062E-02 -5.793E-03  3.002E-03  0.00E+00  0.00E+00  0.00E+00  2.830E+02 -5.150E+02  1.20E+03
+ 12  8  1 20   3.16 -9.932E-03 -5.419E-03  2.978E-03  0.00E+00  0.00E+00  0.00E+00  2.273E+02 -4.131E+02  1.19E+03
+ 13  9  1 20   3.62 -9.205E-03 -5.023E-03  2.955E-03  0.00E+00  0.00E+00  0.00E+00  1.757E+02 -3.189E+02  1.18E+03
+ 14 10  1 20   4.08 -8.448E-03 -4.611E-03  2.931E-03  0.00E+00  0.00E+00  0.00E+00  1.280E+02 -2.317E+02  1.17E+03
+ 15 11  1 20   4.54 -7.671E-03 -4.187E-03  2.908E-03  0.00E+00  0.00E+00  0.00E+00  8.435E+01 -1.520E+02  1.16E+03
+                                                                                                                        
+ 16 12  1 20   5.00 -6.880E-03 -3.756E-03  2.885E-03  0.00E+00  0.00E+00  0.00E+00  4.507E+01 -8.035E+01  1.15E+03
+ 17 13  1 20   5.46 -6.083E-03 -3.321E-03  2.862E-03  0.00E+00  0.00E+00  0.00E+00  1.021E+01 -1.675E+01  1.13E+03
+ 18 14  1 20   5.92 -5.286E-03 -2.886E-03  2.840E-03  0.00E+00  0.00E+00  0.00E+00 -2.045E+01  3.917E+01  1.12E+03
+ 19 15  1 20   6.38 -4.493E-03 -2.453E-03  2.817E-03  0.00E+00  0.00E+00  0.00E+00 -4.727E+01  8.803E+01  1.10E+03
+ 20 16  1 20   6.84 -3.710E-03 -2.026E-03  2.796E-03  0.00E+00  0.00E+00  0.00E+00 -7.063E+01  1.306E+02  1.08E+03
+                                                                                                                        
+ 21 17  1 20   7.30 -2.940E-03 -1.605E-03  2.774E-03  0.00E+00  0.00E+00  0.00E+00 -9.098E+01  1.676E+02  1.06E+03
+ 22 18  1 20   7.65 -2.365E-03 -1.292E-03  2.758E-03  0.00E+00  0.00E+00  0.00E+00 -1.048E+02  1.927E+02  1.05E+03
+ 23 19  1 20   8.00 -1.801E-03 -9.838E-04  2.742E-03  0.00E+00  0.00E+00  0.00E+00 -1.173E+02  2.155E+02  1.04E+03
+ 24 20  1 20   8.38 -1.213E-03 -6.628E-04  2.726E-03  0.00E+00  0.00E+00  0.00E+00 -1.243E+02  2.281E+02  1.01E+03
+ 25 21  1 20   8.75 -6.461E-04 -3.532E-04  2.710E-03  0.00E+00  0.00E+00  0.00E+00 -1.055E+02  1.935E+02  9.66E+02
+                                                                                                                        
+ 26 22  1 20   9.12 -9.699E-05 -5.336E-05  2.694E-03  0.00E+00  0.00E+00  0.00E+00 -6.801E+01  1.247E+02  9.21E+02
+ 27 23  1 20   9.50  4.434E-04  2.417E-04  2.680E-03  0.00E+00  0.00E+00  0.00E+00 -2.771E+01  5.079E+01  8.74E+02
+ 28 24  1 20   9.75  8.037E-04  4.384E-04  2.670E-03  0.00E+00  0.00E+00  0.00E+00 -7.828E+00  1.435E+01  8.41E+02
+ 29 25  1 20  10.00  1.167E-03  6.369E-04  2.662E-03  0.00E+00  0.00E+00  0.00E+00  1.635E-01 -2.995E-01  8.07E+02
+#
+ SPLICE Output   Program Version = 04 Feb 2014    Time = 15 Oct 2025  12:32:17
+
+ Header: 36-1.57_pile at Eirin_LE soil_horizontal_API_pile group_LC04_Future dril            PAGE:   26
+
+ Load: 04_ALS_max torsion                                                        
+
+
+ CONDITIONS ALONG PILE   4   AFTER LOAD INCREMENT   1    RESULTING DISPLACEMENTS AND MOMENTS
+
+ ND LR CR PY  Z-GLB     PILE DISPLACEMENTS GLOBAL      SOIL DISPLACEMENTS GLOBAL     MOMENTS BELOW  NODE     AXIAL
+                         X          Y          Z         X         Y         Z       XX-LOCAL   YY-LOCAL    FORCE
+ 
+  1  1  1 20  -1.24 -1.337E-02  1.087E-02  9.244E-03  0.00E+00  0.00E+00  0.00E+00 -8.337E+02 -1.515E+03  1.79E+03
+  2  1  1 20  -0.83 -1.346E-02  1.074E-02  9.212E-03  0.00E+00  0.00E+00  0.00E+00 -7.706E+02 -1.413E+03  1.80E+03
+  3  1  1 20  -0.43 -1.344E-02  1.055E-02  9.181E-03  0.00E+00  0.00E+00  0.00E+00 -7.075E+02 -1.311E+03  1.80E+03
+  4  1  1 20  -0.03 -1.333E-02  1.031E-02  9.149E-03  0.00E+00  0.00E+00  0.00E+00 -6.442E+02 -1.208E+03  1.80E+03
+  5  1  1 20   0.38 -1.313E-02  1.002E-02  9.117E-03  0.00E+00  0.00E+00  0.00E+00 -5.808E+02 -1.105E+03  1.81E+03
+                                                                                                                        
+  6  2  1 20   0.78 -1.285E-02  9.683E-03  9.086E-03  0.00E+00  0.00E+00  0.00E+00 -5.174E+02 -1.002E+03  1.81E+03
+  7  3  1 20   1.19 -1.249E-02  9.312E-03  9.054E-03  0.00E+00  0.00E+00  0.00E+00 -4.539E+02 -8.988E+02  1.81E+03
+  8  4  1 20   1.60 -1.206E-02  8.906E-03  9.022E-03  0.00E+00  0.00E+00  0.00E+00 -3.904E+02 -7.955E+02  1.82E+03
+  9  5  1 20   2.00 -1.158E-02  8.472E-03  8.990E-03  0.00E+00  0.00E+00  0.00E+00 -3.267E+02 -6.921E+02  1.82E+03
+ 10  6  1 20   2.35 -1.112E-02  8.077E-03  8.962E-03  0.00E+00  0.00E+00  0.00E+00 -2.722E+02 -6.033E+02  1.82E+03
+                                                                                                                        
+ 11  7  1 20   2.70 -1.063E-02  7.667E-03  8.935E-03  0.00E+00  0.00E+00  0.00E+00 -2.203E+02 -5.181E+02  1.82E+03
+ 12  8  1 20   3.16 -9.942E-03  7.112E-03  8.899E-03  0.00E+00  0.00E+00  0.00E+00 -1.593E+02 -4.161E+02  1.81E+03
+ 13  9  1 20   3.62 -9.215E-03  6.542E-03  8.863E-03  0.00E+00  0.00E+00  0.00E+00 -1.037E+02 -3.216E+02  1.79E+03
+ 14 10  1 20   4.08 -8.459E-03  5.962E-03  8.827E-03  0.00E+00  0.00E+00  0.00E+00 -5.308E+01 -2.340E+02  1.77E+03
+ 15 11  1 20   4.54 -7.681E-03  5.379E-03  8.792E-03  0.00E+00  0.00E+00  0.00E+00 -7.793E+00 -1.540E+02  1.74E+03
+                                                                                                                        
+ 16 12  1 20   5.00 -6.890E-03  4.796E-03  8.758E-03  0.00E+00  0.00E+00  0.00E+00  3.188E+01 -8.202E+01  1.71E+03
+ 17 13  1 20   5.46 -6.092E-03  4.216E-03  8.724E-03  0.00E+00  0.00E+00  0.00E+00  6.589E+01 -1.812E+01  1.68E+03
+ 18 14  1 20   5.92 -5.294E-03  3.644E-03  8.691E-03  0.00E+00  0.00E+00  0.00E+00  9.455E+01  3.807E+01  1.65E+03
+ 19 15  1 20   6.38 -4.500E-03  3.082E-03  8.658E-03  0.00E+00  0.00E+00  0.00E+00  1.183E+02  8.718E+01  1.61E+03
+ 20 16  1 20   6.84 -3.715E-03  2.531E-03  8.626E-03  0.00E+00  0.00E+00  0.00E+00  1.377E+02  1.299E+02  1.57E+03
+                                                                                                                        
+ 21 17  1 20   7.30 -2.944E-03  1.994E-03  8.595E-03  0.00E+00  0.00E+00  0.00E+00  1.534E+02  1.672E+02  1.53E+03
+ 22 18  1 20   7.65 -2.369E-03  1.596E-03  8.572E-03  0.00E+00  0.00E+00  0.00E+00  1.631E+02  1.923E+02  1.50E+03
+ 23 19  1 20   8.00 -1.804E-03  1.207E-03  8.550E-03  0.00E+00  0.00E+00  0.00E+00  1.714E+02  2.153E+02  1.47E+03
+ 24 20  1 20   8.38 -1.215E-03  8.027E-04  8.526E-03  0.00E+00  0.00E+00  0.00E+00  1.723E+02  2.279E+02  1.44E+03
+ 25 21  1 20   8.75 -6.467E-04  4.134E-04  8.503E-03  0.00E+00  0.00E+00  0.00E+00  1.422E+02  1.934E+02  1.39E+03
+                                                                                                                        
+ 26 22  1 20   9.12 -9.647E-05  3.677E-05  8.481E-03  0.00E+00  0.00E+00  0.00E+00  9.012E+01  1.245E+02  1.35E+03
+ 27 23  1 20   9.50  4.451E-04 -3.339E-04  8.459E-03  0.00E+00  0.00E+00  0.00E+00  3.628E+01  5.062E+01  1.30E+03
+ 28 24  1 20   9.75  8.060E-04 -5.811E-04  8.445E-03  0.00E+00  0.00E+00  0.00E+00  1.015E+01  1.423E+01  1.27E+03
+ 29 25  1 20  10.00  1.170E-03 -8.306E-04  8.432E-03  0.00E+00  0.00E+00  0.00E+00 -3.123E-01 -4.559E-01  1.23E+03
+#
+ SPLICE Output   Program Version = 04 Feb 2014    Time = 15 Oct 2025  12:32:17
+
+ Header: 36-1.57_pile at Eirin_LE soil_horizontal_API_pile group_LC04_Future dril            PAGE:   27
+
+ Load: 04_ALS_max torsion                                                        
+
+
+ CONDITIONS ALONG PILE   1   AFTER LOAD INCREMENT   1    RESULTING SHEAR AND STRESSES
+
+ NODE LAY Z-GLB    SHEAR BELOW NODE      MAX     CONTACT STRESSES BETWEEN PILE AND SOIL    SECANT STIFFNESS  UTILZN
+                  X-LOCAL    Y-LOCAL    STRESS     X-LOCAL   Y-LOCAL    AXIAL    TORSION    LATERAL  AXIAL    RATIO
+ 
+   1   1  -1.24  3.895E+01 -1.495E+02 -3.842E+04   0.00E+00  0.00E+00  0.00E+00  0.00E+00  0.00E+00 0.00E+00  0.108
+   2   1  -0.83  3.895E+01 -1.495E+02 -3.570E+04   0.00E+00  0.00E+00  0.00E+00  0.00E+00  0.00E+00 0.00E+00  0.101
+   3   1  -0.43  3.895E+01 -1.495E+02 -3.297E+04   0.00E+00  0.00E+00  0.00E+00  0.00E+00  0.00E+00 0.00E+00  0.093
+   4   1  -0.03  3.895E+01 -1.495E+02 -3.026E+04   0.00E+00  0.00E+00  0.00E+00  0.00E+00  0.00E+00 0.00E+00  0.085
+   5   1   0.38  3.895E+01 -1.495E+02 -2.754E+04   0.00E+00  0.00E+00  0.00E+00  0.00E+00  0.00E+00 0.00E+00  0.078
+                                                                                                                        
+   6   2   0.78  3.895E+01 -1.495E+02 -2.484E+04   0.00E+00  0.00E+00  0.00E+00  0.00E+00  0.00E+00 0.00E+00  0.070
+   7   3   1.19  3.895E+01 -1.495E+02 -2.214E+04   0.00E+00  0.00E+00  0.00E+00  0.00E+00  0.00E+00 0.00E+00  0.062
+   8   4   1.60  3.895E+01 -1.495E+02 -1.946E+04   0.00E+00  0.00E+00  0.00E+00  0.00E+00  0.00E+00 0.00E+00  0.055
+   9   5   2.00  3.895E+01 -1.495E+02 -1.680E+04   0.00E+00  0.00E+00  0.00E+00  0.00E+00  0.00E+00 0.00E+00  0.047
+  10   6   2.35  3.677E+01 -1.446E+02 -1.455E+04   1.36E+01 -3.04E+01 -6.70E-02  1.58E+00  4.61E+03 1.79E+03  0.041
+                                                                                                                        
+  11   7   2.70  3.024E+01 -1.299E+02 -1.247E+04   2.71E+01 -6.19E+01 -1.32E-01  3.16E+00  9.84E+03 3.58E+03  0.035
+  12   8   3.16  2.294E+01 -1.132E+02 -1.014E+04   7.48E+00 -1.75E+01 -3.28E-01  3.58E+00  2.97E+03 8.98E+03  0.029
+  13   9   3.62  1.964E+01 -1.054E+02 -8.092E+03   8.18E+00 -1.96E+01 -3.92E-01  3.94E+00  3.60E+03 1.09E+04  0.023
+  14  10   4.08  1.609E+01 -9.680E+01 -6.312E+03   8.68E+00 -2.12E+01 -4.52E-01  4.27E+00  4.25E+03 1.27E+04  0.018
+  15  11   4.54  1.238E+01 -8.763E+01 -4.893E+03   8.96E+00 -2.24E+01 -5.11E-01  4.56E+00  4.93E+03 1.45E+04  0.014
+                                                                                                                        
+  16  12   5.00  8.600E+00 -7.810E+01 -3.973E+03   9.02E+00 -2.29E+01 -5.67E-01  4.81E+00  5.64E+03 1.62E+04  0.011
+  17  13   5.46  4.959E+00 -6.876E+01 -3.660E+03   8.29E+00 -2.15E+01 -5.87E-01  4.66E+00  5.97E+03 1.70E+04  0.010
+  18  14   5.92  1.645E+00 -6.010E+01 -3.859E+03   7.47E+00 -1.97E+01 -6.06E-01  4.82E+00  6.31E+03 1.77E+04  0.011
+  19  15   6.38 -1.308E+00 -5.226E+01 -4.322E+03   6.57E+00 -1.76E+01 -6.24E-01  6.15E+00  6.64E+03 1.84E+04  0.012
+  20  16   6.84 -3.870E+00 -4.533E+01 -4.861E+03   5.61E+00 -1.53E+01 -6.40E-01  7.16E+00  6.99E+03 1.90E+04  0.014
+                                                                                                                        
+  21  17   7.30 -6.012E+00 -3.944E+01 -5.388E+03   4.57E+00 -1.27E+01 -6.56E-01  7.92E+00  7.33E+03 1.96E+04  0.015
+  22  18   7.65 -7.343E+00 -3.571E+01 -5.762E+03   3.75E+00 -1.06E+01 -6.68E-01  8.38E+00  7.60E+03 2.01E+04  0.016
+  23  19   8.00 -8.403E+00 -3.268E+01 -6.112E+03   2.88E+00 -8.35E+00 -6.80E-01  8.75E+00  7.86E+03 2.05E+04  0.017
+  24  20   8.38 -2.345E+01  1.289E+01 -6.216E+03   8.49E+01 -2.57E+02 -1.52E+00  3.72E+01  3.60E+05 4.59E+04  0.018
+  25  21   8.75 -4.526E+01  8.191E+01 -5.181E+03   4.23E+01 -1.45E+02 -1.60E+00  3.72E+01  3.81E+05 4.86E+04  0.015
+                                                                                                                        
+  26  22   9.12 -5.183E+01  1.107E+02 -3.323E+03  -3.92E+00 -2.29E+01 -1.69E+00  3.73E+01  4.02E+05 5.13E+04  0.009
+  27  23   9.50 -4.184E+01  9.564E+01 -1.368E+03  -5.44E+01  1.11E+02 -1.77E+00  3.77E+01  4.23E+05 5.39E+04  0.004
+  28  24   9.75 -2.524E+01  5.926E+01 -4.016E+02  -9.08E+01  2.07E+02 -1.83E+00  3.81E+01  4.38E+05 5.57E+04  0.001
+  29  25  10.00  0.000E+00  0.000E+00  1.443E-02  -1.30E+02  3.11E+02 -1.89E+00  3.87E+01  4.52E+05 5.75E+04  0.000
+#
+ SPLICE Output   Program Version = 04 Feb 2014    Time = 15 Oct 2025  12:32:17
+
+ Header: 36-1.57_pile at Eirin_LE soil_horizontal_API_pile group_LC04_Future dril            PAGE:   28
+
+ Load: 04_ALS_max torsion                                                        
+
+
+ CONDITIONS ALONG PILE   2   AFTER LOAD INCREMENT   1    RESULTING SHEAR AND STRESSES
+
+ NODE LAY Z-GLB    SHEAR BELOW NODE      MAX     CONTACT STRESSES BETWEEN PILE AND SOIL    SECANT STIFFNESS  UTILZN
+                  X-LOCAL    Y-LOCAL    STRESS     X-LOCAL   Y-LOCAL    AXIAL    TORSION    LATERAL  AXIAL    RATIO
+ 
+   1   1  -1.24  3.704E+01  1.643E+02  5.090E+04   0.00E+00  0.00E+00  0.00E+00  0.00E+00  0.00E+00 0.00E+00  0.143
+   2   1  -0.83  3.704E+01  1.643E+02  4.797E+04   0.00E+00  0.00E+00  0.00E+00  0.00E+00  0.00E+00 0.00E+00  0.135
+   3   1  -0.43  3.704E+01  1.643E+02  4.504E+04   0.00E+00  0.00E+00  0.00E+00  0.00E+00  0.00E+00 0.00E+00  0.127
+   4   1  -0.03  3.704E+01  1.643E+02  4.211E+04   0.00E+00  0.00E+00  0.00E+00  0.00E+00  0.00E+00 0.00E+00  0.119
+   5   1   0.38  3.704E+01  1.643E+02  3.917E+04   0.00E+00  0.00E+00  0.00E+00  0.00E+00  0.00E+00 0.00E+00  0.110
+                                                                                                                        
+   6   2   0.78  3.704E+01  1.643E+02  3.624E+04   0.00E+00  0.00E+00  0.00E+00  0.00E+00  0.00E+00 0.00E+00  0.102
+   7   3   1.19  3.704E+01  1.643E+02  3.332E+04   0.00E+00  0.00E+00  0.00E+00  0.00E+00  0.00E+00 0.00E+00  0.094
+   8   4   1.60  3.704E+01  1.643E+02  3.040E+04   0.00E+00  0.00E+00  0.00E+00  0.00E+00  0.00E+00 0.00E+00  0.086
+   9   5   2.00  3.704E+01  1.643E+02  2.750E+04   0.00E+00  0.00E+00  0.00E+00  0.00E+00  0.00E+00 0.00E+00  0.077
+  10   6   2.35  3.517E+01  1.587E+02  2.504E+04   1.17E+01  3.49E+01  1.58E+00  0.00E+00  3.97E+03 8.00E+02  0.071
+                                                                                                                        
+  11   7   2.70  2.940E+01  1.414E+02  2.278E+04   2.43E+01  7.33E+01  3.16E+00  0.00E+00  8.78E+03 1.60E+03  0.064
+  12   8   3.16  2.269E+01  1.212E+02  2.025E+04   7.49E+00  2.30E+01  1.19E+01  4.35E+00  2.97E+03 6.06E+03  0.057
+  13   9   3.62  1.939E+01  1.110E+02  1.808E+04   8.20E+00  2.56E+01  1.43E+01  4.92E+00  3.60E+03 7.35E+03  0.051
+  14  10   4.08  1.583E+01  9.982E+01  1.649E+04   8.71E+00  2.75E+01  1.67E+01  5.47E+00  4.25E+03 8.61E+03  0.046
+  15  11   4.54  1.211E+01  8.798E+01  1.596E+04   8.99E+00  2.88E+01  1.90E+01  6.01E+00  4.93E+03 9.85E+03  0.045
+                                                                                                                        
+  16  12   5.00  8.316E+00  7.574E+01  1.640E+04   9.05E+00  2.94E+01  2.13E+01  6.54E+00  5.64E+03 1.11E+04  0.046
+  17  13   5.46  4.665E+00  6.382E+01  1.714E+04   8.31E+00  2.73E+01  2.22E+01  6.55E+00  5.97E+03 1.16E+04  0.048
+  18  14   5.92  1.340E+00  5.284E+01  1.785E+04   7.49E+00  2.49E+01  2.31E+01  7.00E+00  6.31E+03 1.21E+04  0.050
+  19  15   6.38 -1.623E+00  4.293E+01  1.842E+04   6.60E+00  2.22E+01  2.39E+01  9.25E+00  6.64E+03 1.26E+04  0.052
+  20  16   6.84 -4.194E+00  3.424E+01  1.883E+04   5.63E+00  1.92E+01  2.46E+01  1.12E+01  6.99E+03 1.31E+04  0.053
+                                                                                                                        
+  21  17   7.30 -6.343E+00  2.688E+01  1.909E+04   4.59E+00  1.58E+01  2.54E+01  1.29E+01  7.33E+03 1.35E+04  0.054
+  22  18   7.65 -7.678E+00  2.225E+01  1.919E+04   3.76E+00  1.31E+01  2.59E+01  1.41E+01  7.60E+03 1.39E+04  0.054
+  23  19   8.00 -8.742E+00  1.850E+01  1.924E+04   2.89E+00  1.03E+01  2.64E+01  1.52E+01  7.86E+03 1.42E+04  0.054
+  24  20   8.38 -2.383E+01 -3.679E+01  1.887E+04   8.51E+01  3.12E+02  4.06E+01  0.00E+00  3.60E+05 2.19E+04  0.053
+  25  21   8.75 -4.568E+01 -1.195E+02  1.705E+04   4.23E+01  1.70E+02  4.29E+01  0.00E+00  3.81E+05 2.32E+04  0.048
+                                                                                                                        
+  26  22   9.12 -5.222E+01 -1.512E+02  1.424E+04  -4.11E+00  1.52E+01  4.53E+01  9.54E-07  4.02E+05 2.46E+04  0.040
+  27  23   9.50 -4.212E+01 -1.274E+02  1.135E+04  -5.48E+01 -1.54E+02  4.77E+01  0.00E+00  4.23E+05 2.60E+04  0.032
+  28  24   9.75 -2.540E+01 -7.816E+01  9.861E+03  -9.15E+01 -2.76E+02  4.93E+01  0.00E+00  4.38E+05 2.69E+04  0.028
+  29  25  10.00  0.000E+00  0.000E+00  9.099E+03  -1.31E+02 -4.07E+02  5.08E+01  7.48E-03  4.52E+05 2.78E+04  0.026
+#
+ SPLICE Output   Program Version = 04 Feb 2014    Time = 15 Oct 2025  12:32:17
+
+ Header: 36-1.57_pile at Eirin_LE soil_horizontal_API_pile group_LC04_Future dril            PAGE:   29
+
+ Load: 04_ALS_max torsion                                                        
+
+
+ CONDITIONS ALONG PILE   3   AFTER LOAD INCREMENT   1    RESULTING SHEAR AND STRESSES
+
+ NODE LAY Z-GLB    SHEAR BELOW NODE      MAX     CONTACT STRESSES BETWEEN PILE AND SOIL    SECANT STIFFNESS  UTILZN
+                  X-LOCAL    Y-LOCAL    STRESS     X-LOCAL   Y-LOCAL    AXIAL    TORSION    LATERAL  AXIAL    RATIO
+ 
+   1   1  -1.24 -2.560E+02 -1.400E+02  8.602E+04   0.00E+00  0.00E+00  0.00E+00  0.00E+00  0.00E+00 0.00E+00  0.242
+   2   1  -0.83 -2.560E+02 -1.400E+02  8.092E+04   0.00E+00  0.00E+00  0.00E+00  0.00E+00  0.00E+00 0.00E+00  0.228
+   3   1  -0.43 -2.560E+02 -1.400E+02  7.581E+04   0.00E+00  0.00E+00  0.00E+00  0.00E+00  0.00E+00 0.00E+00  0.214
+   4   1  -0.03 -2.560E+02 -1.400E+02  7.071E+04   0.00E+00  0.00E+00  0.00E+00  0.00E+00  0.00E+00 0.00E+00  0.199
+   5   1   0.38 -2.560E+02 -1.400E+02  6.559E+04   0.00E+00  0.00E+00  0.00E+00  0.00E+00  0.00E+00 0.00E+00  0.185
+                                                                                                                        
+   6   2   0.78 -2.560E+02 -1.400E+02  6.048E+04   0.00E+00  0.00E+00  0.00E+00  0.00E+00  0.00E+00 0.00E+00  0.170
+   7   3   1.19 -2.560E+02 -1.400E+02  5.535E+04   0.00E+00  0.00E+00  0.00E+00  0.00E+00  0.00E+00 0.00E+00  0.156
+   8   4   1.60 -2.560E+02 -1.400E+02  5.023E+04   0.00E+00  0.00E+00  0.00E+00  0.00E+00  0.00E+00 0.00E+00  0.141
+   9   5   2.00 -2.560E+02 -1.400E+02  4.509E+04   0.00E+00  0.00E+00  0.00E+00  0.00E+00  0.00E+00 0.00E+00  0.127
+  10   6   2.35 -2.503E+02 -1.369E+02  4.068E+04  -3.52E+01 -1.92E+01  1.58E+00  0.00E+00  2.90E+03 1.51E+03  0.115
+                                                                                                                        
+  11   7   2.70 -2.326E+02 -1.272E+02  3.645E+04  -7.57E+01 -4.13E+01  3.16E+00  0.00E+00  6.51E+03 3.03E+03  0.103
+  12   8   3.16 -2.099E+02 -1.149E+02  3.138E+04  -3.23E+01 -1.76E+01  7.85E+00  4.35E+00  2.97E+03 7.57E+03  0.088
+  13   9   3.62 -1.955E+02 -1.070E+02  2.664E+04  -3.62E+01 -1.97E+01  9.45E+00  4.92E+00  3.60E+03 9.19E+03  0.075
+  14  10   4.08 -1.796E+02 -9.835E+01  2.223E+04  -3.92E+01 -2.14E+01  1.10E+01  5.47E+00  4.25E+03 1.08E+04  0.063
+  15  11   4.54 -1.627E+02 -8.909E+01  1.818E+04  -4.14E+01 -2.26E+01  1.25E+01  6.01E+00  4.93E+03 1.23E+04  0.051
+                                                                                                                        
+  16  12   5.00 -1.450E+02 -7.947E+01  1.450E+04  -4.25E+01 -2.32E+01  1.39E+01  6.54E+00  5.64E+03 1.39E+04  0.041
+  17  13   5.46 -1.277E+02 -7.003E+01  1.121E+04  -3.97E+01 -2.17E+01  1.45E+01  6.55E+00  5.97E+03 1.46E+04  0.032
+  18  14   5.92 -1.117E+02 -6.129E+01  1.208E+04  -3.65E+01 -1.99E+01  1.50E+01  7.00E+00  6.31E+03 1.52E+04  0.034
+  19  15   6.38 -9.718E+01 -5.335E+01  1.435E+04  -3.26E+01 -1.78E+01  1.55E+01  9.25E+00  6.64E+03 1.58E+04  0.040
+  20  16   6.84 -8.435E+01 -4.635E+01  1.630E+04  -2.83E+01 -1.55E+01  1.59E+01  1.12E+01  6.99E+03 1.64E+04  0.046
+                                                                                                                        
+  21  17   7.30 -7.343E+01 -4.039E+01  1.798E+04  -2.36E+01 -1.29E+01  1.63E+01  1.29E+01  7.33E+03 1.69E+04  0.051
+  22  18   7.65 -6.652E+01 -3.661E+01  1.909E+04  -1.96E+01 -1.07E+01  1.66E+01  1.41E+01  7.60E+03 1.73E+04  0.054
+  23  19   8.00 -6.089E+01 -3.354E+01  2.009E+04  -1.55E+01 -8.46E+00  1.69E+01  1.52E+01  7.86E+03 1.77E+04  0.057
+  24  20   8.38  2.364E+01  1.265E+01  2.046E+04  -4.78E+02 -2.61E+02  4.06E+01  0.00E+00  3.60E+05 4.27E+04  0.058
+  25  21   8.75  1.517E+02  8.262E+01  1.837E+04  -2.69E+02 -1.47E+02  4.29E+01  0.00E+00  3.81E+05 4.55E+04  0.052
+                                                                                                                        
+  26  22   9.12  2.052E+02  1.119E+02  1.455E+04  -4.27E+01 -2.35E+01  4.53E+01  9.54E-07  4.02E+05 4.83E+04  0.041
+  27  23   9.50  1.773E+02  9.672E+01  1.047E+04   2.05E+02  1.12E+02  4.77E+01  0.00E+00  4.23E+05 5.11E+04  0.029
+  28  24   9.75  1.099E+02  5.994E+01  8.364E+03   3.85E+02  2.10E+02  4.93E+01  0.00E+00  4.38E+05 5.30E+04  0.024
+  29  25  10.00  0.000E+00  0.000E+00  7.358E+03   5.77E+02  3.15E+02  5.08E+01  7.48E-03  4.52E+05 5.49E+04  0.021
+#
+ SPLICE Output   Program Version = 04 Feb 2014    Time = 15 Oct 2025  12:32:17
+
+ Header: 36-1.57_pile at Eirin_LE soil_horizontal_API_pile group_LC04_Future dril            PAGE:   30
+
+ Load: 04_ALS_max torsion                                                        
+
+
+ CONDITIONS ALONG PILE   4   AFTER LOAD INCREMENT   1    RESULTING SHEAR AND STRESSES
+
+ NODE LAY Z-GLB    SHEAR BELOW NODE      MAX     CONTACT STRESSES BETWEEN PILE AND SOIL    SECANT STIFFNESS  UTILZN
+                  X-LOCAL    Y-LOCAL    STRESS     X-LOCAL   Y-LOCAL    AXIAL    TORSION    LATERAL  AXIAL    RATIO
+ 
+   1   1  -1.24 -2.531E+02  1.551E+02  9.148E+04   0.00E+00  0.00E+00  0.00E+00  0.00E+00  0.00E+00 0.00E+00  0.258
+   2   1  -0.83 -2.531E+02  1.551E+02  8.629E+04   0.00E+00  0.00E+00  0.00E+00  0.00E+00  0.00E+00 0.00E+00  0.243
+   3   1  -0.43 -2.531E+02  1.551E+02  8.110E+04   0.00E+00  0.00E+00  0.00E+00  0.00E+00  0.00E+00 0.00E+00  0.228
+   4   1  -0.03 -2.531E+02  1.551E+02  7.590E+04   0.00E+00  0.00E+00  0.00E+00  0.00E+00  0.00E+00 0.00E+00  0.214
+   5   1   0.38 -2.531E+02  1.551E+02  7.070E+04   0.00E+00  0.00E+00  0.00E+00  0.00E+00  0.00E+00 0.00E+00  0.199
+                                                                                                                        
+   6   2   0.78 -2.531E+02  1.551E+02  6.549E+04   0.00E+00  0.00E+00  0.00E+00  0.00E+00  0.00E+00 0.00E+00  0.184
+   7   3   1.19 -2.531E+02  1.551E+02  6.028E+04   0.00E+00  0.00E+00  0.00E+00  0.00E+00  0.00E+00 0.00E+00  0.170
+   8   4   1.60 -2.531E+02  1.551E+02  5.507E+04   0.00E+00  0.00E+00  0.00E+00  0.00E+00  0.00E+00 0.00E+00  0.155
+   9   5   2.00 -2.531E+02  1.551E+02  4.985E+04   0.00E+00  0.00E+00  0.00E+00  0.00E+00  0.00E+00 0.00E+00  0.140
+  10   6   2.35 -2.479E+02  1.513E+02  4.537E+04  -3.27E+01  2.37E+01  1.58E+00  0.00E+00  2.69E+03 5.08E+02  0.128
+                                                                                                                        
+  11   7   2.70 -2.313E+02  1.393E+02  4.108E+04  -7.09E+01  5.12E+01  3.16E+00  5.96E-08  6.10E+03 1.02E+03  0.116
+  12   8   3.16 -2.097E+02  1.236E+02  3.591E+04  -3.23E+01  2.31E+01  1.50E+01  2.47E+00  2.97E+03 4.85E+03  0.101
+  13   9   3.62 -1.952E+02  1.134E+02  3.107E+04  -3.62E+01  2.57E+01  1.82E+01  3.20E+00  3.60E+03 5.89E+03  0.088
+  14  10   4.08 -1.794E+02  1.021E+02  2.661E+04  -3.93E+01  2.77E+01  2.12E+01  3.97E+00  4.25E+03 6.89E+03  0.075
+  15  11   4.54 -1.624E+02  9.020E+01  2.264E+04  -4.14E+01  2.90E+01  2.41E+01  4.77E+00  4.93E+03 7.88E+03  0.064
+                                                                                                                        
+  16  12   5.00 -1.447E+02  7.788E+01  1.946E+04  -4.25E+01  2.96E+01  2.70E+01  5.61E+00  5.64E+03 8.86E+03  0.055
+  17  13   5.46 -1.274E+02  6.586E+01  1.827E+04  -3.98E+01  2.75E+01  2.82E+01  6.12E+00  5.97E+03 9.28E+03  0.051
+  18  14   5.92 -1.114E+02  5.478E+01  1.941E+04  -3.65E+01  2.51E+01  2.93E+01  6.62E+00  6.31E+03 9.69E+03  0.055
+  19  15   6.38 -9.680E+01  4.479E+01  2.104E+04  -3.27E+01  2.24E+01  3.03E+01  7.11E+00  6.64E+03 1.01E+04  0.059
+  20  16   6.84 -8.396E+01  3.601E+01  2.254E+04  -2.84E+01  1.93E+01  3.13E+01  7.59E+00  6.99E+03 1.04E+04  0.063
+                                                                                                                        
+  21  17   7.30 -7.302E+01  2.858E+01  2.382E+04  -2.36E+01  1.60E+01  3.23E+01  8.06E+00  7.33E+03 1.08E+04  0.067
+  22  18   7.65 -6.609E+01  2.390E+01  2.465E+04  -1.97E+01  1.33E+01  3.30E+01  8.42E+00  7.60E+03 1.11E+04  0.069
+  23  19   8.00 -6.046E+01  2.011E+01  2.536E+04  -1.55E+01  1.04E+01  3.36E+01  8.77E+00  7.86E+03 1.13E+04  0.071
+  24  20   8.38  2.419E+01 -3.584E+01  2.548E+04  -4.78E+02  3.16E+02  4.06E+01  0.00E+00  3.60E+05 1.37E+04  0.072
+  25  21   8.75  1.524E+02 -1.196E+02  2.311E+04  -2.70E+02  1.72E+02  4.29E+01  0.00E+00  3.81E+05 1.45E+04  0.065
+                                                                                                                        
+  26  22   9.12  2.059E+02 -1.519E+02  1.895E+04  -4.24E+01  1.62E+01  4.53E+01  0.00E+00  4.02E+05 1.53E+04  0.053
+  27  23   9.50  1.778E+02 -1.281E+02  1.455E+04   2.06E+02 -1.55E+02  4.77E+01  0.00E+00  4.23E+05 1.62E+04  0.041
+  28  24   9.75  1.102E+02 -7.868E+01  1.231E+04   3.86E+02 -2.78E+02  4.93E+01  0.00E+00  4.38E+05 1.68E+04  0.035
+  29  25  10.00  0.000E+00  0.000E+00  1.126E+04   5.78E+02 -4.10E+02  5.08E+01  8.06E-03  4.52E+05 1.73E+04  0.032
+#
+ SPLICE Output   Program Version = 04 Feb 2014    Time = 15 Oct 2025  12:32:17
+
+ Header: 36-1.57_pile at Eirin_LE soil_horizontal_API_pile group_LC04_Future dril            PAGE:   31
+
+ Load: 04_ALS_max torsion                                                        
+
+ =========================
+ SUMMARY OF PILE SOLUTIONS   After load vector =  2    Load increment =  1   Iterations = 21
+ =========================
+
+
+ PILE CON    LOCAL PILE HEAD FORCES AND MOMENTS      HEAD     2.MAX     AT      LOCAL PILE HEAD DISPL. AND ROTATIONS
+            AXL-FRC   LAT-FRC   LAT-MOM   AXL-MOM   STRESS    STRESS  Z-LEVEL  AXL-DSP   LAT-DSP   LAT-ROT   AXL-ROT
+ 
+
+   1   5  -1.00E+02  1.54E+02  8.63E+02  1.31E+02 -3.84E+04 -6.22E+03   8.38 -1.21E-04  8.49E-03  4.62E-04  1.21E-03
+
+   2   5   1.47E+03  1.68E+02  8.63E+02  5.76E+01  5.09E+04  1.92E+04   8.00  5.92E-03  1.17E-02  4.62E-04  1.21E-03
+
+   3   5   1.17E+03  2.92E+02  1.73E+03  5.76E+01  8.60E+04  2.05E+04   8.38  3.20E-03  1.52E-02  4.62E-04  1.21E-03
+
+   4   5   1.79E+03  2.97E+02  1.73E+03  4.10E+01  9.15E+04  2.55E+04   8.38  9.24E-03  1.72E-02  4.62E-04  1.21E-03
+
+
+        MAXIMUM PILE STRESSES    MAXIMUM X-SCTN UTILIZATION RATIO   RESERVE AXIAL FACTOR OF SAFETY
+ Pile   Node     Z     Sigma        Node     Z    UR(----)             Force    Capacity    FoS
+
+   1      1    -1.240  -38.4          1    -1.240   0.108           -1.001E+02 -7.358E+02   7.35
+
+   2      1    -1.240   50.9          1    -1.240   0.143            1.473E+03  3.551E+03   2.41
+
+   3      1    -1.240   86.0          1    -1.240   0.242            1.171E+03  3.551E+03   3.03
+
+   4      1    -1.240   91.5          1    -1.240   0.258            1.795E+03  3.551E+03   1.98
+
+ Max/min values =       91.5 (MPa)                  0.258     Comp   1.795E+03  3.551E+03   1.98
+                                                              Tens  -1.001E+02 -7.358E+02   7.35
+
+
+ EXECUTION OF THIS RUN TERMINATED :  15 Oct 2025   12:32:17 HOURS
+
+ LAST PILE SOLUTION ON FILE :   12
+
+ TIME USED =            4.25 SECONDS
+ 

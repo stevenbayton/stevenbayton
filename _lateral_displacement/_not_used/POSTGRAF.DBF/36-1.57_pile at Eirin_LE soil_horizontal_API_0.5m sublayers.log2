@@ -1,0 +1,10 @@
+
+ +++++ START PROGRAM PILGEN   VERSION = 31 Oct 2019
+ +++++ INPUT FILE READ , LABEL LINE :
+ Header: 36-1.57_pile at Eirin_LE soil_horizontal_API_0.5m sublayers.pgjson    
+ +++++ PILE GEOMETRY VALUES COMPUTED
+ +++++ RESULT FILE PILGEN.RES HAS BEEN PRINTED
+ +++++ SPLICE INPUT FILE PILE.07 HAS BEEN GENERATED
+ VECTOR  1 LABEL :                                                             
+ +++++ SPLICE INPUT FILE LOAD.09 HAS BEEN GENERATED
+ 

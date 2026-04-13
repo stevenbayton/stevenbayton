@@ -1,0 +1,10 @@
+
+ +++++ START PROGRAM PILGEN   VERSION = 31 Oct 2019
+ +++++ INPUT FILE READ , LABEL LINE :
+ Header: 36-1.57_pile at Eirin_LE soil_horizontal_API_pile group_LC06_Temp_Tie-
+ +++++ PILE GEOMETRY VALUES COMPUTED
+ +++++ RESULT FILE PILGEN.RES HAS BEEN PRINTED
+ +++++ SPLICE INPUT FILE PILE.07 HAS BEEN GENERATED
+ VECTOR  1 LABEL : Load: 06_ULS A                                              
+ +++++ SPLICE INPUT FILE LOAD.09 HAS BEEN GENERATED
+ 

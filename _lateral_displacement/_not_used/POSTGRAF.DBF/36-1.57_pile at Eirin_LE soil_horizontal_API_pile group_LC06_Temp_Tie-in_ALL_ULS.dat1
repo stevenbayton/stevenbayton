@@ -1,0 +1,130 @@
+Header: 36-1.57_pile at Eirin_LE soil_horizontal_API_pile group_LC06_Temp_Tie-in
+*
+GENSOD Version: 2009-09-01
+*
+* Date         Sign    Log of Corrections
+* 14 Jul 2009  cjfc    New input file for GENSOD revision 5
+*
+
+ ****************** CONTROL SECTION
+  'Soil1'      Name of this soil profile, max 10 characters
+  1.0     CONFRC    Old-force-unit  = CONFRC * New-force-unit  1MN  = 1000*1KN
+  1.0     CONLTH    Old-length-unit = CONLTH * New-length-unit  1M  = 3.28*1FT
+  9       NUMLAYM   Number of main soil layers (max is 1000)
+  0       NUMDSP    Number of Z-levels with given soil displacements (max is 50)
+  10.0    GAMMAW    Unit weight of water (10.0 kN/m3 in SI-units)
+  101.3   ATMPRS    Atmospheric pressure (101.3 kN/m2 in SI-units)
+  0.00       ZCYCL     Z-level down to which cyclic P-Y data shall be generated
+  96   SUSTIF    Use stiff clay P-Y procedures if Su.GT.SUSTIF (API only)
+  2       JPRINT    Printed output code (0=None 1=Some 2=Full)
+  1       JECHO     Echo print of input file NF14 to file NF16 (0=No 1=Yes)
+
+ ****************** MATERIAL COEFFICIENTS SECTION
+  1.000   SFTPHI    Material coefficient on tan(phi)
+  1.000   SFSU      Material coefficient on undrained shear strength
+  1.000   SFSKF     Material coefficient on pile skin friction
+  1.000   SFSIGT    Material coefficient on pile tip resistance
+
+ ****************** PILE DIAMETERS AND GROUP EFFECTS SECTION
+  1       NUMDIA    Number of pile diam for which P-Y/T-Z/Q-Z data is wanted (max is 20)
+  0.914             'NUMDIA' pile diameters in increasing order
+  0       ESOL0     E-soil for lateral group effect calc: Eh(Z)=ESOL0+ESOL1*Z
+  0       ESOL1     ESOL0 = Eh-soil at Z=0.0 , ESOL1 = dEh/dZ , Z = Z-coord
+  1.0       EVHRAT    Ratio Ev(Z)/Eh(Z), Ev(Z) = E-soil for axial group effect
+  0.5     POSAVR    Soil average Poisson's ratio for group effects
+
+ ****************** SOIL SURFACE AND GROUND WATER SECTION
+  0.000    ZSURF     Z-level of non-scoured soil surface
+  2.00    SCRGEN    Depth of general scour below 'ZSURF'
+  2.00    SCRLOC    Depth of local scour below 'ZSURF'
+  20    SLOPE     Side slope (degrees) of local scour holes
+  0.000    ZGRWT     Z-level of ground water table
+  10      GAMPWP    Unit weight of ground water (used to find pore water prss)
+
+ ****************** LOADS AT SOIL SURFACE SECTION
+    0.0   SIGSRF    Vertical stress at surface
+    0.0   DPEMB     Vertical stress under embankment loading
+    0.0   AEMB      Width 'A' of embankment sloping part
+    0.0   BEMB      Pile position w.r.t. embankment toe (positive outside)
+    0.0   DPCIRC    Vertical stress under circular loaded area
+    0.0   RADIUS    Radius of circular loaded area (pile is in centre)
+      0   NUMFRC    Number of vertical point forces at soil surface (max is 45)
+           0        Point force values
+           0.0      Horizontal distance to pile axis 
+
+ ****************** SOIL MAIN LAYERS AND PROPERTIES SECTION
+ Main  Zbotm Gamtot CPTtop CPTbot  Phi    Dr  SuTop  SuBot   Ip   EpsC  API-J
+ layer  (m) (kN/m3)  (MPa)  (MPa) (dgr)  (-)  (kPa)  (kPa)   (%)   (-)   (-)
+  1 2.00 20.30 0.00 0.50 33.70 0.20 0.0 0.0 0 0.0 0.0
+  2 2.70 20.30 0.50 0.50 33.70 0.20 0.0 0.0 0 0.0 0.0
+  3 5.00 21.50 0.0 0.0 0.0 0.0 35.00 65.00 0 0.0100 0.250
+  4 8.00 21.50 0.0 0.0 0.0 0.0 65.00 70.00 0 0.0100 0.250
+  5 9.50 21.30 2.00 100.00 46.60 1.00 0.0 0.0 0 0.0 0.0
+  6 12.80 21.30 100.00 55.00 46.60 1.00 0.0 0.0 0 0.0 0.0
+  7 20.00 21.40 0.0 0.0 0.0 0.0 350.00 350.00 0 0.0100 0.250
+  8 25.00 21.40 0.0 0.0 0.0 0.0 350.00 260.00 0 0.0100 0.250
+  9 39.10 21.40 0.0 0.0 0.0 0.0 260.00 260.00 0 0.0100 0.250
+
+ ****************** SKIN FRICTION AND TIP RESISTANCE (T-Z/Q-Z) SECTION
+  0.9144   DIAMP  Pile outside diameter for axial capacity calculations
+  0.04   WALL   Pile tip wall thickness for axial capacity calculations
+  9.90   ZTIP   Pile tip Z-level for axial capacity calculations
+  1    MATPIL Pile wall material type: 1=steel 2=concrete
+*  Calculation methods : 0=Given values  1=API-93  2=ICP-05  3=NGI-05
+ Main   Calc  SkinC  SkinC  SkinT  SkinT  SigTip SigTip   G0   Tres/   T-Z
+ layer  meth   Top    Bot    Top    Bot     Top   Bot    fact  Tmax  Z.res/D   
+  (-)    (-)  (kPa)  (kPa)  (kPa)  (kPa)   (kPa) (kPa)    (-)   (-)    (-)
+  1 1 0 0 0 0 0 0 1.0 0.010 0
+  2 1 0 0 0 0 0 0 1.0 0.010 0
+  3 1 0 0 0 0 0 0 1.0 0.010 0
+  4 1 0 0 0 0 0 0 1.0 0.010 0
+  5 1 0 0 0 0 0 0 1.0 0.010 0
+  6 1 0 0 0 0 0 0 1.0 0.010 0
+  7 1 0 0 0 0 0 0 1.0 0.010 0
+  8 1 0 0 0 0 0 0 1.0 0.010 0
+  9 1 0 0 0 0 0 0 1.0 0.010 0
+
+ ****************** MAIN LAYERS SUBDIVISION AND P-Y/T-Z/Q-Z CODES SECTION
+   1  NUMPIL  Pile number to be used for automatic main layers sub-divisions
+*
+* P-Y codes : 000=Manual 100+N=Auto 284=API-84 287=API-87 380=DNV 404=ISO-04
+* T-Z codes : 000=Manual 100+N=Auto 200=Kraft-1981 293=API-93
+* Q-Z codes : 000=Manual 100+N=Auto 200=Bi-linear  293=API-93
+*
+ Main  Zbotm  Subdivision    P-Y   T-Z   Q-Z   Open  Misc.soil.layer.values
+ layer  (m)  0=Auto 1=None  Code  Code  Code   hole   1    2    3    4    5
+  1 2.00 0 287 293 293 0 0.0 0.0 0.0 0.0 0.0
+  2 2.70 0 287 293 293 0 0.0 0.0 0.0 0.0 0.0
+  3 5.00 0 287 293 293 0 0.0 0.0 0.0 0.0 0.0
+  4 8.00 0 287 293 293 0 0.0 0.0 0.0 0.0 0.0
+  5 9.50 0 287 293 293 0 0.0 0.0 0.0 0.0 0.0
+  6 12.80 0 287 293 293 0 0.0 0.0 0.0 0.0 0.0
+  7 20.00 0 287 293 293 0 0.0 0.0 0.0 0.0 0.0
+  8 25.00 0 287 293 293 0 0.0 0.0 0.0 0.0 0.0
+  9 39.10 0 287 293 293 0 0.0 0.0 0.0 0.0 0.0
+
+ ****************** MANUAL P-Y (LATERAL RESISTANCE) DATA SECTION
+ Layer  Diam  Numpnt  Line1 : P-values (F/L**2)  Line2 : Y-values (L)
+
+ ****************** P-Y (LATERAL RESISTANCE) DATA MODIFICATION SECTION 
+ Layers Diam P-fact Y-fact  Y-gap  P-peak-fact P-resid-fact Y-resid-fact
+  0 0    0.0  1.0    1.0     0.0     1.00         1.0          1.0
+
+ ****************** MANUAL T-Z (SKIN FRICTION) DATA SECTION
+ Layer  Diam  Numpnt  Line1 : T-values (F/L**2)  Line2 : Z-values (L)
+
+ ****************** T-Z (SKIN FRICTION) DATA MODIFICATION SECTION 
+ Layers  Diam   CMP-fact TNS-fact  TZZ-fact T-resid-fact  Z-resid-fact
+  0 0     0.0     1.0      1.0       1.0       1.0           1.0
+
+ ****************** MANUAL Q-Z (PILE TIP RESISTANCE) DATA SECTION
+ Layer  Diam  Numpnt  Line1 : Q-values (F/L**2)  Line2 : Z-values (L)
+
+ ****************** Q-Z (PILE TIP RESISTANCE) DATA MODIFICATION SECTION
+ Layers  Diam   CMP-fact TNS-fact  QZZ-fact Q-resid-fact  Z-resid-fact
+  0 0     0.0     1.0      1.0       1.0       1.0           1.0
+
+ ****************** GIVEN SOIL DISPLACEMENTS AND OPEN HOLE SECTION
+ Z.level  DSP-X  DSP-Y  DSP-Z  Hole.diameter
+
+End of GENSOD input file : C:\Users\steb\AppData\Local\Temp\7aa41e71-f65e-4b70-a7e7-1d49de922f39\Gensod.inp

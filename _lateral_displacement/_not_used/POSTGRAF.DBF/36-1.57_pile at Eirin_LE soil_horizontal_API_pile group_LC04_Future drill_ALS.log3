@@ -1,0 +1,443 @@
+
+ +++++ Start of program SPLICE     15 Oct 2025   12:32:13        TIME=    0.00
+
+ Program Version : 04 Feb 2014
+
+ Input data is for program revision 5 : 2009-09-01
+
+ Header: 36-1.57_pile at Eirin_LE soil_horizontal_API_pile group_LC04_Future dril
+ 
+
+ NPH  =  5    LAYER =  0    NUMVEC =  2    ISECM =  1    IPRT1 =  1111
+ NLPH =  1    NSDSP =  0    ISTART = 00    INTER =  0    JECHO =     1
+ JACK =  0    IFRC  =  0    MISC(1-5)=    0    0    0  100    0
+
+
+ DISTIN=   0.00    SCOUR=******
+ ACCX  =   0.00    ACCY =  0.00    ACCZ  =  1.00
+
+ 
+
+
+ SOIL DATA FILE USED : 
+ Header: 36-1.57_pile at Eirin_LE soil_horizontal_API_pile group_LC04_Future dril
+
+ PILE DATA FILE USED : 
+ Header: 36-1.57_pile at Eirin_LE soil_horizontal_API_pile group_LC04_Future dril
+
+ PILE DATA FILE NF12 HAS BEEN GENERATED                         TIME=    0.08
+
+ SOIL AND PILE CROSS SECTION DATA HAVE BEEN READ                TIME=    0.08
+
+
+ --------------------
+ LOAD VECTOR NO =   1
+ --------------------
+
+ Load: 04_ALS                                                                    
+ 
+
+ LOAD INCREMENT =   1  START                                    TIME=    0.09
+
+
+ NINC  =  1   IPRT2 =  1111   NPTRC =     1     QTOT  =  1.00000
+ MAXIT =500   IPRT3 =  1111   CONV  =  0.00001
+ MISC(6-11) =     1       0       0       8       0       0
+
+ 
+      ITERATION =   1  START                                    TIME=    0.09
+      ITERATION =   1  HEAD STIFFNESSES COMPUTED                TIME=    0.13
+      ITERATION =   1  INTERFACE EQUATIONS SOLVED               TIME=    0.13
+      ITERATION =   1  NEW DISPL COMPUTED          ICONV= 116   TIME=    0.17
+
+      DISPL TRACE :    5.563E-03   2.182E-02  -6.338E-05
+ 
+      ITERATION =   2  START                                    TIME=    0.17
+      ITERATION =   2  HEAD STIFFNESSES COMPUTED                TIME=    0.21
+      ITERATION =   2  INTERFACE EQUATIONS SOLVED               TIME=    0.21
+      ITERATION =   2  NEW DISPL COMPUTED          ICONV= 116   TIME=    0.25
+
+      DISPL TRACE :    6.702E-03   2.611E-02  -7.879E-04
+ 
+      ITERATION =   3  START                                    TIME=    0.25
+      ITERATION =   3  HEAD STIFFNESSES COMPUTED                TIME=    0.29
+      ITERATION =   3  INTERFACE EQUATIONS SOLVED               TIME=    0.29
+      ITERATION =   3  NEW DISPL COMPUTED          ICONV= 116   TIME=    0.33
+
+      DISPL TRACE :    6.997E-03   2.734E-02  -1.119E-03
+ 
+      ITERATION =   4  START                                    TIME=    0.33
+      ITERATION =   4  HEAD STIFFNESSES COMPUTED                TIME=    0.37
+      ITERATION =   4  INTERFACE EQUATIONS SOLVED               TIME=    0.37
+      ITERATION =   4  NEW DISPL COMPUTED          ICONV= 116   TIME=    0.41
+
+      DISPL TRACE :    7.070E-03   2.799E-02  -1.194E-03
+ 
+      ITERATION =   5  START                                    TIME=    0.41
+      ITERATION =   5  HEAD STIFFNESSES COMPUTED                TIME=    0.45
+      ITERATION =   5  INTERFACE EQUATIONS SOLVED               TIME=    0.45
+      ITERATION =   5  NEW DISPL COMPUTED          ICONV= 116   TIME=    0.49
+
+      DISPL TRACE :    7.151E-03   2.850E-02  -1.330E-03
+ 
+      ITERATION =   6  START                                    TIME=    0.49
+      ITERATION =   6  HEAD STIFFNESSES COMPUTED                TIME=    0.54
+      ITERATION =   6  INTERFACE EQUATIONS SOLVED               TIME=    0.54
+      ITERATION =   6  NEW DISPL COMPUTED          ICONV= 116   TIME=    0.58
+
+      DISPL TRACE :    7.237E-03   2.890E-02  -1.478E-03
+ 
+      ITERATION =   7  START                                    TIME=    0.58
+      ITERATION =   7  HEAD STIFFNESSES COMPUTED                TIME=    0.62
+      ITERATION =   7  INTERFACE EQUATIONS SOLVED               TIME=    0.62
+      ITERATION =   7  NEW DISPL COMPUTED          ICONV= 116   TIME=    0.66
+
+      DISPL TRACE :    7.297E-03   2.927E-02  -1.575E-03
+ 
+      ITERATION =   8  START                                    TIME=    0.66
+      ITERATION =   8  HEAD STIFFNESSES COMPUTED                TIME=    0.70
+      ITERATION =   8  INTERFACE EQUATIONS SOLVED               TIME=    0.70
+      ITERATION =   8  NEW DISPL COMPUTED          ICONV= 116   TIME=    0.74
+
+      DISPL TRACE :    7.360E-03   2.965E-02  -1.679E-03
+ 
+      ITERATION =   9  START                                    TIME=    0.74
+      ITERATION =   9  HEAD STIFFNESSES COMPUTED                TIME=    0.78
+      ITERATION =   9  INTERFACE EQUATIONS SOLVED               TIME=    0.78
+      ITERATION =   9  NEW DISPL COMPUTED          ICONV= 116   TIME=    0.82
+
+      DISPL TRACE :    7.429E-03   3.005E-02  -1.799E-03
+ 
+      ITERATION =  10  START                                    TIME=    0.82
+      ITERATION =  10  HEAD STIFFNESSES COMPUTED                TIME=    0.86
+      ITERATION =  10  INTERFACE EQUATIONS SOLVED               TIME=    0.86
+      ITERATION =  10  NEW DISPL COMPUTED          ICONV= 116   TIME=    0.90
+
+      DISPL TRACE :    7.500E-03   3.047E-02  -1.921E-03
+ 
+      ITERATION =  11  START                                    TIME=    0.90
+      ITERATION =  11  HEAD STIFFNESSES COMPUTED                TIME=    0.93
+      ITERATION =  11  INTERFACE EQUATIONS SOLVED               TIME=    0.93
+      ITERATION =  11  NEW DISPL COMPUTED          ICONV= 116   TIME=    0.97
+
+      DISPL TRACE :    7.544E-03   3.094E-02  -1.984E-03
+ 
+      ITERATION =  12  START                                    TIME=    0.97
+      ITERATION =  12  HEAD STIFFNESSES COMPUTED                TIME=    1.01
+      ITERATION =  12  INTERFACE EQUATIONS SOLVED               TIME=    1.01
+      ITERATION =  12  NEW DISPL COMPUTED          ICONV= 116   TIME=    1.06
+
+      DISPL TRACE :    7.571E-03   3.151E-02  -2.011E-03
+ 
+      ITERATION =  13  START                                    TIME=    1.06
+      ITERATION =  13  HEAD STIFFNESSES COMPUTED                TIME=    1.10
+      ITERATION =  13  INTERFACE EQUATIONS SOLVED               TIME=    1.10
+      ITERATION =  13  NEW DISPL COMPUTED          ICONV= 116   TIME=    1.14
+
+      DISPL TRACE :    7.541E-03   3.210E-02  -1.919E-03
+ 
+      ITERATION =  14  START                                    TIME=    1.14
+      ITERATION =  14  HEAD STIFFNESSES COMPUTED                TIME=    1.19
+      ITERATION =  14  INTERFACE EQUATIONS SOLVED               TIME=    1.19
+      ITERATION =  14  NEW DISPL COMPUTED          ICONV= 116   TIME=    1.23
+
+      DISPL TRACE :    7.455E-03   3.269E-02  -1.717E-03
+ 
+      ITERATION =  15  START                                    TIME=    1.23
+      ITERATION =  15  HEAD STIFFNESSES COMPUTED                TIME=    1.27
+      ITERATION =  15  INTERFACE EQUATIONS SOLVED               TIME=    1.27
+      ITERATION =  15  NEW DISPL COMPUTED          ICONV= 116   TIME=    1.31
+
+      DISPL TRACE :    7.363E-03   3.326E-02  -1.515E-03
+ 
+      ITERATION =  16  START                                    TIME=    1.31
+      ITERATION =  16  HEAD STIFFNESSES COMPUTED                TIME=    1.35
+      ITERATION =  16  INTERFACE EQUATIONS SOLVED               TIME=    1.35
+      ITERATION =  16  NEW DISPL COMPUTED          ICONV= 116   TIME=    1.40
+
+      DISPL TRACE :    7.326E-03   3.370E-02  -1.439E-03
+ 
+      ITERATION =  17  START                                    TIME=    1.40
+      ITERATION =  17  HEAD STIFFNESSES COMPUTED                TIME=    1.44
+      ITERATION =  17  INTERFACE EQUATIONS SOLVED               TIME=    1.44
+      ITERATION =  17  NEW DISPL COMPUTED          ICONV= 112   TIME=    1.48
+
+      DISPL TRACE :    7.313E-03   3.401E-02  -1.412E-03
+ 
+      ITERATION =  18  START                                    TIME=    1.48
+      ITERATION =  18  HEAD STIFFNESSES COMPUTED                TIME=    1.52
+      ITERATION =  18  INTERFACE EQUATIONS SOLVED               TIME=    1.52
+      ITERATION =  18  NEW DISPL COMPUTED          ICONV= 111   TIME=    1.56
+
+      DISPL TRACE :    7.308E-03   3.424E-02  -1.398E-03
+ 
+      ITERATION =  19  START                                    TIME=    1.56
+      ITERATION =  19  HEAD STIFFNESSES COMPUTED                TIME=    1.60
+      ITERATION =  19  INTERFACE EQUATIONS SOLVED               TIME=    1.60
+      ITERATION =  19  NEW DISPL COMPUTED          ICONV= 102   TIME=    1.64
+
+      DISPL TRACE :    7.305E-03   3.439E-02  -1.391E-03
+ 
+      ITERATION =  20  START                                    TIME=    1.64
+      ITERATION =  20  HEAD STIFFNESSES COMPUTED                TIME=    1.68
+      ITERATION =  20  INTERFACE EQUATIONS SOLVED               TIME=    1.68
+      ITERATION =  20  NEW DISPL COMPUTED          ICONV=  98   TIME=    1.72
+
+      DISPL TRACE :    7.304E-03   3.449E-02  -1.386E-03
+ 
+      ITERATION =  21  START                                    TIME=    1.72
+      ITERATION =  21  HEAD STIFFNESSES COMPUTED                TIME=    1.76
+      ITERATION =  21  INTERFACE EQUATIONS SOLVED               TIME=    1.76
+      ITERATION =  21  NEW DISPL COMPUTED          ICONV=  94   TIME=    1.80
+
+      DISPL TRACE :    7.303E-03   3.456E-02  -1.383E-03
+ 
+      ITERATION =  22  START                                    TIME=    1.80
+      ITERATION =  22  HEAD STIFFNESSES COMPUTED                TIME=    1.84
+      ITERATION =  22  INTERFACE EQUATIONS SOLVED               TIME=    1.84
+      ITERATION =  22  NEW DISPL COMPUTED          ICONV=  90   TIME=    1.88
+
+      DISPL TRACE :    7.302E-03   3.460E-02  -1.381E-03
+ 
+      ITERATION =  23  START                                    TIME=    1.88
+      ITERATION =  23  HEAD STIFFNESSES COMPUTED                TIME=    1.92
+      ITERATION =  23  INTERFACE EQUATIONS SOLVED               TIME=    1.92
+      ITERATION =  23  NEW DISPL COMPUTED          ICONV=  84   TIME=    1.96
+
+      DISPL TRACE :    7.302E-03   3.463E-02  -1.379E-03
+ 
+      ITERATION =  24  START                                    TIME=    1.96
+      ITERATION =  24  HEAD STIFFNESSES COMPUTED                TIME=    2.00
+      ITERATION =  24  INTERFACE EQUATIONS SOLVED               TIME=    2.00
+      ITERATION =  24  NEW DISPL COMPUTED          ICONV=  77   TIME=    2.04
+
+      DISPL TRACE :    7.301E-03   3.465E-02  -1.378E-03
+ 
+      ITERATION =  25  START                                    TIME=    2.04
+      ITERATION =  25  HEAD STIFFNESSES COMPUTED                TIME=    2.08
+      ITERATION =  25  INTERFACE EQUATIONS SOLVED               TIME=    2.08
+      ITERATION =  25  NEW DISPL COMPUTED          ICONV=  66   TIME=    2.12
+
+      DISPL TRACE :    7.301E-03   3.467E-02  -1.378E-03
+ 
+      ITERATION =  26  START                                    TIME=    2.12
+      ITERATION =  26  HEAD STIFFNESSES COMPUTED                TIME=    2.16
+      ITERATION =  26  INTERFACE EQUATIONS SOLVED               TIME=    2.16
+      ITERATION =  26  NEW DISPL COMPUTED          ICONV=  58   TIME=    2.20
+
+      DISPL TRACE :    7.301E-03   3.467E-02  -1.378E-03
+ 
+      ITERATION =  27  START                                    TIME=    2.20
+      ITERATION =  27  HEAD STIFFNESSES COMPUTED                TIME=    2.24
+      ITERATION =  27  INTERFACE EQUATIONS SOLVED               TIME=    2.24
+      ITERATION =  27  NEW DISPL COMPUTED          ICONV=  58   TIME=    2.28
+
+      DISPL TRACE :    7.301E-03   3.468E-02  -1.377E-03
+ 
+      ITERATION =  28  START                                    TIME=    2.28
+      ITERATION =  28  HEAD STIFFNESSES COMPUTED                TIME=    2.32
+      ITERATION =  28  INTERFACE EQUATIONS SOLVED               TIME=    2.32
+      ITERATION =  28  NEW DISPL COMPUTED          ICONV=   0   TIME=    2.36
+
+      DISPL TRACE :    7.301E-03   3.468E-02  -1.377E-03
+ 
+ LOAD INCREMENT =   1  SOLUTION OBTAINED AFTER  28 ITERATIONS   TIME=    2.36
+ LOAD INCREMENT =   1  RESULTING VALUES UPDATED                 TIME=    2.40
+
+ Maximum pile stress =       1.035E+05 for pile 003 at z-level =   -1.24
+
+ Maximum pile strength U.R. =    0.292 for pile 003 at z-level =   -1.24
+
+ Maximum pile compression =  2.056E+03 for pile 004 DSP.AXL =    2.726E-02
+
+ Maximum pile tension =     -3.127E+02 for pile 001 DSP.AXL =   -1.377E-03
+
+ Minimum axial factors of safety =  Comp:  1.73 (P004)  Tens:  2.35 (P001)
+
+ Maximum resulting displ =   4.373E-02 for pile 004
+
+
+ --------------------
+ LOAD VECTOR NO =   2
+ --------------------
+
+ Load: 04_ALS_max torsion                                                        
+ 
+
+ LOAD INCREMENT =   1  START                                    TIME=    2.41
+
+
+ NINC  =  1   IPRT2 =  1111   NPTRC =     1     QTOT  =  1.00000
+ MAXIT =500   IPRT3 =  1111   CONV  =  0.00001
+ MISC(6-11) =     1       0       0       8       0       0
+
+ 
+      ITERATION =   1  START                                    TIME=    2.41
+      ITERATION =   1  HEAD STIFFNESSES COMPUTED                TIME=    2.45
+      ITERATION =   1  INTERFACE EQUATIONS SOLVED               TIME=    2.45
+      ITERATION =   1  NEW DISPL COMPUTED          ICONV= 116   TIME=    2.49
+
+      DISPL TRACE :    2.789E-03  -6.970E-03   4.179E-04
+ 
+      ITERATION =   2  START                                    TIME=    2.49
+      ITERATION =   2  HEAD STIFFNESSES COMPUTED                TIME=    2.54
+      ITERATION =   2  INTERFACE EQUATIONS SOLVED               TIME=    2.54
+      ITERATION =   2  NEW DISPL COMPUTED          ICONV= 116   TIME=    2.58
+
+      DISPL TRACE :    3.261E-03  -7.408E-03   6.326E-05
+ 
+      ITERATION =   3  START                                    TIME=    2.58
+      ITERATION =   3  HEAD STIFFNESSES COMPUTED                TIME=    2.62
+      ITERATION =   3  INTERFACE EQUATIONS SOLVED               TIME=    2.62
+      ITERATION =   3  NEW DISPL COMPUTED          ICONV= 116   TIME=    2.66
+
+      DISPL TRACE :    3.625E-03  -7.380E-03  -7.386E-05
+ 
+      ITERATION =   4  START                                    TIME=    2.66
+      ITERATION =   4  HEAD STIFFNESSES COMPUTED                TIME=    2.70
+      ITERATION =   4  INTERFACE EQUATIONS SOLVED               TIME=    2.70
+      ITERATION =   4  NEW DISPL COMPUTED          ICONV= 116   TIME=    2.74
+
+      DISPL TRACE :    3.886E-03  -7.300E-03  -1.726E-04
+ 
+      ITERATION =   5  START                                    TIME=    2.74
+      ITERATION =   5  HEAD STIFFNESSES COMPUTED                TIME=    2.78
+      ITERATION =   5  INTERFACE EQUATIONS SOLVED               TIME=    2.78
+      ITERATION =   5  NEW DISPL COMPUTED          ICONV= 116   TIME=    2.82
+
+      DISPL TRACE :    4.063E-03  -7.273E-03  -1.747E-04
+ 
+      ITERATION =   6  START                                    TIME=    2.82
+      ITERATION =   6  HEAD STIFFNESSES COMPUTED                TIME=    2.86
+      ITERATION =   6  INTERFACE EQUATIONS SOLVED               TIME=    2.86
+      ITERATION =   6  NEW DISPL COMPUTED          ICONV= 116   TIME=    2.90
+
+      DISPL TRACE :    4.190E-03  -7.276E-03  -1.634E-04
+ 
+      ITERATION =   7  START                                    TIME=    2.90
+      ITERATION =   7  HEAD STIFFNESSES COMPUTED                TIME=    2.94
+      ITERATION =   7  INTERFACE EQUATIONS SOLVED               TIME=    2.94
+      ITERATION =   7  NEW DISPL COMPUTED          ICONV= 116   TIME=    2.98
+
+      DISPL TRACE :    4.265E-03  -7.274E-03  -1.507E-04
+ 
+      ITERATION =   8  START                                    TIME=    2.98
+      ITERATION =   8  HEAD STIFFNESSES COMPUTED                TIME=    3.02
+      ITERATION =   8  INTERFACE EQUATIONS SOLVED               TIME=    3.02
+      ITERATION =   8  NEW DISPL COMPUTED          ICONV= 116   TIME=    3.08
+
+      DISPL TRACE :    4.308E-03  -7.271E-03  -1.412E-04
+ 
+      ITERATION =   9  START                                    TIME=    3.08
+      ITERATION =   9  HEAD STIFFNESSES COMPUTED                TIME=    3.12
+      ITERATION =   9  INTERFACE EQUATIONS SOLVED               TIME=    3.12
+      ITERATION =   9  NEW DISPL COMPUTED          ICONV= 116   TIME=    3.16
+
+      DISPL TRACE :    4.335E-03  -7.271E-03  -1.342E-04
+ 
+      ITERATION =  10  START                                    TIME=    3.16
+      ITERATION =  10  HEAD STIFFNESSES COMPUTED                TIME=    3.21
+      ITERATION =  10  INTERFACE EQUATIONS SOLVED               TIME=    3.21
+      ITERATION =  10  NEW DISPL COMPUTED          ICONV= 116   TIME=    3.25
+
+      DISPL TRACE :    4.353E-03  -7.271E-03  -1.293E-04
+ 
+      ITERATION =  11  START                                    TIME=    3.25
+      ITERATION =  11  HEAD STIFFNESSES COMPUTED                TIME=    3.29
+      ITERATION =  11  INTERFACE EQUATIONS SOLVED               TIME=    3.29
+      ITERATION =  11  NEW DISPL COMPUTED          ICONV= 116   TIME=    3.34
+
+      DISPL TRACE :    4.363E-03  -7.272E-03  -1.261E-04
+ 
+      ITERATION =  12  START                                    TIME=    3.34
+      ITERATION =  12  HEAD STIFFNESSES COMPUTED                TIME=    3.38
+      ITERATION =  12  INTERFACE EQUATIONS SOLVED               TIME=    3.38
+      ITERATION =  12  NEW DISPL COMPUTED          ICONV= 105   TIME=    3.42
+
+      DISPL TRACE :    4.370E-03  -7.273E-03  -1.241E-04
+ 
+      ITERATION =  13  START                                    TIME=    3.42
+      ITERATION =  13  HEAD STIFFNESSES COMPUTED                TIME=    3.47
+      ITERATION =  13  INTERFACE EQUATIONS SOLVED               TIME=    3.47
+      ITERATION =  13  NEW DISPL COMPUTED          ICONV=  73   TIME=    3.52
+
+      DISPL TRACE :    4.375E-03  -7.273E-03  -1.229E-04
+ 
+      ITERATION =  14  START                                    TIME=    3.52
+      ITERATION =  14  HEAD STIFFNESSES COMPUTED                TIME=    3.57
+      ITERATION =  14  INTERFACE EQUATIONS SOLVED               TIME=    3.57
+      ITERATION =  14  NEW DISPL COMPUTED          ICONV=  28   TIME=    3.61
+
+      DISPL TRACE :    4.377E-03  -7.274E-03  -1.221E-04
+ 
+      ITERATION =  15  START                                    TIME=    3.61
+      ITERATION =  15  HEAD STIFFNESSES COMPUTED                TIME=    3.65
+      ITERATION =  15  INTERFACE EQUATIONS SOLVED               TIME=    3.65
+      ITERATION =  15  NEW DISPL COMPUTED          ICONV=  28   TIME=    3.69
+
+      DISPL TRACE :    4.379E-03  -7.274E-03  -1.216E-04
+ 
+      ITERATION =  16  START                                    TIME=    3.69
+      ITERATION =  16  HEAD STIFFNESSES COMPUTED                TIME=    3.73
+      ITERATION =  16  INTERFACE EQUATIONS SOLVED               TIME=    3.73
+      ITERATION =  16  NEW DISPL COMPUTED          ICONV=  27   TIME=    3.77
+
+      DISPL TRACE :    4.380E-03  -7.274E-03  -1.214E-04
+ 
+      ITERATION =  17  START                                    TIME=    3.77
+      ITERATION =  17  HEAD STIFFNESSES COMPUTED                TIME=    3.81
+      ITERATION =  17  INTERFACE EQUATIONS SOLVED               TIME=    3.81
+      ITERATION =  17  NEW DISPL COMPUTED          ICONV=  26   TIME=    3.85
+
+      DISPL TRACE :    4.380E-03  -7.274E-03  -1.212E-04
+ 
+      ITERATION =  18  START                                    TIME=    3.85
+      ITERATION =  18  HEAD STIFFNESSES COMPUTED                TIME=    3.90
+      ITERATION =  18  INTERFACE EQUATIONS SOLVED               TIME=    3.90
+      ITERATION =  18  NEW DISPL COMPUTED          ICONV=  24   TIME=    3.94
+
+      DISPL TRACE :    4.381E-03  -7.274E-03  -1.211E-04
+ 
+      ITERATION =  19  START                                    TIME=    3.94
+      ITERATION =  19  HEAD STIFFNESSES COMPUTED                TIME=    3.98
+      ITERATION =  19  INTERFACE EQUATIONS SOLVED               TIME=    3.98
+      ITERATION =  19  NEW DISPL COMPUTED          ICONV=  20   TIME=    4.02
+
+      DISPL TRACE :    4.381E-03  -7.274E-03  -1.210E-04
+ 
+      ITERATION =  20  START                                    TIME=    4.02
+      ITERATION =  20  HEAD STIFFNESSES COMPUTED                TIME=    4.07
+      ITERATION =  20  INTERFACE EQUATIONS SOLVED               TIME=    4.07
+      ITERATION =  20  NEW DISPL COMPUTED          ICONV=  14   TIME=    4.11
+
+      DISPL TRACE :    4.381E-03  -7.274E-03  -1.210E-04
+ 
+      ITERATION =  21  START                                    TIME=    4.11
+      ITERATION =  21  HEAD STIFFNESSES COMPUTED                TIME=    4.16
+      ITERATION =  21  INTERFACE EQUATIONS SOLVED               TIME=    4.16
+      ITERATION =  21  NEW DISPL COMPUTED          ICONV=   0   TIME=    4.20
+
+      DISPL TRACE :    4.381E-03  -7.274E-03  -1.209E-04
+ 
+ LOAD INCREMENT =   1  SOLUTION OBTAINED AFTER  21 ITERATIONS   TIME=    4.20
+ LOAD INCREMENT =   1  RESULTING VALUES UPDATED                 TIME=    4.24
+
+ Maximum pile stress =       9.148E+04 for pile 004 at z-level =   -1.24
+
+ Maximum pile strength U.R. =    0.258 for pile 004 at z-level =   -1.24
+
+ Maximum pile compression =  1.795E+03 for pile 004 DSP.AXL =    9.244E-03
+
+ Maximum pile tension =     -1.001E+02 for pile 001 DSP.AXL =   -1.209E-04
+
+ Minimum axial factors of safety =  Comp:  1.98 (P004)  Tens:  7.35 (P001)
+
+ Maximum resulting displ =   1.955E-02 for pile 004
+
+ Header: 36-1.57_pile at Eirin_LE soil_horizontal_API_pile group_LC04_Future dril
+ 
+
+ +++++ End of program SPLICE      15 Oct 2025   12:32:17         TIME=    4.25
+
+ TIME USED =            4.25 SECONDS
+ 

@@ -1,0 +1,113 @@
+1
+
+
+ 
+                                                CAP        
+         HALLO!       WELCOME     TO     PC     CAP        
+                                                CAP        
+ 
+
+
+ 
+                                                           
+         PLEASE   TYPE   YOUR   INPUT   FILE   NAME        
+                                                           
+ 
+
+
+ ----------------------------->    
+          BEARING CAPACITY CALCULATED BY SLIP SURFACES             PAGE     1
+
+          METHOD DESCRIBED IN NGI INTERNAL REPORT 52406 DATED 01 OCT 1985
+
+          PROJECT : Project Information                                         
+
+          INPUT DATA REPRINT
+          ******************
+
+          UNITS USED : MN/M                            
+          WIDTH OF FOUNDATION                                 B =       6.600
+          LENGTH OF FOUNDATION                                L =       6.600
+          DEPTH OF EMBEDMENT , START VALUE                  ZSS =      10.500
+          DEPTH OF EMBEDMENT , FINAL VALUE                  ZSF =      10.500
+          DEPTH OF EMBEDMENT , STEP  VALUE               ZSSTEP =       0.000
+          SOIL TOTAL UNIT WEIGHT                           GAMS =       0.019
+          WATER UNIT WEIGHT                                GAMW =       0.010
+
+          SUBMERGED WEIGHT OF STRUCTURE , START VALUE       PVS =       3.028
+          SUBMERGED WEIGHT OF STRUCTURE , FINAL VALUE       PVF =       3.028
+          SUBMERGED WEIGHT OF STRUCTURE , STEP  VALUE    PVSTEP =       0.000
+          HORIZONTAL FORCE AT MUDLINE                        PH =       1.456
+          OVERTURNING MOMENT AT MUDLINE                       M =       9.248
+          EXCESS WATER PRESSURE OUTSIDE HEEL              DELPH =       0.000
+          EXCESS WATER PRESSURE OUTSIDE TOE               DELPT =       0.000
+          LOAD FACTORS TO BE USED                            LF =         1.0
+
+          MAXIMUM DEPTH OF SLIP SURFACE BELOW BASE         ZMAX =      30.400
+          STEP VALUE FOR SLIP SURFACE DEPTH               ZSTEP =       0.200
+          REDUCTION FACTOR SIDE, BASE/SOIL                REDBS =       0.500
+          REDUCTION FACTOR SIDE, SOIL/SOIL                REDSS =       0.400
+
+          ACTIVE SIDE CRACK ASSUMPTION :
++                                         CLOSED CRACK
+          PASSIVE SIDE AREA ASSUMPTION :
++                                         SMALL AREA
+
+          SHEAR STRENGTH USED :
+
+             DEPTH      TRIAXIAL     SIMPLE       TRIAXIAL     MINIMUM
+             BELOW      COMPRESSION  SHEAR        EXTENSION    HORIZONTAL
+             MUDLINE    STRENGTH     STRENGTH     STRENGTH     STRENGTH
+
+               0.000      0.007        0.007        0.007        0.001
+               0.500      0.008        0.008        0.008        0.008
+               0.500      0.008        0.008        0.008        0.008
+               1.000      0.010        0.010        0.010        0.010
+               1.000      0.010        0.010        0.010        0.010
+               2.000      0.013        0.013        0.013        0.013
+               2.000      0.013        0.013        0.013        0.013
+               3.000      0.016        0.016        0.016        0.016
+               3.000      0.016        0.016        0.016        0.016
+               4.000      0.020        0.020        0.020        0.020
+               4.000      0.020        0.020        0.020        0.020
+               6.000      0.026        0.026        0.026        0.026
+               6.000      0.026        0.026        0.026        0.026
+               8.000      0.032        0.032        0.032        0.032
+               8.000      0.032        0.032        0.032        0.032
+              10.500      0.040        0.040        0.040        0.040
+              10.510      0.040        0.040        0.040        0.040
+              11.300      0.043        0.043        0.043        0.043
+              11.300      0.006        0.006        0.006        0.006
+              12.500      0.007        0.007        0.007        0.007
+              12.500      0.044        0.044        0.044        0.044
+              13.500      0.047        0.047        0.047        0.047
+              13.500      0.047        0.047        0.047        0.047
+              14.000      0.049        0.049        0.049        0.049
+              14.000      0.049        0.049        0.049        0.049
+              15.000      0.051        0.051        0.051        0.051
+              30.400      0.051        0.051        0.051        0.051
+
+                                                                         1/ 4
+                              NUMBER OF ITERATIONS EXCEEDS 101                              SF COMPUTED IN LAST ITERATION         :     2.938                              SF COMPUTED IN LAST BUT ONE ITERATION :     3.122
+                              NUMBER OF ITERATIONS EXCEEDS 101                              SF COMPUTED IN LAST ITERATION         :     3.203                              SF COMPUTED IN LAST BUT ONE ITERATION :     2.876
+1
+          BEARING CAPACITY CALCULATED BY SLIP SURFACES             PAGE  2/ 4
+
+          PROJECT : Project Information                                         
+          LOAD FACTOR : 1.00  SUBMERGED WEIGHT :       3.0  BASE EMB :  10.50
+
+
+          SAFETY FACTOR VERSUS DEPTH
+          **************************
+
+          DEPTH OF SLIP   BASE/SLIP   SAFETY   SF= S(A*SA)/(-S(B))
+          SURFACE BELOW   SURFACE     FACTOR
+          MUDLINE         ANGLE                    S(A*SA)    S(B) 
+                Z          ALPHA       SF
+
+
+
+
+                    EFFECTIVE WIDTH B0 IS LESS THAN OR EQUAL TO ZERO:
+
+                    COMPUTATION TERMINATED FOR PRESENT LOAD CASE.

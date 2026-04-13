@@ -1,0 +1,200 @@
+1
+
+
+ 
+                                                CARL       
+         HALLO!       WELCOME     TO     PC     CARL       
+                                                CARL       
+ 
+
+
+ 
+                                                           
+         PLEASE   TYPE   YOUR   INPUT   FILE   NAME        
+                                                           
+ 
+
+
+ ----------------------------->    
+          BEARING CAPACITY CALCULATED BY SLIP CIRCLES              PAGE     1
+
+          METHOD DESCRIBED IN NGI REPORT 52406-44 DATED 10 61985        /
+          PROJECT : Project Information                                         
+
+          INPUT DATA REPRINT
+          ******************
+
+          UNITS USED : MN, m                           
+          WIDTH OF FOUNDATION                                 B =       6.600
+          LENGTH OF FOUNDATION                                L =       6.600
+          DEPTH OF EMBEDMENT , START VALUE                  ZSS =      10.500
+          DEPTH OF EMBEDMENT , FINAL VALUE                  ZSF =      10.500
+          DEPTH OF EMBEDMENT , STEP  VALUE               ZSSTEP =       0.000
+          SOIL TOTAL UNIT WEIGHT                           GAMS =       0.019
+          WATER UNIT WEIGHT                                GAMW =       0.010
+
+          SUBMERGED WEIGHT OF STRUCTURE , START VALUE       PVS =       3.028
+          SUBMERGED WEIGHT OF STRUCTURE , FINAL VALUE       PVF =       3.028
+          SUBMERGED WEIGHT OF STRUCTURE , STEP  VALUE    PVSTEP =       0.000
+          HORIZONTAL FORCE AT MUDLINE                        PH =       1.456
+          OVERTURNING MOMENT AT MUDLINE                       M =       9.248
+          EXCESS WATER PRESSURE OUTSIDE HEEL              DELPH =       0.000
+          EXCESS WATER PRESSURE OUTSIDE TOE               DELPT =       0.000
+          LOAD FACTORS TO BE USED                            LF =         1.0
+
+          MAXIMUM DEPTH OF SLIP SURFACE BELOW BASE         ZMAX =      13.500
+          STEP VALUE FOR SLIP SURFACE DEPTH               ZSTEP =       0.200
+          REDUCTION FACTOR SIDE, BASE/SOIL                REDBS =       0.500
+          REDUCTION FACTOR SIDE, SOIL/SOIL                REDSS =       0.400
+
+          ACTIVE SIDE CRACK ASSUMPTION :
++                                         CLOSED CRACK
+          PASSIVE SIDE AREA ASSUMPTION :
++                                         SMALL AREA
+
+          LEFT SIDE ROUGHNESS ASSUMTION  :     0.00
+          RIGHT SIDE ROUGHNESS ASSUMTION :     0.00
+
+          MINIMUM DISTANCE FROM CIRCLE CENTRE TO RIGHT EDGE OF BASE :     0.0
+
+          SHEAR STRENGTH USED :
+
+             DEPTH      TRIAXIAL     SIMPLE       TRIAXIAL     MINIMUM
+             BELOW      COMPRESSION  SHEAR        EXTENSION    HORIZONTAL
+             MUDLINE    STRENGTH     STRENGTH     STRENGTH     STRENGTH
+
+               0.000      0.007        0.007        0.007        0.007
+               0.500      0.008        0.008        0.008        0.008
+               0.500      0.008        0.008        0.008        0.008
+               1.000      0.010        0.010        0.010        0.010
+               1.000      0.010        0.010        0.010        0.010
+               2.000      0.013        0.013        0.013        0.013
+               2.000      0.013        0.013        0.013        0.013
+               3.000      0.016        0.016        0.016        0.016
+               3.000      0.016        0.016        0.016        0.016
+               4.000      0.020        0.020        0.020        0.020
+               4.000      0.020        0.020        0.020        0.020
+               6.000      0.026        0.026        0.026        0.026
+               6.000      0.026        0.026        0.026        0.026
+               8.000      0.032        0.032        0.032        0.032
+               8.000      0.032        0.032        0.032        0.032
+              10.500      0.040        0.040        0.040        0.040
+              10.510      0.040        0.040        0.040        0.040
+              11.300      0.043        0.043        0.043        0.043
+              11.300      0.006        0.006        0.006        0.006
+              12.500      0.007        0.007        0.007        0.007
+              12.500      0.044        0.044        0.044        0.044
+              13.500      0.047        0.047        0.047        0.047
+              13.500      0.047        0.047        0.047        0.047
+              14.000      0.049        0.049        0.049        0.049
+              14.000      0.049        0.049        0.049        0.049
+              15.000      0.051        0.051        0.051        0.051
+
+                                                                         1/ 4
+1
+          BEARING CAPACITY CALCULATED BY SLIP CIRCLES              PAGE  2/ 4
+
+          PROJECT : Project Information                                         
+          LOAD FACTOR : 1.00  SUBMERGED WEIGHT :       3.0  BASE EMB :  10.50
+
+
+          SAFETY FACTOR VERSUS DEPTH
+          **************************
+
+  DEPTH    HOR. DISTANCE FROM CIRCLE CENTRE TO RIGHT EDGE
+
+
+            0.0   0.7   1.3   2.0   2.6   3.3   4.0   4.6   5.3   5.9   6.6
+
+   10.7    0.00  6.44  4.90  5.00  5.46  5.80  6.09  6.33  6.53  6.70  6.83
+   10.9    0.00  6.91  5.08  4.30  4.60  4.91  5.19  5.46  5.71  5.93  6.12
+   11.1    0.00  7.35  5.34  4.28  4.14  4.42  4.65  4.91  5.16  5.39  5.61
+   11.3    0.00  0.00  5.43  4.30  3.88  4.13  4.30  4.52  4.76  5.00  5.22
+   11.5    0.00  0.00  5.55  4.27  3.69  3.75  3.94  4.12  4.33  4.55  4.76
+   11.7    0.00  0.00  5.67  4.30  3.67  3.57  3.73  3.84  4.02  4.22  4.41
+   11.9    0.00  0.00  0.00  4.47  3.69  3.46  3.56  3.67  3.83  4.01  4.20
+   12.1    0.00  0.00  0.00  4.54  3.67  3.33  3.42  3.50  3.63  3.80  3.93
+   12.3    0.00  0.00  0.00  4.62  3.74  3.27  3.29  3.38  3.47  3.62  3.78
+   12.5    0.00  0.00  0.00  0.00  3.77  3.23  3.20  3.28  3.36  3.50  3.66
+   12.7    0.00  0.00  0.00  0.00  3.87  3.36  3.23  3.29  3.42  3.55  3.71
+   12.9    0.00  0.00  0.00  0.00  3.90  3.34  3.19  3.23  3.31  3.46  3.61
+   13.1    0.00  0.00  0.00  0.00  4.03  3.45  3.18  3.23  3.32  3.44  3.58
+   13.3    0.00  0.00  0.00  0.00  0.00  3.47  3.16  3.19  3.28  3.39  3.53
+   13.5    0.00  0.00  0.00  0.00  0.00  3.56  3.19  3.21  3.29  3.40  3.54
+
+
+          MINIMUM SAFETY FACTOR          SF =      3.160
+          FOUND FOR DEPTH                 Z =     13.300
+          AND DISTANCE TO CIRCLE CENTER  BH =      3.960
+          AND CIRCLE RADIUS                 =      1.400
+
+          S(A*SA)                           =-0.9030E+02
+          S(B)                              = 0.2857E+02
+1
+          BEARING CAPACITY CALCULATED BY SLIP CIRCLES              PAGE  3/ 4
+
+          PROJECT : Project Information                                         
+          LOAD FACTOR : 1.00  SUBMERGED WEIGHT :       3.0  BASE EMB :  10.50
+
+
+          MOMENTS CALCULATED FOR CRITICAL SURFACE
+          ***************************************
+
+          MINIMUM SAFETY FACTOR          SF =      3.160
+          FOUND FOR DEPTH                 Z =     13.300
+          AND DISTANCE TO CIRCLE CENTER  BH =      3.960
+          AND CIRCLE RADIUS                 =      1.400
+
+
+          K(N) = A(N) * SA(N)/SF  + B(N)
+
+           N    CODE       K(N)         A(N)      SA(N)  SA(N)/SF      B(N)
+
+           1    MB     0.2454E+02   0.0000E+00    0.000    0.000   0.2454E+02
+
+           2    VB     0.7734E+01   0.0000E+00    0.000    0.000   0.7734E+01
+
+           3    HB     0.2039E+01   0.0000E+00    0.000    0.000   0.2039E+01
+
+           4    PA     0.2831E+02  -0.7506E+03    0.023    0.007   0.3387E+02
+
+           5   -PP    -0.3944E+02  -0.7506E+03    0.023    0.007  -0.3387E+02
+
+           6     T    -0.1695E+01  -0.2287E+03    0.023    0.007   0.0000E+00
+
+           7    HA     0.4189E+01  -0.1090E+03    0.016    0.005   0.4731E+01
+
+           8   -HP    -0.1316E+02  -0.2604E+03    0.030    0.009  -0.1071E+02
+
+           9   -RP    -0.3776E+00  -0.2995E+02    0.040    0.013   0.0000E+00
+
+          10   -RSBS  -0.2964E+01  -0.3998E+03    0.023    0.007   0.0000E+00
+
+          11   -RSSS  -0.9412E+01  -0.1441E+04    0.021    0.007   0.0000E+00
+
+          12     W     0.2394E+00   0.0000E+00    0.000    0.000   0.2394E+00
+
+1
+          BEARING CAPACITY CALCULATED BY SLIP CIRCLES              PAGE  4/ 4
+
+          PROJECT : Project Information                                         
+          SUMMARY OF RESULTS OF STABILITY CALCULATIONS
+          ********************************************
+
+          IN ADDITON THE FOLLOWING RESULTS HAVE BEEN INCLUDED : 
+
+          AVERAGE MOBILIZED SHEAR STRESS ALONG SLIP SURFACECSS = -S(B)/S(A)
+          MOBILIZED SHEAR STRESS ACCORDING TO BRINCH HANSEN FORMULA = CB  *)
+          MOBILIZED SHEAR STRESS ACCORDING TO MEYERHOF  FORMULA      = CM  *)
+
+
+          LOAD  SUBMERGED DEPTH SAFETY  DEPTH  DIST.   MOB  MOB     MOB    
+          FACT  PLATFORM  BASE  FACTOR  SLIP   FROM    SHEAR  SHEAR   SHEAR
+          USED  WEIGHT    EMBED         SURFA  EDGE    NGI  BR.HA   M"HOF
+
+           LF      PV      ZS     SF      Z     BH      CSS   CB      CM  
+
+          1.00       3.0  10.5   3.16   13.30   4.0    0.0072****************
+
+          *)
+          THE TWO MENTIONED FORMULAS ARE BASED ON THE EFFECTIVE AREA CONCEPT

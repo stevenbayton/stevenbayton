@@ -1,0 +1,856 @@
+
+ +++++ Start of program SPLICE     10 Oct 2025   14:01:31        TIME=    0.00
+
+ Program Version : 04 Feb 2014
+
+ Input data is for program revision 5 : 2009-09-01
+
+ Header: calculation.pgjson                                                      
+ 
+
+ NPH  =  3    LAYER =  0    NUMVEC =  1    ISECM =  1    IPRT1 =  1111
+ NLPH =  1    NSDSP =  0    ISTART = 00    INTER =  0    JECHO =     1
+ JACK =  0    IFRC  =  0    MISC(1-5)=    0    0    0  100    0
+
+
+ DISTIN=   0.00    SCOUR=******
+ ACCX  =   0.00    ACCY =  0.00    ACCZ  =  1.00
+
+ 
+
+
+ SOIL DATA FILE USED : 
+ Header: calculation.pgjson                                                      
+
+ PILE DATA FILE USED : 
+ Header: calculation.pgjson                                                      
+
+ PILE DATA FILE NF12 HAS BEEN GENERATED                         TIME=    0.04
+
+ SOIL AND PILE CROSS SECTION DATA HAVE BEEN READ                TIME=    0.04
+
+
+ --------------------
+ LOAD VECTOR NO =   1
+ --------------------
+
+ Load: Load1                                                                     
+ 
+
+ LOAD INCREMENT =   1  START                                    TIME=    0.05
+
+
+ NINC  =  1   IPRT2 =  1111   NPTRC =     1     QTOT  =  0.05000
+ MAXIT =500   IPRT3 =  1111   CONV  =  0.00001
+ MISC(6-11) =     1       0       0       8       0       0
+
+ 
+      ITERATION =   1  START                                    TIME=    0.05
+      ITERATION =   1  HEAD STIFFNESSES COMPUTED                TIME=    0.07
+      ITERATION =   1  INTERFACE EQUATIONS SOLVED               TIME=    0.07
+      ITERATION =   1  NEW DISPL COMPUTED          ICONV= 190   TIME=    0.09
+
+      DISPL TRACE :    1.789E-04   0.000E+00  -6.751E-06
+ 
+      ITERATION =   2  START                                    TIME=    0.09
+      ITERATION =   2  HEAD STIFFNESSES COMPUTED                TIME=    0.10
+      ITERATION =   2  INTERFACE EQUATIONS SOLVED               TIME=    0.10
+      ITERATION =   2  NEW DISPL COMPUTED          ICONV=   0   TIME=    0.12
+
+      DISPL TRACE :    1.804E-04   0.000E+00  -1.382E-05
+ 
+ LOAD INCREMENT =   1  SOLUTION OBTAINED AFTER   2 ITERATIONS   TIME=    0.12
+ LOAD INCREMENT =   1  RESULTING VALUES UPDATED                 TIME=    0.14
+
+ Maximum pile stress =       1.761E+03 for pile 002 at z-level =    0.00
+
+ Maximum pile strength U.R. =    0.005 for pile 002 at z-level =    0.00
+
+ Maximum pile compression =  4.971E+00 for pile 002 DSP.AXL =    1.582E-05
+
+ Maximum pile tension =     -4.971E+00 for pile 001 DSP.AXL =   -1.382E-05
+
+ Minimum axial factors of safety =  Comp: 99.99 (P002)  Tens: 99.99 (P001)
+
+ Maximum resulting displ =   1.811E-04 for pile 002
+
+ LOAD INCREMENT =   2  START                                    TIME=    0.15
+
+
+ NINC  =  2   IPRT2 =  1111   NPTRC =     1     QTOT  =  0.10000
+ MAXIT =500   IPRT3 =  1111   CONV  =  0.00001
+ MISC(6-11) =     1       0       0       8       0       0
+
+ 
+      ITERATION =   1  START                                    TIME=    0.15
+      ITERATION =   1  HEAD STIFFNESSES COMPUTED                TIME=    0.17
+      ITERATION =   1  INTERFACE EQUATIONS SOLVED               TIME=    0.17
+      ITERATION =   1  NEW DISPL COMPUTED          ICONV= 202   TIME=    0.19
+
+      DISPL TRACE :    1.804E-04   0.000E+00  -1.382E-05
+ 
+      ITERATION =   2  START                                    TIME=    0.19
+      ITERATION =   2  HEAD STIFFNESSES COMPUTED                TIME=    0.21
+      ITERATION =   2  INTERFACE EQUATIONS SOLVED               TIME=    0.21
+      ITERATION =   2  NEW DISPL COMPUTED          ICONV=   0   TIME=    0.23
+
+      DISPL TRACE :    1.804E-04   0.000E+00  -1.382E-05
+ 
+ LOAD INCREMENT =   2  SOLUTION OBTAINED AFTER   2 ITERATIONS   TIME=    0.23
+ LOAD INCREMENT =   2  RESULTING VALUES UPDATED                 TIME=    0.25
+
+ Maximum pile stress =       3.523E+03 for pile 002 at z-level =    0.00
+
+ Maximum pile strength U.R. =    0.010 for pile 002 at z-level =    0.00
+
+ Maximum pile compression =  9.943E+00 for pile 002 DSP.AXL =    3.164E-05
+
+ Maximum pile tension =     -9.943E+00 for pile 001 DSP.AXL =   -2.764E-05
+
+ Minimum axial factors of safety =  Comp: 99.99 (P002)  Tens: 85.91 (P001)
+
+ Maximum resulting displ =   3.621E-04 for pile 002
+
+ LOAD INCREMENT =   3  START                                    TIME=    0.25
+
+
+ NINC  =  3   IPRT2 =  1111   NPTRC =     1     QTOT  =  0.15000
+ MAXIT =500   IPRT3 =  1111   CONV  =  0.00001
+ MISC(6-11) =     1       0       0       8       0       0
+
+ 
+      ITERATION =   1  START                                    TIME=    0.25
+      ITERATION =   1  HEAD STIFFNESSES COMPUTED                TIME=    0.27
+      ITERATION =   1  INTERFACE EQUATIONS SOLVED               TIME=    0.27
+      ITERATION =   1  NEW DISPL COMPUTED          ICONV= 202   TIME=    0.29
+
+      DISPL TRACE :    1.804E-04   0.000E+00  -1.382E-05
+ 
+      ITERATION =   2  START                                    TIME=    0.29
+      ITERATION =   2  HEAD STIFFNESSES COMPUTED                TIME=    0.31
+      ITERATION =   2  INTERFACE EQUATIONS SOLVED               TIME=    0.31
+      ITERATION =   2  NEW DISPL COMPUTED          ICONV=   0   TIME=    0.33
+
+      DISPL TRACE :    1.804E-04   0.000E+00  -1.382E-05
+ 
+ LOAD INCREMENT =   3  SOLUTION OBTAINED AFTER   2 ITERATIONS   TIME=    0.33
+ LOAD INCREMENT =   3  RESULTING VALUES UPDATED                 TIME=    0.35
+
+ Maximum pile stress =       5.284E+03 for pile 002 at z-level =    0.00
+
+ Maximum pile strength U.R. =    0.015 for pile 002 at z-level =    0.00
+
+ Maximum pile compression =  1.491E+01 for pile 002 DSP.AXL =    4.746E-05
+
+ Maximum pile tension =     -1.491E+01 for pile 001 DSP.AXL =   -4.145E-05
+
+ Minimum axial factors of safety =  Comp: 99.99 (P002)  Tens: 57.27 (P001)
+
+ Maximum resulting displ =   5.432E-04 for pile 002
+
+ LOAD INCREMENT =   4  START                                    TIME=    0.35
+
+
+ NINC  =  4   IPRT2 =  1111   NPTRC =     1     QTOT  =  0.20000
+ MAXIT =500   IPRT3 =  1111   CONV  =  0.00001
+ MISC(6-11) =     1       0       0       8       0       0
+
+ 
+      ITERATION =   1  START                                    TIME=    0.35
+      ITERATION =   1  HEAD STIFFNESSES COMPUTED                TIME=    0.37
+      ITERATION =   1  INTERFACE EQUATIONS SOLVED               TIME=    0.37
+      ITERATION =   1  NEW DISPL COMPUTED          ICONV= 202   TIME=    0.39
+
+      DISPL TRACE :    1.804E-04   0.000E+00  -1.382E-05
+ 
+      ITERATION =   2  START                                    TIME=    0.39
+      ITERATION =   2  HEAD STIFFNESSES COMPUTED                TIME=    0.41
+      ITERATION =   2  INTERFACE EQUATIONS SOLVED               TIME=    0.41
+      ITERATION =   2  NEW DISPL COMPUTED          ICONV=   0   TIME=    0.43
+
+      DISPL TRACE :    1.804E-04   0.000E+00  -1.382E-05
+ 
+ LOAD INCREMENT =   4  SOLUTION OBTAINED AFTER   2 ITERATIONS   TIME=    0.43
+ LOAD INCREMENT =   4  RESULTING VALUES UPDATED                 TIME=    0.45
+
+ Maximum pile stress =       7.045E+03 for pile 002 at z-level =    0.00
+
+ Maximum pile strength U.R. =    0.020 for pile 002 at z-level =    0.00
+
+ Maximum pile compression =  1.989E+01 for pile 002 DSP.AXL =    6.327E-05
+
+ Maximum pile tension =     -1.989E+01 for pile 001 DSP.AXL =   -5.527E-05
+
+ Minimum axial factors of safety =  Comp: 99.99 (P002)  Tens: 42.95 (P001)
+
+ Maximum resulting displ =   7.243E-04 for pile 002
+
+ LOAD INCREMENT =   5  START                                    TIME=    0.46
+
+
+ NINC  =  5   IPRT2 =  1111   NPTRC =     1     QTOT  =  0.25000
+ MAXIT =500   IPRT3 =  1111   CONV  =  0.00001
+ MISC(6-11) =     1       0       0       8       0       0
+
+ 
+      ITERATION =   1  START                                    TIME=    0.46
+      ITERATION =   1  HEAD STIFFNESSES COMPUTED                TIME=    0.47
+      ITERATION =   1  INTERFACE EQUATIONS SOLVED               TIME=    0.47
+      ITERATION =   1  NEW DISPL COMPUTED          ICONV= 202   TIME=    0.49
+
+      DISPL TRACE :    1.804E-04   0.000E+00  -1.382E-05
+ 
+      ITERATION =   2  START                                    TIME=    0.49
+      ITERATION =   2  HEAD STIFFNESSES COMPUTED                TIME=    0.51
+      ITERATION =   2  INTERFACE EQUATIONS SOLVED               TIME=    0.51
+      ITERATION =   2  NEW DISPL COMPUTED          ICONV=   0   TIME=    0.53
+
+      DISPL TRACE :    1.804E-04   0.000E+00  -1.382E-05
+ 
+ LOAD INCREMENT =   5  SOLUTION OBTAINED AFTER   2 ITERATIONS   TIME=    0.53
+ LOAD INCREMENT =   5  RESULTING VALUES UPDATED                 TIME=    0.55
+
+ Maximum pile stress =       8.807E+03 for pile 002 at z-level =    0.00
+
+ Maximum pile strength U.R. =    0.025 for pile 002 at z-level =    0.00
+
+ Maximum pile compression =  2.486E+01 for pile 002 DSP.AXL =    7.909E-05
+
+ Maximum pile tension =     -2.486E+01 for pile 001 DSP.AXL =   -6.909E-05
+
+ Minimum axial factors of safety =  Comp: 99.99 (P002)  Tens: 34.36 (P001)
+
+ Maximum resulting displ =   9.054E-04 for pile 002
+
+ LOAD INCREMENT =   6  START                                    TIME=    0.56
+
+
+ NINC  =  6   IPRT2 =  1111   NPTRC =     1     QTOT  =  0.30000
+ MAXIT =500   IPRT3 =  1111   CONV  =  0.00001
+ MISC(6-11) =     1       0       0       8       0       0
+
+ 
+      ITERATION =   1  START                                    TIME=    0.56
+      ITERATION =   1  HEAD STIFFNESSES COMPUTED                TIME=    0.58
+      ITERATION =   1  INTERFACE EQUATIONS SOLVED               TIME=    0.58
+      ITERATION =   1  NEW DISPL COMPUTED          ICONV= 202   TIME=    0.60
+
+      DISPL TRACE :    1.804E-04   0.000E+00  -1.382E-05
+ 
+      ITERATION =   2  START                                    TIME=    0.60
+      ITERATION =   2  HEAD STIFFNESSES COMPUTED                TIME=    0.62
+      ITERATION =   2  INTERFACE EQUATIONS SOLVED               TIME=    0.62
+      ITERATION =   2  NEW DISPL COMPUTED          ICONV=   0   TIME=    0.64
+
+      DISPL TRACE :    1.804E-04   0.000E+00  -1.382E-05
+ 
+ LOAD INCREMENT =   6  SOLUTION OBTAINED AFTER   2 ITERATIONS   TIME=    0.64
+ LOAD INCREMENT =   6  RESULTING VALUES UPDATED                 TIME=    0.66
+
+ Maximum pile stress =       1.057E+04 for pile 002 at z-level =    0.00
+
+ Maximum pile strength U.R. =    0.030 for pile 002 at z-level =    0.00
+
+ Maximum pile compression =  2.983E+01 for pile 002 DSP.AXL =    9.491E-05
+
+ Maximum pile tension =     -2.983E+01 for pile 001 DSP.AXL =   -8.291E-05
+
+ Minimum axial factors of safety =  Comp: 99.99 (P002)  Tens: 28.63 (P001)
+
+ Maximum resulting displ =   1.086E-03 for pile 002
+
+ LOAD INCREMENT =   7  START                                    TIME=    0.66
+
+
+ NINC  =  7   IPRT2 =  1111   NPTRC =     1     QTOT  =  0.35000
+ MAXIT =500   IPRT3 =  1111   CONV  =  0.00001
+ MISC(6-11) =     1       0       0       8       0       0
+
+ 
+      ITERATION =   1  START                                    TIME=    0.66
+      ITERATION =   1  HEAD STIFFNESSES COMPUTED                TIME=    0.68
+      ITERATION =   1  INTERFACE EQUATIONS SOLVED               TIME=    0.68
+      ITERATION =   1  NEW DISPL COMPUTED          ICONV= 202   TIME=    0.70
+
+      DISPL TRACE :    1.804E-04   0.000E+00  -1.382E-05
+ 
+      ITERATION =   2  START                                    TIME=    0.70
+      ITERATION =   2  HEAD STIFFNESSES COMPUTED                TIME=    0.72
+      ITERATION =   2  INTERFACE EQUATIONS SOLVED               TIME=    0.72
+      ITERATION =   2  NEW DISPL COMPUTED          ICONV=   0   TIME=    0.74
+
+      DISPL TRACE :    1.804E-04   0.000E+00  -1.382E-05
+ 
+ LOAD INCREMENT =   7  SOLUTION OBTAINED AFTER   2 ITERATIONS   TIME=    0.74
+ LOAD INCREMENT =   7  RESULTING VALUES UPDATED                 TIME=    0.76
+
+ Maximum pile stress =       1.233E+04 for pile 002 at z-level =    0.00
+
+ Maximum pile strength U.R. =    0.035 for pile 002 at z-level =    0.00
+
+ Maximum pile compression =  3.480E+01 for pile 002 DSP.AXL =    1.107E-04
+
+ Maximum pile tension =     -3.480E+01 for pile 001 DSP.AXL =   -9.673E-05
+
+ Minimum axial factors of safety =  Comp: 99.99 (P002)  Tens: 24.54 (P001)
+
+ Maximum resulting displ =   1.267E-03 for pile 002
+
+ LOAD INCREMENT =   8  START                                    TIME=    0.77
+
+
+ NINC  =  8   IPRT2 =  1111   NPTRC =     1     QTOT  =  0.40000
+ MAXIT =500   IPRT3 =  1111   CONV  =  0.00001
+ MISC(6-11) =     1       0       0       8       0       0
+
+ 
+      ITERATION =   1  START                                    TIME=    0.77
+      ITERATION =   1  HEAD STIFFNESSES COMPUTED                TIME=    0.79
+      ITERATION =   1  INTERFACE EQUATIONS SOLVED               TIME=    0.79
+      ITERATION =   1  NEW DISPL COMPUTED          ICONV= 202   TIME=    0.81
+
+      DISPL TRACE :    1.804E-04   0.000E+00  -1.382E-05
+ 
+      ITERATION =   2  START                                    TIME=    0.81
+      ITERATION =   2  HEAD STIFFNESSES COMPUTED                TIME=    0.83
+      ITERATION =   2  INTERFACE EQUATIONS SOLVED               TIME=    0.83
+      ITERATION =   2  NEW DISPL COMPUTED          ICONV=   0   TIME=    0.85
+
+      DISPL TRACE :    1.804E-04   0.000E+00  -1.382E-05
+ 
+ LOAD INCREMENT =   8  SOLUTION OBTAINED AFTER   2 ITERATIONS   TIME=    0.85
+ LOAD INCREMENT =   8  RESULTING VALUES UPDATED                 TIME=    0.87
+
+ Maximum pile stress =       1.409E+04 for pile 002 at z-level =    0.00
+
+ Maximum pile strength U.R. =    0.040 for pile 002 at z-level =    0.00
+
+ Maximum pile compression =  3.977E+01 for pile 002 DSP.AXL =    1.265E-04
+
+ Maximum pile tension =     -3.977E+01 for pile 001 DSP.AXL =   -1.105E-04
+
+ Minimum axial factors of safety =  Comp: 98.05 (P002)  Tens: 21.48 (P001)
+
+ Maximum resulting displ =   1.449E-03 for pile 002
+
+ LOAD INCREMENT =   9  START                                    TIME=    0.87
+
+
+ NINC  =  9   IPRT2 =  1111   NPTRC =     1     QTOT  =  0.45000
+ MAXIT =500   IPRT3 =  1111   CONV  =  0.00001
+ MISC(6-11) =     1       0       0       8       0       0
+
+ 
+      ITERATION =   1  START                                    TIME=    0.87
+      ITERATION =   1  HEAD STIFFNESSES COMPUTED                TIME=    0.89
+      ITERATION =   1  INTERFACE EQUATIONS SOLVED               TIME=    0.89
+      ITERATION =   1  NEW DISPL COMPUTED          ICONV= 202   TIME=    0.91
+
+      DISPL TRACE :    1.804E-04   0.000E+00  -1.382E-05
+ 
+      ITERATION =   2  START                                    TIME=    0.91
+      ITERATION =   2  HEAD STIFFNESSES COMPUTED                TIME=    0.93
+      ITERATION =   2  INTERFACE EQUATIONS SOLVED               TIME=    0.93
+      ITERATION =   2  NEW DISPL COMPUTED          ICONV=   0   TIME=    0.95
+
+      DISPL TRACE :    1.804E-04   0.000E+00  -1.382E-05
+ 
+ LOAD INCREMENT =   9  SOLUTION OBTAINED AFTER   2 ITERATIONS   TIME=    0.95
+ LOAD INCREMENT =   9  RESULTING VALUES UPDATED                 TIME=    0.97
+
+ Maximum pile stress =       1.585E+04 for pile 002 at z-level =    0.00
+
+ Maximum pile strength U.R. =    0.045 for pile 002 at z-level =    0.00
+
+ Maximum pile compression =  4.474E+01 for pile 002 DSP.AXL =    1.424E-04
+
+ Maximum pile tension =     -4.474E+01 for pile 001 DSP.AXL =   -1.244E-04
+
+ Minimum axial factors of safety =  Comp: 87.15 (P002)  Tens: 19.09 (P001)
+
+ Maximum resulting displ =   1.630E-03 for pile 002
+
+ LOAD INCREMENT =  10  START                                    TIME=    0.98
+
+
+ NINC  = 10   IPRT2 =  1111   NPTRC =     1     QTOT  =  0.50000
+ MAXIT =500   IPRT3 =  1111   CONV  =  0.00001
+ MISC(6-11) =     1       0       0       8       0       0
+
+ 
+      ITERATION =   1  START                                    TIME=    0.98
+      ITERATION =   1  HEAD STIFFNESSES COMPUTED                TIME=    1.00
+      ITERATION =   1  INTERFACE EQUATIONS SOLVED               TIME=    1.00
+      ITERATION =   1  NEW DISPL COMPUTED          ICONV= 202   TIME=    1.02
+
+      DISPL TRACE :    1.804E-04   0.000E+00  -1.382E-05
+ 
+      ITERATION =   2  START                                    TIME=    1.02
+      ITERATION =   2  HEAD STIFFNESSES COMPUTED                TIME=    1.04
+      ITERATION =   2  INTERFACE EQUATIONS SOLVED               TIME=    1.04
+      ITERATION =   2  NEW DISPL COMPUTED          ICONV=   0   TIME=    1.06
+
+      DISPL TRACE :    1.804E-04   0.000E+00  -1.382E-05
+ 
+ LOAD INCREMENT =  10  SOLUTION OBTAINED AFTER   2 ITERATIONS   TIME=    1.06
+ LOAD INCREMENT =  10  RESULTING VALUES UPDATED                 TIME=    1.07
+
+ Maximum pile stress =       1.761E+04 for pile 002 at z-level =    0.00
+
+ Maximum pile strength U.R. =    0.050 for pile 002 at z-level =    0.00
+
+ Maximum pile compression =  4.971E+01 for pile 002 DSP.AXL =    1.582E-04
+
+ Maximum pile tension =     -4.971E+01 for pile 001 DSP.AXL =   -1.382E-04
+
+ Minimum axial factors of safety =  Comp: 78.44 (P002)  Tens: 17.18 (P001)
+
+ Maximum resulting displ =   1.811E-03 for pile 002
+
+ LOAD INCREMENT =  11  START                                    TIME=    1.08
+
+
+ NINC  = 11   IPRT2 =  1111   NPTRC =     1     QTOT  =  0.60000
+ MAXIT =500   IPRT3 =  1111   CONV  =  0.00001
+ MISC(6-11) =     1       0       0       8       0       0
+
+ 
+      ITERATION =   1  START                                    TIME=    1.08
+      ITERATION =   1  HEAD STIFFNESSES COMPUTED                TIME=    1.10
+      ITERATION =   1  INTERFACE EQUATIONS SOLVED               TIME=    1.10
+      ITERATION =   1  NEW DISPL COMPUTED          ICONV= 202   TIME=    1.12
+
+      DISPL TRACE :    3.608E-04   0.000E+00  -2.764E-05
+ 
+      ITERATION =   2  START                                    TIME=    1.12
+      ITERATION =   2  HEAD STIFFNESSES COMPUTED                TIME=    1.14
+      ITERATION =   2  INTERFACE EQUATIONS SOLVED               TIME=    1.14
+      ITERATION =   2  NEW DISPL COMPUTED          ICONV=   0   TIME=    1.16
+
+      DISPL TRACE :    3.608E-04   0.000E+00  -2.765E-05
+ 
+ LOAD INCREMENT =  11  SOLUTION OBTAINED AFTER   2 ITERATIONS   TIME=    1.16
+ LOAD INCREMENT =  11  RESULTING VALUES UPDATED                 TIME=    1.18
+
+ Maximum pile stress =       2.114E+04 for pile 002 at z-level =    0.00
+
+ Maximum pile strength U.R. =    0.060 for pile 002 at z-level =    0.00
+
+ Maximum pile compression =  5.966E+01 for pile 002 DSP.AXL =    1.898E-04
+
+ Maximum pile tension =     -5.966E+01 for pile 001 DSP.AXL =   -1.658E-04
+
+ Minimum axial factors of safety =  Comp: 65.36 (P002)  Tens: 14.32 (P001)
+
+ Maximum resulting displ =   2.173E-03 for pile 002
+
+ LOAD INCREMENT =  12  START                                    TIME=    1.18
+
+
+ NINC  = 12   IPRT2 =  1111   NPTRC =     1     QTOT  =  0.70000
+ MAXIT =500   IPRT3 =  1111   CONV  =  0.00001
+ MISC(6-11) =     1       0       0       8       0       0
+
+ 
+      ITERATION =   1  START                                    TIME=    1.18
+      ITERATION =   1  HEAD STIFFNESSES COMPUTED                TIME=    1.20
+      ITERATION =   1  INTERFACE EQUATIONS SOLVED               TIME=    1.20
+      ITERATION =   1  NEW DISPL COMPUTED          ICONV= 202   TIME=    1.22
+
+      DISPL TRACE :    3.628E-04   0.000E+00  -2.789E-05
+ 
+      ITERATION =   2  START                                    TIME=    1.22
+      ITERATION =   2  HEAD STIFFNESSES COMPUTED                TIME=    1.24
+      ITERATION =   2  INTERFACE EQUATIONS SOLVED               TIME=    1.24
+      ITERATION =   2  NEW DISPL COMPUTED          ICONV=   0   TIME=    1.26
+
+      DISPL TRACE :    3.628E-04   0.000E+00  -2.789E-05
+ 
+ LOAD INCREMENT =  12  SOLUTION OBTAINED AFTER   2 ITERATIONS   TIME=    1.26
+ LOAD INCREMENT =  12  RESULTING VALUES UPDATED                 TIME=    1.28
+
+ Maximum pile stress =       2.468E+04 for pile 002 at z-level =    0.00
+
+ Maximum pile strength U.R. =    0.070 for pile 002 at z-level =    0.00
+
+ Maximum pile compression =  6.965E+01 for pile 002 DSP.AXL =    2.216E-04
+
+ Maximum pile tension =     -6.965E+01 for pile 001 DSP.AXL =   -1.937E-04
+
+ Minimum axial factors of safety =  Comp: 55.98 (P002)  Tens: 12.26 (P001)
+
+ Maximum resulting displ =   2.537E-03 for pile 002
+
+ LOAD INCREMENT =  13  START                                    TIME=    1.29
+
+
+ NINC  = 13   IPRT2 =  1111   NPTRC =     1     QTOT  =  0.80000
+ MAXIT =500   IPRT3 =  1111   CONV  =  0.00001
+ MISC(6-11) =     1       0       0       8       0       0
+
+ 
+      ITERATION =   1  START                                    TIME=    1.29
+      ITERATION =   1  HEAD STIFFNESSES COMPUTED                TIME=    1.31
+      ITERATION =   1  INTERFACE EQUATIONS SOLVED               TIME=    1.31
+      ITERATION =   1  NEW DISPL COMPUTED          ICONV= 202   TIME=    1.33
+
+      DISPL TRACE :    3.722E-04   0.000E+00  -2.866E-05
+ 
+      ITERATION =   2  START                                    TIME=    1.33
+      ITERATION =   2  HEAD STIFFNESSES COMPUTED                TIME=    1.35
+      ITERATION =   2  INTERFACE EQUATIONS SOLVED               TIME=    1.35
+      ITERATION =   2  NEW DISPL COMPUTED          ICONV=   0   TIME=    1.37
+
+      DISPL TRACE :    3.725E-04   0.000E+00  -2.868E-05
+ 
+ LOAD INCREMENT =  13  SOLUTION OBTAINED AFTER   2 ITERATIONS   TIME=    1.37
+ LOAD INCREMENT =  13  RESULTING VALUES UPDATED                 TIME=    1.38
+
+ Maximum pile stress =       2.827E+04 for pile 002 at z-level =    0.00
+
+ Maximum pile strength U.R. =    0.080 for pile 002 at z-level =    0.00
+
+ Maximum pile compression =  7.980E+01 for pile 002 DSP.AXL =    2.537E-04
+
+ Maximum pile tension =     -7.980E+01 for pile 001 DSP.AXL =   -2.224E-04
+
+ Minimum axial factors of safety =  Comp: 48.87 (P002)  Tens: 10.70 (P001)
+
+ Maximum resulting displ =   2.911E-03 for pile 002
+
+ LOAD INCREMENT =  14  START                                    TIME=    1.39
+
+
+ NINC  = 14   IPRT2 =  1111   NPTRC =     1     QTOT  =  0.90000
+ MAXIT =500   IPRT3 =  1111   CONV  =  0.00001
+ MISC(6-11) =     1       0       0       8       0       0
+
+ 
+      ITERATION =   1  START                                    TIME=    1.39
+      ITERATION =   1  HEAD STIFFNESSES COMPUTED                TIME=    1.41
+      ITERATION =   1  INTERFACE EQUATIONS SOLVED               TIME=    1.41
+      ITERATION =   1  NEW DISPL COMPUTED          ICONV= 202   TIME=    1.43
+
+      DISPL TRACE :    4.251E-04   0.000E+00  -3.166E-05
+ 
+      ITERATION =   2  START                                    TIME=    1.43
+      ITERATION =   2  HEAD STIFFNESSES COMPUTED                TIME=    1.45
+      ITERATION =   2  INTERFACE EQUATIONS SOLVED               TIME=    1.45
+      ITERATION =   2  NEW DISPL COMPUTED          ICONV=   0   TIME=    1.47
+
+      DISPL TRACE :    4.283E-04   0.000E+00  -3.183E-05
+ 
+ LOAD INCREMENT =  14  SOLUTION OBTAINED AFTER   2 ITERATIONS   TIME=    1.47
+ LOAD INCREMENT =  14  RESULTING VALUES UPDATED                 TIME=    1.49
+
+ Maximum pile stress =       3.209E+04 for pile 002 at z-level =    0.00
+
+ Maximum pile strength U.R. =    0.090 for pile 002 at z-level =    0.00
+
+ Maximum pile compression =  9.056E+01 for pile 002 DSP.AXL =    2.872E-04
+
+ Maximum pile tension =     -9.056E+01 for pile 001 DSP.AXL =   -2.542E-04
+
+ Minimum axial factors of safety =  Comp: 43.06 (P002)  Tens:  9.43 (P001)
+
+ Maximum resulting displ =   3.341E-03 for pile 002
+
+ LOAD INCREMENT =  15  START                                    TIME=    1.49
+
+
+ NINC  = 15   IPRT2 =  1111   NPTRC =     1     QTOT  =  1.00000
+ MAXIT =500   IPRT3 =  1111   CONV  =  0.00001
+ MISC(6-11) =     1       0       0       8       0       0
+
+ 
+      ITERATION =   1  START                                    TIME=    1.49
+      ITERATION =   1  HEAD STIFFNESSES COMPUTED                TIME=    1.51
+      ITERATION =   1  INTERFACE EQUATIONS SOLVED               TIME=    1.51
+      ITERATION =   1  NEW DISPL COMPUTED          ICONV= 202   TIME=    1.53
+
+      DISPL TRACE :    4.500E-04   0.000E+00  -3.306E-05
+ 
+      ITERATION =   2  START                                    TIME=    1.53
+      ITERATION =   2  HEAD STIFFNESSES COMPUTED                TIME=    1.55
+      ITERATION =   2  INTERFACE EQUATIONS SOLVED               TIME=    1.55
+      ITERATION =   2  NEW DISPL COMPUTED          ICONV=   0   TIME=    1.57
+
+      DISPL TRACE :    4.500E-04   0.000E+00  -3.306E-05
+ 
+ LOAD INCREMENT =  15  SOLUTION OBTAINED AFTER   2 ITERATIONS   TIME=    1.57
+ LOAD INCREMENT =  15  RESULTING VALUES UPDATED                 TIME=    1.59
+
+ Maximum pile stress =       3.599E+04 for pile 002 at z-level =    0.00
+
+ Maximum pile strength U.R. =    0.101 for pile 002 at z-level =    0.00
+
+ Maximum pile compression =  1.016E+02 for pile 002 DSP.AXL =    3.212E-04
+
+ Maximum pile tension =     -1.016E+02 for pile 001 DSP.AXL =   -2.873E-04
+
+ Minimum axial factors of safety =  Comp: 38.39 (P002)  Tens:  8.41 (P001)
+
+ Maximum resulting displ =   3.792E-03 for pile 002
+
+ LOAD INCREMENT =  16  START                                    TIME=    1.59
+
+
+ NINC  = 16   IPRT2 =  1111   NPTRC =     1     QTOT  =  1.50000
+ MAXIT =500   IPRT3 =  1111   CONV  =  0.00001
+ MISC(6-11) =     1       0       0       8       0       0
+
+ 
+      ITERATION =   1  START                                    TIME=    1.59
+      ITERATION =   1  HEAD STIFFNESSES COMPUTED                TIME=    1.61
+      ITERATION =   1  INTERFACE EQUATIONS SOLVED               TIME=    1.61
+      ITERATION =   1  NEW DISPL COMPUTED          ICONV= 202   TIME=    1.63
+
+      DISPL TRACE :    2.251E-03   0.000E+00  -1.654E-04
+ 
+      ITERATION =   2  START                                    TIME=    1.63
+      ITERATION =   2  HEAD STIFFNESSES COMPUTED                TIME=    1.65
+      ITERATION =   2  INTERFACE EQUATIONS SOLVED               TIME=    1.65
+      ITERATION =   2  NEW DISPL COMPUTED          ICONV= 162   TIME=    1.67
+
+      DISPL TRACE :    2.331E-03   0.000E+00  -1.714E-04
+ 
+      ITERATION =   3  START                                    TIME=    1.67
+      ITERATION =   3  HEAD STIFFNESSES COMPUTED                TIME=    1.69
+      ITERATION =   3  INTERFACE EQUATIONS SOLVED               TIME=    1.69
+      ITERATION =   3  NEW DISPL COMPUTED          ICONV=  86   TIME=    1.71
+
+      DISPL TRACE :    2.346E-03   0.000E+00  -1.723E-04
+ 
+      ITERATION =   4  START                                    TIME=    1.71
+      ITERATION =   4  HEAD STIFFNESSES COMPUTED                TIME=    1.73
+      ITERATION =   4  INTERFACE EQUATIONS SOLVED               TIME=    1.73
+      ITERATION =   4  NEW DISPL COMPUTED          ICONV=   0   TIME=    1.75
+
+      DISPL TRACE :    2.350E-03   0.000E+00  -1.725E-04
+ 
+ LOAD INCREMENT =  16  SOLUTION OBTAINED AFTER   4 ITERATIONS   TIME=    1.75
+ LOAD INCREMENT =  16  RESULTING VALUES UPDATED                 TIME=    1.77
+
+ Maximum pile stress =       5.598E+04 for pile 002 at z-level =    0.00
+
+ Maximum pile strength U.R. =    0.158 for pile 002 at z-level =    0.00
+
+ Maximum pile compression =  1.580E+02 for pile 002 DSP.AXL =    4.946E-04
+
+ Maximum pile tension =     -1.580E+02 for pile 001 DSP.AXL =   -4.598E-04
+
+ Minimum axial factors of safety =  Comp: 24.68 (P002)  Tens:  5.41 (P001)
+
+ Maximum resulting displ =   6.148E-03 for pile 002
+
+ LOAD INCREMENT =  17  START                                    TIME=    1.77
+
+
+ NINC  = 17   IPRT2 =  1111   NPTRC =     1     QTOT  =  2.00000
+ MAXIT =500   IPRT3 =  1111   CONV  =  0.00001
+ MISC(6-11) =     1       0       0       8       0       0
+
+ 
+      ITERATION =   1  START                                    TIME=    1.77
+      ITERATION =   1  HEAD STIFFNESSES COMPUTED                TIME=    1.79
+      ITERATION =   1  INTERFACE EQUATIONS SOLVED               TIME=    1.79
+      ITERATION =   1  NEW DISPL COMPUTED          ICONV= 202   TIME=    1.81
+
+      DISPL TRACE :    3.246E-03   0.000E+00  -2.266E-04
+ 
+      ITERATION =   2  START                                    TIME=    1.81
+      ITERATION =   2  HEAD STIFFNESSES COMPUTED                TIME=    1.83
+      ITERATION =   2  INTERFACE EQUATIONS SOLVED               TIME=    1.83
+      ITERATION =   2  NEW DISPL COMPUTED          ICONV= 182   TIME=    1.85
+
+      DISPL TRACE :    3.417E-03   0.000E+00  -2.369E-04
+ 
+      ITERATION =   3  START                                    TIME=    1.85
+      ITERATION =   3  HEAD STIFFNESSES COMPUTED                TIME=    1.87
+      ITERATION =   3  INTERFACE EQUATIONS SOLVED               TIME=    1.87
+      ITERATION =   3  NEW DISPL COMPUTED          ICONV= 146   TIME=    1.89
+
+      DISPL TRACE :    3.461E-03   0.000E+00  -2.395E-04
+ 
+      ITERATION =   4  START                                    TIME=    1.89
+      ITERATION =   4  HEAD STIFFNESSES COMPUTED                TIME=    1.91
+      ITERATION =   4  INTERFACE EQUATIONS SOLVED               TIME=    1.91
+      ITERATION =   4  NEW DISPL COMPUTED          ICONV=  26   TIME=    1.93
+
+      DISPL TRACE :    3.471E-03   0.000E+00  -2.401E-04
+ 
+      ITERATION =   5  START                                    TIME=    1.93
+      ITERATION =   5  HEAD STIFFNESSES COMPUTED                TIME=    1.95
+      ITERATION =   5  INTERFACE EQUATIONS SOLVED               TIME=    1.95
+      ITERATION =   5  NEW DISPL COMPUTED          ICONV=   0   TIME=    1.97
+
+      DISPL TRACE :    3.473E-03   0.000E+00  -2.402E-04
+ 
+ LOAD INCREMENT =  17  SOLUTION OBTAINED AFTER   5 ITERATIONS   TIME=    1.97
+ LOAD INCREMENT =  17  RESULTING VALUES UPDATED                 TIME=    1.98
+
+ Maximum pile stress =      -8.068E+04 for pile 001 at z-level =    0.00
+
+ Maximum pile strength U.R. =    0.227 for pile 001 at z-level =    0.00
+
+ Maximum pile compression =  2.277E+02 for pile 002 DSP.AXL =    6.979E-04
+
+ Maximum pile tension =     -2.277E+02 for pile 001 DSP.AXL =   -7.000E-04
+
+ Minimum axial factors of safety =  Comp: 17.12 (P002)  Tens:  3.75 (P001)
+
+ Maximum resulting displ =   9.627E-03 for pile 001
+
+ LOAD INCREMENT =  18  START                                    TIME=    1.99
+
+
+ NINC  = 18   IPRT2 =  1111   NPTRC =     1     QTOT  =  2.50000
+ MAXIT =500   IPRT3 =  1111   CONV  =  0.00001
+ MISC(6-11) =     1       0       0       8       0       0
+
+ 
+      ITERATION =   1  START                                    TIME=    1.99
+      ITERATION =   1  HEAD STIFFNESSES COMPUTED                TIME=    2.01
+      ITERATION =   1  INTERFACE EQUATIONS SOLVED               TIME=    2.01
+      ITERATION =   1  NEW DISPL COMPUTED          ICONV= 202   TIME=    2.03
+
+      DISPL TRACE :    5.002E-03   0.000E+00  -3.322E-04
+ 
+      ITERATION =   2  START                                    TIME=    2.03
+      ITERATION =   2  HEAD STIFFNESSES COMPUTED                TIME=    2.05
+      ITERATION =   2  INTERFACE EQUATIONS SOLVED               TIME=    2.05
+      ITERATION =   2  NEW DISPL COMPUTED          ICONV= 196   TIME=    2.07
+
+      DISPL TRACE :    5.271E-03   0.000E+00  -3.482E-04
+ 
+      ITERATION =   3  START                                    TIME=    2.07
+      ITERATION =   3  HEAD STIFFNESSES COMPUTED                TIME=    2.09
+      ITERATION =   3  INTERFACE EQUATIONS SOLVED               TIME=    2.09
+      ITERATION =   3  NEW DISPL COMPUTED          ICONV= 148   TIME=    2.11
+
+      DISPL TRACE :    5.317E-03   0.000E+00  -3.509E-04
+ 
+      ITERATION =   4  START                                    TIME=    2.11
+      ITERATION =   4  HEAD STIFFNESSES COMPUTED                TIME=    2.13
+      ITERATION =   4  INTERFACE EQUATIONS SOLVED               TIME=    2.13
+      ITERATION =   4  NEW DISPL COMPUTED          ICONV=   0   TIME=    2.15
+
+      DISPL TRACE :    5.325E-03   0.000E+00  -3.514E-04
+ 
+ LOAD INCREMENT =  18  SOLUTION OBTAINED AFTER   4 ITERATIONS   TIME=    2.15
+ LOAD INCREMENT =  18  RESULTING VALUES UPDATED                 TIME=    2.17
+
+ Maximum pile stress =      -1.131E+05 for pile 001 at z-level =    0.00
+
+ Maximum pile strength U.R. =    0.319 for pile 001 at z-level =    0.00
+
+ Maximum pile compression =  3.192E+02 for pile 002 DSP.AXL =    9.505E-04
+
+ Maximum pile tension =     -3.192E+02 for pile 001 DSP.AXL =   -1.051E-03
+
+ Minimum axial factors of safety =  Comp: 12.22 (P002)  Tens:  2.68 (P001)
+
+ Maximum resulting displ =   1.496E-02 for pile 001
+
+ LOAD INCREMENT =  19  START                                    TIME=    2.18
+
+
+ NINC  = 19   IPRT2 =  1111   NPTRC =     1     QTOT  =  3.00000
+ MAXIT =500   IPRT3 =  1111   CONV  =  0.00001
+ MISC(6-11) =     1       0       0       8       0       0
+
+ 
+      ITERATION =   1  START                                    TIME=    2.18
+      ITERATION =   1  HEAD STIFFNESSES COMPUTED                TIME=    2.20
+      ITERATION =   1  INTERFACE EQUATIONS SOLVED               TIME=    2.20
+      ITERATION =   1  NEW DISPL COMPUTED          ICONV= 202   TIME=    2.22
+
+      DISPL TRACE :    6.916E-03   0.000E+00  -4.463E-04
+ 
+      ITERATION =   2  START                                    TIME=    2.22
+      ITERATION =   2  HEAD STIFFNESSES COMPUTED                TIME=    2.24
+      ITERATION =   2  INTERFACE EQUATIONS SOLVED               TIME=    2.24
+      ITERATION =   2  NEW DISPL COMPUTED          ICONV= 166   TIME=    2.25
+
+      DISPL TRACE :    7.006E-03   0.000E+00  -4.516E-04
+ 
+      ITERATION =   3  START                                    TIME=    2.25
+      ITERATION =   3  HEAD STIFFNESSES COMPUTED                TIME=    2.28
+      ITERATION =   3  INTERFACE EQUATIONS SOLVED               TIME=    2.28
+      ITERATION =   3  NEW DISPL COMPUTED          ICONV=   0   TIME=    2.29
+
+      DISPL TRACE :    7.010E-03   0.000E+00  -4.519E-04
+ 
+ LOAD INCREMENT =  19  SOLUTION OBTAINED AFTER   3 ITERATIONS   TIME=    2.29
+ LOAD INCREMENT =  19  RESULTING VALUES UPDATED                 TIME=    2.31
+
+ Maximum pile stress =      -1.525E+05 for pile 001 at z-level =    0.00
+
+ Maximum pile strength U.R. =    0.430 for pile 001 at z-level =    0.00
+
+ Maximum pile compression =  4.304E+02 for pile 002 DSP.AXL =    1.247E-03
+
+ Maximum pile tension =     -4.304E+02 for pile 001 DSP.AXL =   -1.503E-03
+
+ Minimum axial factors of safety =  Comp:  9.06 (P002)  Tens:  1.98 (P001)
+
+ Maximum resulting displ =   2.199E-02 for pile 001
+
+ LOAD INCREMENT =  20  START                                    TIME=    2.32
+
+
+ NINC  = 20   IPRT2 =  1111   NPTRC =     1     QTOT  =  4.00000
+ MAXIT =500   IPRT3 =  1111   CONV  =  0.00001
+ MISC(6-11) =     1       0       0       8       0       0
+
+ 
+      ITERATION =   1  START                                    TIME=    2.32
+      ITERATION =   1  HEAD STIFFNESSES COMPUTED                TIME=    2.34
+      ITERATION =   1  INTERFACE EQUATIONS SOLVED               TIME=    2.34
+      ITERATION =   1  NEW DISPL COMPUTED          ICONV= 202   TIME=    2.36
+
+      DISPL TRACE :    1.492E-02   0.000E+00  -1.003E-03
+ 
+      ITERATION =   2  START                                    TIME=    2.36
+      ITERATION =   2  HEAD STIFFNESSES COMPUTED                TIME=    2.38
+      ITERATION =   2  INTERFACE EQUATIONS SOLVED               TIME=    2.38
+      ITERATION =   2  NEW DISPL COMPUTED          ICONV= 199   TIME=    2.40
+
+      DISPL TRACE :    1.537E-02   0.000E+00  -1.069E-03
+ 
+      ITERATION =   3  START                                    TIME=    2.40
+      ITERATION =   3  HEAD STIFFNESSES COMPUTED                TIME=    2.42
+      ITERATION =   3  INTERFACE EQUATIONS SOLVED               TIME=    2.42
+      ITERATION =   3  NEW DISPL COMPUTED          ICONV= 154   TIME=    2.44
+
+      DISPL TRACE :    1.542E-02   0.000E+00  -1.074E-03
+ 
+      ITERATION =   4  START                                    TIME=    2.44
+      ITERATION =   4  HEAD STIFFNESSES COMPUTED                TIME=    2.46
+      ITERATION =   4  INTERFACE EQUATIONS SOLVED               TIME=    2.46
+      ITERATION =   4  NEW DISPL COMPUTED          ICONV=   0   TIME=    2.48
+
+      DISPL TRACE :    1.542E-02   0.000E+00  -1.074E-03
+ 
+ LOAD INCREMENT =  20  SOLUTION OBTAINED AFTER   4 ITERATIONS   TIME=    2.48
+ LOAD INCREMENT =  20  RESULTING VALUES UPDATED                 TIME=    2.50
+
+ Maximum pile stress =      -2.365E+05 for pile 001 at z-level =    0.00
+
+ Maximum pile strength U.R. =    0.666 for pile 001 at z-level =    0.00
+
+ Maximum pile compression =  6.674E+02 for pile 002 DSP.AXL =    1.876E-03
+
+ Maximum pile tension =     -6.674E+02 for pile 001 DSP.AXL =   -2.578E-03
+
+ Minimum axial factors of safety =  Comp:  5.84 (P002)  Tens:  1.28 (P001)
+
+ Maximum resulting displ =   3.745E-02 for pile 001
+
+ Header: calculation.pgjson                                                      
+ 
+
+ +++++ End of program SPLICE      10 Oct 2025   14:01:34         TIME=    2.50
+
+ TIME USED =            2.50 SECONDS
+ 

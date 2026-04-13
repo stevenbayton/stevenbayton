@@ -1,0 +1,84 @@
+Header: 36-1.57_pile at Eirin_LE soil_horizontal_API_pile group_LC06_Temp_Tie-in
+*
+SPLICE Version: 2009-09-01
+*
+* Date         Sign    Log of Corrections
+* 14 Jul 2009  cjfc    New input file for SPLICE revision 5
+*
+
+ ****************** CONTROL SECTION
+  1.0    CONFRC    Old-force-unit  = CONFRC * New-force-unit  1MN  = 1000*1KN
+  1.0    CONLTH    Old-length-unit = CONLTH * New-length-unit  1M  = 3.28*1FT
+  5      NPH       Number of pile heads including dummy piles (max is 300)
+  1      NLPH      Number of pile heads with given loads (max is 5)
+  0      JACK      Superstructure code (0=None 1=Present 2=Generate)
+  1      NUMVEC    Number of load vectors to be analysed (limit is 75 by Splice, Pilgen has no limit)
+  00     ISTART    Code 'IJ' for save/read of re-start values (I=Save J=Read)
+  1      ISECM     Code for second order moments (0=Neglect 1=Include)
+  0      NURCHK    Cross section strength UR check (0=No 1=NORSOK 2=ISO-19902)
+  1111   IPRT1     Print code 'IJKL' (L=Piles K=Loads J=Soil I=Soil.disp)
+  1      JECHO     Echo print of input file NF5 to file NF14 (0=No 1=Yes)
+  0 0 0 100 0        Misc(1) - Misc(5)  Special purpose parameters
+
+ ****************** PILE/SOIL/PILE INTERACTION, SOIL PROFILES AND SCOUR SECTION
+  0     INTER     Mindlin interaction code (0=No 1=Dif.piles 2=Full -1=Avail)
+  0.0   DISTIN    Maximum interaction distance
+ Pile1 Pile2 Soil.profile  Z.scour P-Y.pfact  T-Z.tfact  Q-Z.qfact
+  1 1 Soil1 2.000 1.0 1.0 1.0
+  2 2 Soil1 2.000 1.0 1.0 1.0
+  3 3 Soil1 2.000 1.0 1.0 1.0
+  4 4 Soil1 2.000 1.0 1.0 1.0
+  5 5 Soil1 9999.000 1.0 1.0 1.0
+
+ ****************** POINT FORCES SECTION
+    0     IFRC      Number of given point forces
+  Force    X-coord  Y-coord  Z-coord     X-FORCE  Y-FORCE  Z-FORCE
+
+ ****************** LOAD APPLICATION SECTION
+  0.000 0.000 1.000   ACCX,ACCY,ACCZ   Gravity loading ratio in X- Y- AND Z-dir
+ VECTOR  NUMINC  KEEP  VECMLT  SOLMLT  FRCMLT
+  1 6 0 1.000 1.000 1.000
+ VECTOR  INCR  MAXIT  IPRT2  IPRT3  NPTRC   QTOT  CONV    Misc(6,7,8,9,10,11)
+  1 1 500 1111 1111 1 .000 0.000010 1 0 0 8 0 0
+  1 2 500 1111 1111 1 .200 0.000010 1 0 0 8 0 0
+  1 3 500 1111 1111 1 .400 0.000010 1 0 0 8 0 0
+  1 4 500 1111 1111 1 .600 0.000010 1 0 0 8 0 0
+  1 5 500 1111 1111 1 .800 0.000010 1 0 0 8 0 0
+  1 6 500 1111 1111 1 1.000 0.000010 1 0 0 8 0 0
+C
+C VECTOR : LOAD VECTOR NUMBER  1,2,3,...,NUMVEC
+C NUMINC : NUMBER OF LOAD INCREMENTS FOR EACH VECTOR
+C KEEP   : START CONDITION (0=ZERO 1=RESULTING CONDITION AFTER LAST VECTOR)
+C VECMLT : LOAD VECTOR MULTIPLIER FOR LOAD VALUES READ FROM FILE 'NF9'
+C SOLMLT : SOIL DISPL MULTIPLIER FOR VALUES READ FROM FILE 'NF10'
+C FRCMLT : POINT FORCE MULTIPLIER FOR POINT FORCES GIVEN ABOVE
+C
+C VECTOR : LOAD VECTOR NUMBER  1,2,3,...,NUMVEC
+C INCR   : LOAD INCREMENT NUMBER FOR PRESENT VECTOR  1,2,3,...,NUMINC
+C MAXIT  : MAXIMUM NUMBER OF ITERATIONS
+C IPRT2  : PRINT CODE 'IJKL' (L=RES.DSP K=RES.FRC J=INC.DSP I=INC.FRC)
+C IPRT3  : PRINT CODE 'IJKL' (L=MATRIX  K=PIL.RES J=SUMMARY I=NF15.SAVING)
+C          K=2 GIVES LIMITED PILE OUTPUT WITH DEPTH  
+C          I=1 SAVES INTERFACE DISPL AND FORCES
+C          I=2 SAVES ALL DATA IN COMMON BLOCK /PILPRP/ , I=3 DOES BOTH
+C NPTRC  : TRACE PRINT OF PILE 'NPTRC' DURING ITERATIONS
+C QTOT   : TOTAL LOAD (DISP) AFTER PRESENT INCR  (INCR=VECT*(QTOTNOW-QTOTLAST))
+C CONV   : CONVERGENCE CRITERION (LENGTH)
+C
+C MISC(1) - MISC(11) ARE SPECIAL PURPOSE PARAMETERS
+C
+C MISC(1) :  1=CHECK EQUATION SOLVER   2=PRINT VECTOR AND SUB-MATRICES
+C MISC(2) :  1=SKIP STIFFNESS MATRIX SYMMETRY ENFORCEMENT AT PILE HEADS
+C MISC(3) :  CONVERGENCE FACTOR DISPL  ( NEXT=(OLD*F+NEW)/(1+F)  F=MISC3/100 )
+C MISC(4) :  CONVERGENCE FACTOR FORCS  ( NEXT=(OLD*F+NEW)/(1+F)  F=MISC4/100 )
+C MISC(5) :  CONVERGENCE FACTOR STFNS  ( NEXT=(OLD*F+NEW)/(1+F)  F=MISC5/100 )
+C MISC(6) = 0  COMPUTE NEW SOIL DISPL DUE TO GROUP EFFECTS AFTER EACH ITERTN
+C         = 1  COMPUTE SOIL DISPL ONCE ONLY  (SHOULD SECURE CONVERGENCE)
+C MISC(7) = 1  PRINT INCR DSP AND FRC TO SCREEN AFTER EACH ITERATION
+C MISC(8) = 1  PRINT STIFFNESS VALUES TO SCREEN AFTER EACH ITERATION
+C MISC(9) = 9  PRINT PROGRAM CONTROL FLOW TO SCREEN
+C MISC(9) = 8  SKIP AUTOMATIC DIVERGENCE CHECK
+C MISC(10)= NPND  TRACE PRINT OF VALUES FOR NODE 'ND' ON PILE 'NP' TO SCREEN
+C MISC(11)= NF DETAILED ELEMENT DATA TRACE SAVED ON UNIT 'NF'
+
+End of SPLICE input file : C:\Users\steb\AppData\Local\Temp\7aa41e71-f65e-4b70-a7e7-1d49de922f39\Splice.inp
