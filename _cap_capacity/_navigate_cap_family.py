@@ -69,9 +69,9 @@ def run_CARL(main_folder, foundation_location_name, input_heading, b_save, b1, l
 def input_file_CAP(foundation_location_name, input_heading, input_dict, b_save, b1, b2, pf_mat, V_design, H_design, M_design, main_folder, z_emb_start=0, z_emb_end=0, zstep=0, WH=0, WT=0, phi_int=25, subfolder='executables', calc_type='CAP'):
     
     z = input_dict['z']
-    su_C = input_dict['su_C_u']
-    su_D = input_dict['su_D_u']
-    su_E = input_dict['su_E_o']
+    su_C = input_dict['su_C_found']
+    su_D = input_dict['su_D_found']
+    su_E = input_dict['su_E']
     
     GAMS = 0.019
     GAMW = 0.01
@@ -141,9 +141,9 @@ def input_file_CAP(foundation_location_name, input_heading, input_dict, b_save, 
 def input_file_CARL(foundation_location_name, input_heading, input_dict, b_save, b1, b2, V_design, H_design, M_design, main_folder, z_emb_start=0, z_emb_end=0, zstep=0, WH=0, WT=0, subfolder='executables', calc_type='CARL'):
     
     z = input_dict['z']
-    su_C = input_dict['su_C_u']
-    su_D = input_dict['su_D_u']
-    su_E = input_dict['su_E_o']
+    su_C = input_dict['su_C_found']
+    su_D = input_dict['su_D_found']
+    su_E = input_dict['su_E']
 
     GAMS = 0.019
     GAMW = 0.01
@@ -192,9 +192,9 @@ def input_file_CARL(foundation_location_name, input_heading, input_dict, b_save,
 def input_file_CAPT(foundation_location_name, input_heading, input_dict, b_save, b1, b2, V_design, main_folder, z_emb_start=0, z_emb_end=0, zstep=0, subfolder='executables', calc_type='CAPT'):
     
     z = input_dict['z']
-    su_C = input_dict['su_C_u']
-    su_D = input_dict['su_D_u']
-    su_E = input_dict['su_E_o']
+    su_C = input_dict['su_C_found']
+    su_D = input_dict['su_D_found']
+    su_E = input_dict['su_E']
 
     GAMS = 0.019
     GAMW = 0.01

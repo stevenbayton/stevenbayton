@@ -16,12 +16,12 @@ def cpt_shaft_clay(q_c, sbt, case, calculation_dict, kf_p=0.03, kf_h=0.05):
         inner_ratio = 1
 
     if 'most_probable' in case.lower():
-        k_side = kf_p
+        k_f = kf_p
     elif 'highest' in case.lower():
-        k_side = kf_h
+        k_f = kf_h
     elif 'tailored' in case.lower():
         match = re.search(r'\[([0-9.+-eE]+)\]', case)
-        k_side = float(match.group(1))
+        k_f = float(match.group(1))
     elif 'sbt' in case.lower():
         if 'be' in case.lower():
             matrix = {'SD': 0.0011,
@@ -45,14 +45,14 @@ def cpt_shaft_clay(q_c, sbt, case, calculation_dict, kf_p=0.03, kf_h=0.05):
                       'CC': 0.1,
                       'TC': 0.35}
         if sbt in matrix:
-            k_side = matrix[sbt]
+            k_f = matrix[sbt]
         else:
-            k_side = matrix['CD']
+            k_f = matrix['CD']
 
-    q_s = q_c*k_side
+    q_s = q_c*k_f
     
-    save_parameter = {'q_c[input_s]': q_c,
-                      'k_side[calc_s]': k_side}
+    save_parameter = {'q_c[input_s]# q<sub>c</sub> (MPa) ? -': q_c,
+                      'k_f[calc_s]# k<sub>s</sub> (-) ? -': k_f}
         
     return q_s, inner_ratio, save_parameter
 
@@ -80,16 +80,16 @@ def almhamre_shaft_clay(q_c, f_s_cpt, sigv0_, z, z_tip, case, calculation_dict, 
     h = z_tip - z
     q_s = multiplier*(qs_res + (qs_init - qs_res)*math.exp(-k*h))
 
-    save_parameter = {'q_c[input_s]': q_c,
-                      'f_s[input_s]': f_s_cpt,
-                      'sigv0_[input_s]': sigv0_,
-                      'k[calc_s]': k,
-                      'b[calc_s]': b,
-                      'qs_res[calc_s]': qs_res,
-                      'qs_init[calc_s]': qs_init,
-                      'z_tip[calc_s]': z_tip,
-                      'h[calc_s]': h,
-                      'mult[calc_s]': multiplier}
+    save_parameter = {'q_c[input_s]# q<sub>c</sub> (MPa) ? -': q_c,
+                      'f_s[input_s]# f<sub>s</sub> (MPa) ? -': f_s_cpt,
+                      "sigv0_[input_s]# σ'<sub>v</sub> (kPa) ? -": sigv0_,
+                      'k[calc_s]# k (-) ? -': k,
+                      'b[calc_s]# b (-) ? -': b,
+                      'qs_res[calc_s]# q<sub>s,res</sub> (MPa) ? -': qs_res,
+                      'qs_init[calc_s]# q<sub>s,ini</sub> (MPa) ? -': qs_init,
+                      'z_tip[calc_s]# z<sub>tip</sub> (m) ? -': z_tip,
+                      'h[calc_s]# h (m) ? -': h,
+                      'mult[calc_s]# mult (-) ? -': multiplier}
     
     return q_s, inner_ratio, save_parameter
 
@@ -101,14 +101,14 @@ def alpha_dnv_shaft_clay(s_u_c, alpha, dss_suc, calculation_dict):
     else:
         inner_ratio = 1
 
-    s_udss = s_u_c*dss_suc
+    s_u_dss = s_u_c*dss_suc
     
-    q_s = 0.001*alpha*s_udss
+    q_s = 0.001*alpha*s_u_dss
 
-    save_parameter = {'s_u_c[input_s]': s_u_c,
-                      'alpha[calc_s]': alpha,
-                      'dss_suc[calc_s]': dss_suc,
-                      's_udss[calc_s]': s_udss}
+    save_parameter = {'s_u_c[input_s]# s<sub>u,c</sub> (kPa) ? -': s_u_c,
+                      'alpha[calc_s]# α (-) ? -': alpha,
+                      'dss_suc[input_s]# s<sub>u,d</sub>/s<sub>u,c</sub> (-) ? -': dss_suc,
+                      's_u_dss[input_s]# s<sub>u,d</sub> (kPa) ? -': s_u_dss}
         
     return q_s, inner_ratio, save_parameter
 
@@ -136,12 +136,12 @@ def alpha_iso_api_shaft_clay(s_u_c, sigv0_, dss_suc, calculation_dict, alpha_lim
 
     q_s = 0.001*alpha*s_u_dss
         
-    save_parameter = {'s_u_c[input_s]': s_u_c,
-                      'sigv0_[input_s]': sigv0_,
-                      'dss_suc[calc_s]': dss_suc,
-                      's_u_dss[calc_s]': s_u_dss,
-                      'alpha[calc_s]': alpha}
-    
+    save_parameter = {'s_u_c[input_s]# s<sub>u,c</sub> (kPa) ? -': s_u_c,
+                      "sigv0_[input_s]# σ'<sub>v</sub> (kPa) ? -": sigv0_,
+                      'dss_suc[input_s]# s<sub>u,d</sub>/s<sub>u,c</sub> (-) ? -': dss_suc,
+                      's_u_dss[input_s]# s<sub>u,d</sub> (kPa) ? -': s_u_dss,
+                      'alpha[calc_s]# α (-) ? -': alpha}
+             
     return q_s, inner_ratio, save_parameter
 
 
@@ -158,13 +158,13 @@ def ucpt_shaft_clay(q_t, z, z_tip, calculation_dict, Fst=1, beta=0.25):
 
     q_s = 0.07*Fst*q_t*np.power(h_D_, -beta)
 
-    save_parameter = {'q_t[input_s]': q_t,
-                      'z_tip[calc_s]': z_tip,
-                      'h[calc_s]': h,
-                      'D_[calc_s]': D_,
-                      'h_D_[calc_s]': h_D_,
-                      'Fst[calc_s]': Fst,
-                      'beta[calc_s]': beta}
+    save_parameter = {'q_t[input_s]# q<sub>t</sub> (MPa) ? -': q_t,
+                      'z_tip[calc_s]# z<sub>tip</sub> (m) ? -': z_tip,
+                      'h[calc_s]# h (m) ? -': h,
+                      'D_[calc_s]# D<sub>eff</sub> (m) ? -': D_,
+                      'h_D_[calc_s]# h/D<sub>eff</sub> (-) ? -': h_D_,
+                      'Fst[calc_s]# F<sub>st</sub> (-) ? -': Fst,
+                      'beta[calc_s]# β (-) ? -': beta}
     
     return q_s, inner_ratio, save_parameter
 
@@ -191,15 +191,15 @@ def ngi_shaft_clay(s_u_c, sigv0_, uu_suc, i_p, calculation_dict, F_tip=1):
 
     q_s = 0.001*max(beta_nc*sigv0_, alpha_psi*s_u_uu)
 
-    save_parameter = {'s_u_c[input_s]': s_u_c,
-                      'sigv0_[input_s]': sigv0_,
-                      'uu_suc[input_s]': uu_suc,
-                      's_u_uu[input_s]': s_u_uu,
-                      'i_p[input_s]': i_p,
-                      'psi[calc_s]': psi,
-                      'alpha_nc[calc_s]': alpha_nc,
-                      'alpha_psi[calc_s]': alpha_psi,
-                      'beta_nc[calc_s]': beta_nc}
+    save_parameter = {'s_u_c[input_s]# s<sub>u,c</sub> (kPa) ? -': s_u_c,
+                      "sigv0_[input_s]# σ'<sub>v</sub> (kPa) ? -": sigv0_,
+                      'uu_suc[input_s]# s<sub>u,uu</sub>/s<sub>u,c</sub> (-) ? -': uu_suc,
+                      's_u_uu[input_s]# s<sub>u,uu</sub> (kPa) ? -': s_u_uu,
+                      'i_p[input_s]# I<sub>p</sub> (%) ? -': i_p,
+                      'psi[calc_s]# ψ (-) ? -': psi,
+                      'alpha_nc[calc_s]# α<sub>nc</sub> (-) ? -': alpha_nc,
+                      'alpha_psi[calc_s]# α<sub>ψ</sub> (-) ? -': alpha_psi,
+                      'beta_nc[calc_s]# β<sub>nc</sub> (-) ? -': beta_nc}
     
     return q_s, inner_ratio, save_parameter
 
@@ -227,15 +227,15 @@ def icp_shaft_clay(sigv0_, ocr, z, z_tip, st, delta_int, calculation_dict, K_f_K
     
     q_s = K_f_K_c*K_c*0.001*sigv0_*math.tan(np.radians(delta_int))
 
-    save_parameter = {'sigv0_[input_s]': sigv0_,
-                      'ocr[input_s]': ocr,
-                      'st[input_s]': st,
-                      'delta_int[input_s]': delta_int,
-                      'z_tip[calc_s]': z_tip,
-                      'h[calc_s]': h,
-                      'K_f_K_c[calc_s]': K_f_K_c,
-                      'R_star[calc_s]': R_star,
-                      'h_R[calc_s]': h_R,
+    save_parameter = {"sigv0_[input_s]# σ'<sub>v</sub> (kPa) ? -": sigv0_,
+                      'ocr[input_s]# OCR (-) ? -': ocr,
+                      'st[input_s]# S<sub>t</sub> (-) ? -': st,
+                      'delta_int[input_s]# δ<sub>int</sub> (deg) ? -': delta_int,
+                      'z_tip[calc_s]# z<sub>tip</sub> (m) ? -': z_tip,
+                      'h[calc_s]# h (m) ? -': h,
+                      'K_f_K_c[calc_s]# K<sub>f</sub>/K<sub>c</sub> (-) ? -': K_f_K_c,
+                      'R_star[calc_s]# R* (-) ? -': R_star,
+                      'h_R[calc_s]# h/R (-) ? -': h_R,
                       'dI_vy[calc_s]': dI_vy,
                       'K_c[calc_s]': K_c}
             
@@ -261,11 +261,11 @@ def uwa_shaft_clay(q_t, sigv0_, z, z_tip, delta_int, calculation_dict):
                         
     q_s = 0.23*q_t*np.power(h_R, -0.2)/np.power(1000*q_t/sigv0_, 0.15)*math.tan(np.radians(delta_int))
 
-    save_parameter = {'q_t[input_s]': q_t,
-                      'sigv0_[input_s]': sigv0_,
-                      'delta_int[input_s]': delta_int,
-                      'z_tip[calc_s]': z_tip,
-                      'h[calc_s]': h,
+    save_parameter = {'q_t[input_s]# q<sub>t</sub> (MPa) ? -': q_t,
+                      "sigv0_[input_s]# σ'<sub>v</sub> (kPa) ? -": sigv0_,
+                      'delta_int[input_s]# δ<sub>int</sub> (deg) ? -': delta_int,
+                      'z_tip[calc_s]# z<sub>tip</sub> (m) ? -': z_tip,
+                      'h[calc_s]# h (m) ? -': h,
                       'R_star[calc_s]': R_star,
                       'h_R[calc_s]': h_R}
             
@@ -281,12 +281,12 @@ def fugro_shaft_clay(q_t, sigv0_, sigv0, z, z_tip):
     Q_t = (1000*max(1e-10, q_t) - sigv0)/max(1e-10, sigv0_)
     q_s = min(0.08, 0.16*np.power(max(1e-10, h/1), -0.3)*np.power(Q_t, -0.4))
 
-    save_parameter = {'q_t[input_s]': q_t,
-                      'sigv0_[input_s]': sigv0_,
-                      'sigv0[input_s]': sigv0,
-                      'Q_t[input_s]': Q_t,
-                      'z_tip[calc_s]': z_tip,
-                      'h[calc_s]': h}
+    save_parameter = {'q_t[input_s]# q<sub>t</sub> (MPa) ? -': q_t,
+                      "sigv0_[input_s]# σ'<sub>v</sub> (kPa) ? -": sigv0_,
+                      'sigv0[input_s]# σ<sub>v</sub> (kPa) ? -': sigv0,
+                      'Q_t[input_s]# Q<sub>t</sub> (-) ? -': Q_t,
+                      'z_tip[calc_s]# z<sub>tip</sub> (m) ? -': z_tip,
+                      'h[calc_s]# h (m) ? -': h}
             
     return q_s, inner_ratio, save_parameter
 
@@ -300,12 +300,12 @@ def cpt_shaft_sand(q_c, sbt, case, calculation_dict, kf_p=0.001, kf_h=0.003):
         inner_ratio = 1
     
     if 'most_probable' in case.lower():
-        k_side = kf_p
+        k_f = kf_p
     elif 'highest' in case.lower():
-        k_side = kf_h
+        k_f = kf_h
     elif 'tailored' in case.lower():
         match = re.search(r'\[([0-9.+-eE]+)\]', case)
-        k_side = float(match.group(1))
+        k_f = float(match.group(1))
     elif 'sbt' in case.lower():
         if 'be' in case.lower():
             matrix = {'SD': 0.0011,
@@ -329,14 +329,14 @@ def cpt_shaft_sand(q_c, sbt, case, calculation_dict, kf_p=0.001, kf_h=0.003):
                       'CC': 0.1,
                       'TC': 0.35}
         if sbt in matrix:
-            k_side = matrix[sbt]
+            k_f = matrix[sbt]
         else:
-            k_side = matrix['SD']
+            k_f = matrix['SD']
 
-    q_s = q_c*k_side
+    q_s = q_c*k_f
 
-    save_parameter = {'q_c[input_s]': q_c,
-                      'k_side[calc_s]': k_side}
+    save_parameter = {'q_c[input_s]# q<sub>c</sub> (MPa) ? -': q_c,
+                      'k_f[calc_s]# k<sub>s</sub> (-) ? -': k_f}
         
     return q_s, inner_ratio, save_parameter
 
@@ -357,38 +357,38 @@ def almhamre_shaft_sand(q_c, sigv0_, z, z_tip, d_r, case, calculation_dict, k_ss
     sigv0_ = max(0.001, sigv0_)
 
     if d_r < 15:
-        delta = 15
+        delta_int = 15
     elif d_r < 35:
-        delta = 20
+        delta_int = 20
     elif d_r < 65:
-        delta = 25
+        delta_int = 25
     elif d_r < 85:
-        delta = 30
+        delta_int = 30
     else:
-        delta = 35
+        delta_int = 35
         
     k = np.power(1000*q_c/sigv0_, 0.5)/80
     K = 0.0066*1000*q_c*(sigv0_/patm)**0.13/sigv0_
 
-    qs_init = 0.001*K*sigv0_*math.tan(math.radians(delta))
+    qs_init = 0.001*K*sigv0_*math.tan(math.radians(delta_int))
     qs_res = k_ss*qs_init
     h = z_tip - z
     q_s = multiplier*(qs_res + (qs_init - qs_res)*math.exp(-k*h))
     
     q_s = max(0, q_s)
 
-    save_parameter = {'q_c[input_s]': q_c,
+    save_parameter = {'q_c[input_s]# q<sub>c</sub> (MPa) ? -': q_c,
                       'd_r[input_s]': d_r,
-                      'sigv0_[input_s]': sigv0_,
-                      'delta[calc_s]': delta,
+                      "sigv0_[input_s]# σ'<sub>v</sub> (kPa) ? -": sigv0_,
+                      'delta_int[calc_s]': delta_int,
                       'k[calc_s]': k,
                       'K[calc_s]': K,
                       'k_ss[calc_s]': k_ss,
                       'qs_res[calc_s]': qs_res,
                       'qs_init[calc_s]': qs_init,
-                      'z_tip[calc_s]': z_tip,
-                      'h[calc_s]': h,
-                      'mult[calc_s]': multiplier}
+                      'z_tip[calc_s]# z<sub>tip</sub> (m) ? -': z_tip,
+                      'h[calc_s]# h (m) ? -': h,
+                      'mult[calc_s]# mult (-) ? -': multiplier}
     
     return q_s, inner_ratio, save_parameter
 
@@ -401,8 +401,8 @@ def beta_dnv_shaft_sand(phi, phi_rep, sigv0_, calculation_dict, c=0, r=0.66):
         inner_ratio = 1
     
     tan_phi = math.tan(math.radians(phi))
-    tan_delta = r*tan_phi
-    delta = np.degrees(np.atan(tan_delta))
+    tan_delta_int = r*tan_phi
+    delta_int = np.degrees(np.atan(tan_delta_int))
 
     # if calc_type in ['installation']:
     #     K = np.interp(min(45, max(26.6, phi_rep)), [26.6, 28.8, 31, 33, 35, 36.9, 38.7, 40.4, 42, 43.5, 45], [4.1, 4.7, 5.5, 6.3, 7.3, 8.6, 9.9, 10.7, 13.2, 15.3, 17.8])
@@ -412,15 +412,15 @@ def beta_dnv_shaft_sand(phi, phi_rep, sigv0_, calculation_dict, c=0, r=0.66):
     K = 0.8
 
     a = c * 1 / np.tan(np.radians(phi))
-    q_s = 0.001*(a + K*sigv0_*tan_delta) ## HERE ##
+    q_s = 0.001*(a + K*sigv0_*tan_delta_int) ## HERE ##
         
-    save_parameter = {'phi[input_s]': phi,
-                      'tan_phi[calc_s]': tan_phi,
-                      'r[calc_s]': r,
-                      'tan_delta[calc_s]': tan_delta,
-                      'delta[calc_s]': delta,
-                      'K[calc_s]': K,
-                      'a[calc_s]': a}
+    save_parameter = {'phi[input_s]# φ (deg) ? -': phi,
+                      'tan_phi[calc_s]#  tan(φ) (-) ? -': tan_phi,
+                      'r[calc_s]# r (-) ? -': r,
+                      'tan_delta_int[calc_s]# tan(δ) (-) ? -': tan_delta_int,
+                      'delta_int[calc_s]# δ (deg) ? -': delta_int,
+                      'K[calc_s]# K (-) ? -': K,
+                      'a[calc_s]# a (-) ? -': a}
         
     return q_s, inner_ratio, save_parameter
 
@@ -451,7 +451,7 @@ def beta_iso_api_shaft_sand(d_r, sigv0_, calculation_dict):
         q_s = q_s_lim
 
     save_parameter = {'d_r[input_s]': d_r,
-                      'sigv0_[input_s]': sigv0_,
+                      "sigv0_[input_s]# σ'<sub>v</sub> (kPa) ? -": sigv0_,
                       'q_s_lim[calc_s]': q_s_lim,
                       'beta[calc_s]': beta}
     
@@ -487,23 +487,23 @@ def ucpt_shaft_sand(q_c, sigv0_, z, z_tip, I_c, delta_int, calculation_dict, f_d
     else:
         i_c_corr = 1
     
-    sig_rc = (i_c_corr*q_c/44)*np.power(A_r_eff, 0.3)*np.power(max(1, h_D), -0.4)
+    sig_rc_ = (i_c_corr*q_c/44)*np.power(A_r_eff, 0.3)*np.power(max(1, h_D), -0.4)
     
     dsig_rd_ = (i_c_corr*q_c/10)*np.power(1000*i_c_corr*q_c/sigv0_, -0.33)*d_cpt/D
         
-    q_s = (ft_fc)*(sig_rc + dsig_rd_)*np.tan(np.radians(delta_int))
+    q_s = (ft_fc)*(sig_rc_ + dsig_rd_)*np.tan(np.radians(delta_int))
 
-    save_parameter = {'q_c[input_s]': q_c,
-                      'sigv0_[input_s]': sigv0_,
+    save_parameter = {'q_c[input_s]# q<sub>c</sub> (MPa) ? -': q_c,
+                      "sigv0_[input_s]# σ'<sub>v</sub> (kPa) ? -": sigv0_,
                       'I_c[input_s]': I_c,
-                      'delta_int[input_s]': delta_int,
-                      'z_tip[calc_s]': z_tip,
-                      'h[calc_s]': h,
+                      'delta_int[input_s]# δ<sub>int</sub> (deg) ? -': delta_int,
+                      'z_tip[calc_s]# z<sub>tip</sub> (m) ? -': z_tip,
+                      'h[calc_s]# h (m) ? -': h,
                       'PLR[calc_s]': PLR,
                       'A_r_eff[calc_s]': A_r_eff,
                       'i_c_corr[calc_s]': i_c_corr,
                       'ft_fc[calc_s]': ft_fc,
-                      'sig_rc[calc_s]': sig_rc,
+                      'sig_rc_[calc_s]': sig_rc_,
                       'dsig_rd_[calc_s]': dsig_rd_}
     
     return q_s, inner_ratio, save_parameter
@@ -532,11 +532,11 @@ def ngi_shaft_sand(q_c, sigv0_, z, z_tip, calculation_dict, f_direction, materia
     elif material.lower() == 'concrete':
         F_mat = 1.2
 
-    q_s = max(0.001*0.1*sigv0_, (z/max(1e-10, z_tip))*0.1*F_dr*F_sig*F_tip*F_load*F_mat)
+    q_s = max(0.001*0.1*sigv0_ (z/max(1e-10, z_tip))*0.1*F_dr*F_sig*F_tip*F_load*F_mat)
 
-    save_parameter = {'q_c[input_s]': q_c,
-                      'sigv0_[input_s]': sigv0_,
-                      'z_tip[calc_s]': z_tip,
+    save_parameter = {'q_c[input_s]# q<sub>c</sub> (MPa) ? -': q_c,
+                      "sigv0_[input_s]# σ'<sub>v</sub> (kPa) ? -": sigv0_,
+                      'z_tip[calc_s]# z<sub>tip</sub> (m) ? -': z_tip,
                       'd_r_ngi[calc_s]': d_r_ngi,
                       'F_dr[calc_s]': F_dr,
                       'F_sig[calc_s]': F_sig,
@@ -586,10 +586,10 @@ def icp_shaft_sand(q_c, sigv0_, z, z_tip, delta_int, calculation_dict, f_directi
             
     q_s = a*(b*sig_rc_ + dsig_rd_)*math.tan(np.radians(delta_int))
 
-    save_parameter = {'q_c[input_s]': q_c,
-                      'sigv0_[input_s]': sigv0_,
-                      'z_tip[calc_s]': z_tip,
-                      'h[calc_s]': h,
+    save_parameter = {'q_c[input_s]# q<sub>c</sub> (MPa) ? -': q_c,
+                      "sigv0_[input_s]# σ'<sub>v</sub> (kPa) ? -": sigv0_,
+                      'z_tip[calc_s]# z<sub>tip</sub> (m) ? -': z_tip,
+                      'h[calc_s]# h (m) ? -': h,
                       'R_star[calc_s]': R_star,
                       'G[calc_s]': G,
                       'h_R[calc_s]': h_R,
@@ -632,10 +632,11 @@ def uwa_shaft_sand(q_c, sigv0_, z, z_tip, delta_int, calculation_dict, f_directi
         
     q_s = (f_fc)*(sig_rc + dsig_rd_)*tan_delta
 
-    save_parameter = {'q_c[input_s]': q_c,
-                      'sigv0_[input_s]': sigv0_,
-                      'z_tip[calc_s]': z_tip,
-                      'h[calc_s]': h,
+    save_parameter = {'q_c[input_s]# q<sub>c</sub> (MPa) ? -': q_c,
+                      "sigv0_[input_s]# σ'<sub>v</sub> (kPa) ? -": sigv0_,
+                      'delta_int[input_s]# δ<sub>int</sub> (deg) ? -': delta_int,
+                      'z_tip[calc_s]# z<sub>tip</sub> (m) ? -': z_tip,
+                      'h[calc_s]# h (m) ? -': h,
                       'h_D[calc_s]': h_D,
                       'IFR[calc_s]': IFR,
                       'A_r_eff[calc_s]': A_r_eff,
@@ -668,10 +669,10 @@ def fugro_shaft_sand(q_c, sigv0_, z, z_tip, calculation_dict, f_direction, min_h
     elif f_direction.lower() == 'tension':
         q_s = 0.045*q_c*np.power(sigv0_/100, 0.15)*np.power(max(h_R_star, 4), -0.85)
        
-    save_parameter = {'q_c[input_s]': q_c,
-                      'sigv0_[input_s]': sigv0_,
-                      'z_tip[calc_s]': z_tip,
-                      'h[calc_s]': h,
+    save_parameter = {'q_c[input_s]# q<sub>c</sub> (MPa) ? -': q_c,
+                      "sigv0_[input_s]# σ'<sub>v</sub> (kPa) ? -": sigv0_,
+                      'z_tip[calc_s]# z<sub>tip</sub> (m) ? -': z_tip,
+                      'h[calc_s]# h (m) ? -': h,
                       'R_star[calc_s]': R_star,
                       'h_R_star[calc_s]': h_R_star}
     
@@ -897,22 +898,22 @@ def shaft_resistance(depth_i, soil_data_dis_dict, dl_s,
 
             if calc_type in ['plug_bearing_installation', 'plug_bearing_removal']: 
                 save_parameter_ii = {key.replace('_s]', '_ps]'): value for key, value in save_parameter_ii.items()}
-                save_parameter_ii['soil_type_ps_section_' + str(idx+1) + '[input_ps]'] = soil_type_ii
-                save_parameter_ii['z_ps_section_' + str(idx+1) + '[calc_ps]'] = float(depth_ii_1)
-                save_parameter_ii['q_ps_section_' + str(idx+1) + '[calc_ps]'] = float(q_s_ii)
-                save_parameter_ii['di_do_ratio_section_' + str(idx+1) + '[geometry_ps]'] = a_shaft_inner_diff_ii/a_shaft_outer_diff_ii
-                save_parameter_ii['a_ps_inner_section_' + str(idx+1) + '[geometry_ps]'] = inner_ratio_ii*a_shaft_inner_diff_ii
-                save_parameter_ii['Q_ps_inner_section_' + str(idx+1) + '[calc_ps]'] = Q_s_inner_section_i
+                save_parameter_ii['soil_type_ps_section_' + str(idx+1) + '[input_ps]# - ? Section'+str(idx+1)] = soil_type_ii
+                save_parameter_ii['z_ps_section_' + str(idx+1) + '[input_ps]# z (m) ? Section'+str(idx+1)] = float(depth_ii_1)
+                save_parameter_ii['q_ps_section_' + str(idx+1) + '[calc_ps2]# q<sub>s,pb</sub> (MPa) ? Section'+str(idx+1)] = float(q_s_ii)
+                save_parameter_ii['a_ps_inner_section_' + str(idx+1) + '[geometry_ps]# A<sub>s,pb</sub> (m<super>2</super>) ? Section'+str(idx+1)] = inner_ratio_ii*a_shaft_inner_diff_ii
+                save_parameter_ii['Q_ps_inner_section_' + str(idx+1) + '[calc_ps3]# ΔQ<sub>s,pb</sub> (MN ? Section'+str(idx+1)] = Q_s_inner_section_i
             else:
-                save_parameter_ii['soil_type_s_section_' + str(idx+1) + '[input_s]'] = soil_type_ii
-                save_parameter_ii['z_s_section_' + str(idx+1) + '[calc_s]'] = float(depth_ii_1)
-                save_parameter_ii['q_s_section_' + str(idx+1) + '[calc_s]'] = float(q_s_ii)
-                save_parameter_ii['di_do_ratio_section_' + str(idx+1) + '[geometry_s]'] = a_shaft_inner_diff_ii/a_shaft_outer_diff_ii
-                save_parameter_ii['a_s_inner_section_' + str(idx+1) + '[geometry_s]'] = inner_ratio_ii*a_shaft_inner_diff_ii
-                save_parameter_ii['a_s_outer_section_' + str(idx+1) + '[geometry_s]'] = a_shaft_outer_diff_ii
-                save_parameter_ii['a_s_total_section_' + str(idx+1) + '[geometry_s]'] = a_shaft_outer_diff_ii + inner_ratio_ii*a_shaft_inner_diff_ii
-                save_parameter_ii['Q_s_inner_section_' + str(idx+1) + '[calc_s]'] = Q_s_inner_section_i
-                save_parameter_ii['Q_s_outer_section_' + str(idx+1) + '[calc_s]'] = Q_s_outer_section_i
+                save_parameter_ii['soil_type_s_section_' + str(idx+1) + '[input_s]# - ? Section'+str(idx+1)] = soil_type_ii
+                save_parameter_ii['z_s_section_' + str(idx+1) + '[input_s]#  z (m) ? Section'+str(idx+1)] = float(depth_ii_1)
+                save_parameter_ii['q_s_section_' + str(idx+1) + '[calc_s2]# q<sub>s</sub> (MPa) ? Section'+str(idx+1)] = float(q_s_ii)
+                save_parameter_ii['di_do_ratio_section_' + str(idx+1) + '[geometry_s]# A<sub>i</sub>/A<sub>o</sub> ? Section'+str(idx+1)] = a_shaft_inner_diff_ii/a_shaft_outer_diff_ii
+                save_parameter_ii['a_s_inner_section_' + str(idx+1) + '[geometry_s]# A<sub>s,inner</sub> (m<super>2</super>) ? Section'+str(idx+1)] = inner_ratio_ii*a_shaft_inner_diff_ii
+                save_parameter_ii['a_s_outer_section_' + str(idx+1) + '[geometry_s]# A<sub>s,outer</sub> (m<super>2</super>) ? Section'+str(idx+1)] = a_shaft_outer_diff_ii
+                save_parameter_ii['a_s_total_section_' + str(idx+1) + '[geometry_s]# A<sub>s</sub> (m<super>2</super>) ? Section'+str(idx+1)] = a_shaft_outer_diff_ii + inner_ratio_ii*a_shaft_inner_diff_ii
+                save_parameter_ii['Q_s_inner_section_' + str(idx+1) + '[calc_s3]# ΔQ<sub>s,inner</sub> (MN) ? Section'+str(idx+1)] = Q_s_inner_section_i
+                save_parameter_ii['Q_s_outer_section_' + str(idx+1) + '[calc_s3]# ΔQ<sub>s,outer</sub> (MN) ? Section'+str(idx+1)] = Q_s_outer_section_i
+                save_parameter_ii['Q_s_total_section_' + str(idx+1) + '[calc_s3]# ΔQ<sub>s</sub> (MN) ? Section'+str(idx+1)] = Q_s_inner_section_i + Q_s_outer_section_i
      
             shaft_parameter_inc.append(save_parameter_ii)
 
@@ -936,14 +937,14 @@ def shaft_resistance(depth_i, soil_data_dis_dict, dl_s,
         Q_s_total = Q_s_outer + Q_s_inner
 
     if calc_type in ['plug_bearing_installation', 'plug_bearing_removal']: 
-        results_dict_shaft = {'Q_ps_inner[output_ps]': Q_ps_inner,
-                            'shaft_parameter_inc_plug_bearing': shaft_parameter_inc,
-                            'pf_soil_mat[input_ps]': pf_soil_mat}
+        results_dict_shaft = {'Q_ps_inner[output_ps]# Q<sub>s,pb</sub> (MN) ? -': Q_ps_inner,
+                              'shaft_parameter_inc_plug_bearing': shaft_parameter_inc,
+                              'pf_soil_mat[input_ps]# γ<sub>m,pb</sub> (-) ? -': pf_soil_mat}
     else:
-        results_dict_shaft = {'Q_s_total[output_s]': Q_s_total,
-                              'Q_s_inner[output_s]': Q_s_inner,
-                              'Q_s_outer[output_s]': Q_s_outer,
+        results_dict_shaft = {'Q_s_total[output_s]# Q<sub>s</sub> (MN) ? -': Q_s_total,
+                              'Q_s_inner[output_s]# Q<sub>s,inner</sub> (MN) ? -': Q_s_inner,
+                              'Q_s_outer[output_s]# Q<sub>s,outer</sub> (MN) ? -': Q_s_outer,
                               'shaft_parameter_inc': shaft_parameter_inc,
-                              'pf_soil_mat[input_s]': pf_soil_mat}
+                              'pf_soil_mat[input_s]# γ<sub>m</sub> (-) ? -': pf_soil_mat}
     
     return results_dict_shaft

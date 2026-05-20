@@ -20,12 +20,12 @@ def cpt_base_clay(q_c, sbt, case, calculation_dict, kp_p=0.4, kp_h=0.6):
         plug_output = 'cored'
 
     if 'most_probable' in case.lower():
-        k_tip = kp_p
+        k_p = kp_p
     elif 'highest' in case.lower():
-        k_tip = kp_h
+        k_p = kp_h
     elif 'tailored' in case.lower():
         match = re.search(r'\[([0-9.+-eE]+)\]', case)
-        k_tip = float(match.group(1))
+        k_p = float(match.group(1))
     elif 'sbt' in case.lower():
         if 'be' in case.lower():
             matrix = {'SD': 0.12,
@@ -49,15 +49,15 @@ def cpt_base_clay(q_c, sbt, case, calculation_dict, kp_p=0.4, kp_h=0.6):
                       'CC': 8,
                       'TC': 5}
         if sbt in matrix:
-            k_tip = matrix[sbt]
+            k_p = matrix[sbt]
         else:
-            k_tip = matrix['CD']
+            k_p = matrix['CD']
 
-    q_b = q_c*k_tip
+    q_b = q_c*k_p
 
-    save_parameter = {'q_c[input_b]': q_c,
-                      'k_tip[calc_b]': k_tip,
-                      'plug_output[calc_b]': plug_output}
+    save_parameter = {'q_c[input_b]# q<sub>c</sub> (MPa) ? -': q_c,
+                      'k_p[calc_b]# k<sub>p</sub> (-) ? -': k_p,
+                      'plug_output[output_b]# - ? -': plug_output}
     
     return q_b, a_base, base_influence, plug_output, save_parameter
 
@@ -82,10 +82,10 @@ def almhamre_base_clay(q_c, case, calculation_dict, k_tc=0.6):
     
     q_b = multiplier*k_tc*q_c
 
-    save_parameter = {'q_c[input_b]': q_c,
-                      'k_tc[calc_b]': k_tc,
-                      'mult[calc_b]': multiplier,
-                      'plug_output[calc_b]': plug_output}
+    save_parameter = {'q_c[input_b]# q<sub>c</sub> (MPa) ? -': q_c,
+                      'k_tc[calc_b]# k<sub>t,c</sub> (-) ? -': k_tc,
+                      'mult[calc_b]# mult (-) ? -': multiplier,
+                      'plug_output[output_b]# - ? -': plug_output}
         
     return q_b, a_base, base_influence, plug_output, save_parameter
 
@@ -143,15 +143,15 @@ def bc_dnv_base_deep_clay(s_u_c, dss_suc, sue_suc, sigv0_, calculation_dict):
     else:
         q_b = 0.001*N_c*s_u_c*0.9
 
-    save_parameter = {'s_u_c[input_b]': s_u_c,
-                      's_u_dss[input_b]': s_u_dss,
-                      'dss_suc[input_b]': dss_suc,
-                      's_u_e[input_b]': s_u_e,
-                      'sue_suc[input_b]': sue_suc,
-                      's_u_ave[input_b]': s_u_ave,
-                      'sigv0_[input_b]': sigv0_,
-                      'N_c[calc_b]': N_c,
-                      'plug_output[calc_b]': plug_output}
+    save_parameter = {'s_u_c[input_b]# s<sub>u,c</sub> (kPa) ? -': s_u_c,
+                      's_u_dss[input_b]# s<sub>u,d</sub> (kPa) ? -': s_u_dss,
+                      'dss_suc[input_b]# s<sub>u,d</sub>/s<sub>u,c</sub> (-) ? -': dss_suc,
+                      's_u_e[input_b]# s<sub>u,e</sub> (kPa) ? -': s_u_e,
+                      'sue_suc[input_b]# s<sub>u,e</sub>/s<sub>u,c</sub> (-) ? -': sue_suc,
+                      's_u_ave[input_b]# s<sub>u,ave</sub> (kPa) ? -': s_u_ave,
+                      "sigv0_[input_b]# σ'<sub>v</sub> (kPa) ? -": sigv0_,
+                      'N_c[calc_b]# N<sub>c</sub> (-) ? -': N_c,
+                      'plug_output[output_b]# - ? -': plug_output}
     
     return q_b, a_base, base_influence, plug_output, save_parameter
 
@@ -202,14 +202,14 @@ def bc_iso_base_deep_clay(s_u_c, dss_suc, sue_suc, calculation_dict, N_c=9):
     
     q_b = 0.001*N_c*s_u_c*0.9
 
-    save_parameter = {'s_u_c[input_b]': s_u_c,
-                      's_u_dss[input_b]': s_u_dss,
-                      'dss_suc[input_b]': dss_suc,
-                      's_u_e[input_b]': s_u_e,
-                      'sue_suc[input_b]': sue_suc,
-                      's_u_ave[input_b]': s_u_ave,
-                      'N_c[calc_b]': N_c,
-                      'plug_output[calc_b]': plug_output}
+    save_parameter = {'s_u_c[input_b]# s<sub>u,c</sub> (kPa) ? -': s_u_c,
+                      's_u_dss[input_b]# s<sub>u,dss</sub> (kPa) ? -': s_u_dss,
+                      'dss_suc[input_b]# s<sub>u,d</sub>/s<sub>u,c</sub> (-) ? -': dss_suc,
+                      's_u_e[input_b]# s<sub>u,e</sub> (kPa) ? -': s_u_e,
+                      'sue_suc[input_b]# s<sub>u,e</sub>/s<sub>u,c</sub> (-) ? -': sue_suc,
+                      's_u_ave[input_b]# s<sub>u,ave</sub> (kPa) ? -': s_u_ave,
+                      'N_c[calc_b]# N<sub>c</sub> (-) ? -': N_c,
+                      'plug_output[output_b]# - ? -': plug_output}
     
     return q_b, a_base, base_influence, plug_output, save_parameter
 
@@ -257,14 +257,14 @@ def bc_api_base_deep_clay(s_u_c, dss_suc, sue_suc, calculation_dict, N_c=9):
     
     q_b = 0.001*N_c*s_u_ave
 
-    save_parameter = {'s_u_c[input_b]': s_u_c,
-                      's_u_dss[input_b]': s_u_dss,
-                      'dss_suc[input_b]': dss_suc,
-                      's_u_e[input_b]': s_u_e,
-                      'sue_suc[input_b]': sue_suc,
-                      's_u_ave[input_b]': s_u_ave,
-                      'N_c[calc_b]': N_c,
-                      'plug_output[calc_b]': plug_output}
+    save_parameter = {'s_u_c[input_b]# s<sub>u,c</sub> (kPa) ? -': s_u_c,
+                      's_u_dss[input_b]# s<sub>u,dss</sub> (kPa) ? -': s_u_dss,
+                      'dss_suc[input_b]# s<sub>u,d</sub>/s<sub>u,c</sub> (-) ? -': dss_suc,
+                      's_u_e[input_b]# s<sub>u,e</sub> (kPa) ? -': s_u_e,
+                      'sue_suc[input_b]# s<sub>u,e</sub>/s<sub>u,c</sub> (-) ? -': sue_suc,
+                      's_u_ave[input_b]# s<sub>u,ave</sub> (kPa) ? -': s_u_ave,
+                      'N_c[calc_b]# N<sub>c</sub> (-) ? -': N_c,
+                      'plug_output[output_b]# - ? -': plug_output}
     
     return q_b, a_base, base_influence, plug_output, save_parameter
 
@@ -288,9 +288,9 @@ def ucpt_base_clay(q_t_tot, z, z_tot, soil_type_tot, calculation_dict):
     q_p = np.average(q_t_tot[(z_tot <= z+20*t) & (z_tot >= z) & (soil_type_tot == 'C') & (z_tot >= 0)])
     q_b = (0.2 + 0.6*np.power(D_/D, 2))*q_p
 
-    save_parameter = {'q_p[input_b]': q_p,
-                      'D_[calc_b]': D_,
-                      'plug_output[calc_b]': plug_output}
+    save_parameter = {'q_p[input_b]# q<sub>p</sub> (MPa) ? -': q_p,
+                      'D_[calc_b]# D<sub>eff</sub> (m) ? -': D_,
+                      'plug_output[output_b]# - ? -': plug_output}
     
     return q_b, a_base, base_influence, plug_output, save_parameter
 
@@ -309,11 +309,11 @@ def ngi_base_clay(s_u_c, uu_suc, calculation_dict, N_c=9):
     
     q_b = 0.001*N_c*s_u_uu
 
-    save_parameter = {'s_u_c[input_b]': s_u_c,
-                      'uu_suc[input_b]': uu_suc,
-                      's_u_uu[input_b]': s_u_uu,
-                      'N_c[calc_b]': N_c,
-                      'plug_output[calc_b]': plug_output}
+    save_parameter = {'s_u_c[input_b]# s<sub>u,c</sub> (kPa) ? -': s_u_c,
+                      'uu_suc[input_b]# s<sub>u,uu</sub>/s<sub>u,c</sub> (-) ? -': uu_suc,
+                      's_u_uu[input_b]# s<sub>u,uu</sub> (kPa) ? -': s_u_uu,
+                      'N_c[calc_b]# N<sub>c</sub> (-) ? -': N_c,
+                      'plug_output[output_b]# - ? -': plug_output}
     
     return q_b, a_base, base_influence, plug_output, save_parameter
 
@@ -344,9 +344,9 @@ def icp_base_clay(q_c, calculation_dict, d_cpt, drainage='undrained'):
     else:
         plug_output = 'cored'
     
-    save_parameter = {'q_c[input_b]': q_c,
-                      'k_b[calc_b]': k_b,
-                      'plug_output[calc_b]': plug_output}
+    save_parameter = {'q_c[input_b]# q<sub>c</sub> (MPa) ? -': q_c,
+                      'k_b[calc_b]# k<sub>b</sub> (-) ? -': k_b,
+                      'plug_output[output_b]# - ? -': plug_output}
     
     return q_b, a_base, base_influence, plug_output, save_parameter
 
@@ -377,9 +377,9 @@ def uwa_base_clay(q_c, calculation_dict, d_cpt, drainage='undrained'):
     else:
         plug_output = 'cored'
     
-    save_parameter = {'q_c[input_b]': q_c,
-                      'k_b[calc_b]': k_b,
-                      'plug_output[calc_b]': plug_output}
+    save_parameter = {'q_c[input_b]# q<sub>c</sub> (MPa) ? -': q_c,
+                      'k_b[calc_b]# k<sub>b</sub> (-) ? -': k_b,
+                      'plug_output[output_b]# - ? -': plug_output}
     
     return q_b, a_base, base_influence, plug_output, save_parameter
 
@@ -401,8 +401,8 @@ def fugro_base_clay(q_t_tot, p_0_tot, z, z_tot, calculation_dict):
     q_p = np.average(q_n_tot[(z_tot >= z-1.5*D) & (z_tot <= z+1.5*D) & (z_tot >= 0)])
     q_b = 0.7*q_p
 
-    save_parameter = {'q_p[input_b]': q_p,
-                      'plug_output[calc_b]': plug_output}
+    save_parameter = {'q_p[input_b]# q<sub>p</sub> (MPa) ? -': q_p,
+                      'plug_output[output_b]# - ? -': plug_output}
     
     return q_b, a_base, base_influence, plug_output, save_parameter
 
@@ -420,12 +420,12 @@ def cpt_base_sand(q_c, sbt, case, calculation_dict, kp_p=0.3, kp_h=0.6):
         plug_output = 'cored'
 
     if 'most_probable' in case.lower():
-        k_tip = kp_p
+        k_p = kp_p
     elif 'highest' in case.lower():
-        k_tip = kp_h
+        k_p = kp_h
     elif 'tailored' in case.lower():
         match = re.search(r'\[([0-9.+-eE]+)\]', case)
-        k_tip = float(match.group(1))
+        k_p = float(match.group(1))
     elif 'sbt' in case.lower():
         if 'be' in case.lower():
             matrix = {'SD': 0.12,
@@ -449,15 +449,15 @@ def cpt_base_sand(q_c, sbt, case, calculation_dict, kp_p=0.3, kp_h=0.6):
                       'CC': 8,
                       'TC': 5}
         if sbt in matrix:
-            k_tip = matrix[sbt]
+            k_p = matrix[sbt]
         else:
-            k_tip = matrix['SD']
+            k_p = matrix['SD']
     
-    q_b = q_c*k_tip
+    q_b = q_c*k_p
 
-    save_parameter = {'q_c[input_b]': q_c,
-                      'k_tip[calc_b]': k_tip,
-                      'plug_output[calc_b]': plug_output}
+    save_parameter = {'q_c[input_b]# q<sub>c</sub> (MPa) ? -': q_c,
+                      'k_p[calc_b]# k<sub>p</sub> (-) ? -': k_p,
+                      'plug_output[output_b]# - ? -': plug_output}
     
     return q_b, a_base, base_influence, plug_output, save_parameter
 
@@ -483,12 +483,12 @@ def almhamre_base_sand(q_c, sigv0_, case, calculation_dict, k_ts=0.15, beta=0.2)
     
     q_b = multiplier*k_ts*q_c*(1000*q_c/sigv0_)**beta
 
-    save_parameter = {'q_c[input_b]': q_c,
-                      'sigv0_[input_b]': sigv0_,
+    save_parameter = {'q_c[input_b]# q<sub>c</sub> (MPa) ? -': q_c,
+                      "sigv0_[input_b]# σ'<sub>v</sub> (kPa) ? -": sigv0_,
                       'k_ts[calc_b]': k_ts,
                       'beta[calc_b]': beta,
-                      'mult[calc_b]': multiplier,
-                      'plug_output[calc_b]': plug_output}
+                      'mult[calc_b]# mult (-) ? -': multiplier,
+                      'plug_output[output_b]# - ? -': plug_output}
     
     return q_b, a_base, base_influence, plug_output, save_parameter
 
@@ -545,12 +545,12 @@ def bc_dnv_base_deep_sand(z, phi, sigv0_, calculation_dict):
     
     q_b = 0.001 * (0.5 * (sigv0_/max(1e-10, z)) * base_influence * N_g + sigv0_ * N_q)
 
-    save_parameter = {'phi[input_b]': phi,
-                      'sigv0_[input_b]': sigv0_,
-                      'N_q[calc_b]': N_q,
-                      'N_g[calc_b]': N_g,
-                      'b_eff[calc_b]': base_influence,
-                      'plug_output[calc_b]': plug_output}
+    save_parameter = {'phi[input_b]# φ (deg) ? -': phi,
+                      "sigv0_[input_b]# σ'<sub>v</sub> (kPa) ? -": sigv0_,
+                      'N_q[calc_b]# N<sub>q</sub> (-) ? -': N_q,
+                      'N_g[calc_b]# N<sub>γ</sub> (-) ? -': N_g,
+                      'b_eff[calc_b]# b<sub>eff</sub> (m) ? -': base_influence,
+                      'plug_output[output_b]# - ? - ': plug_output}
     
     return q_b, a_base, base_influence, plug_output, save_parameter
 
@@ -584,7 +584,7 @@ def bc_dnv_base_deep_sand(z, phi, sigv0_, calculation_dict):
 #     if q_b > q_b_lim:
 #         q_b = q_b_lim
 
-#     save_parameter = {'dr[input_b]': d_r,
+#     save_parameter = {'d_r[input_b]': d_r,
 #                       'sigv0_[input_b]': sigv0_,
 #                       'N_q[bc_api_sand_b]': N_q,
 #                       'q_b_lim[bc_api_sand_b]': q_b_lim}
@@ -621,11 +621,11 @@ def bc_api_base_deep_sand(d_r, sigv0_, calculation_dict):
     if q_b > q_b_lim:
         q_b = q_b_lim
 
-    save_parameter = {'dr[input_b]': d_r,
-                      'sigv0_[input_b]': sigv0_,
+    save_parameter = {'d_r[input_b]': d_r,
+                      "sigv0_[input_b]# σ'<sub>v</sub> (kPa) ? -": sigv0_,
                       'N_q[calc_b]': N_q,
                       'q_b_lim[calc_b]': q_b_lim,
-                      'plug_output[calc_b]': plug_output}
+                      'plug_output[output_b]# - ? -': plug_output}
     
     return q_b, a_base, base_influence, plug_output, save_parameter
 
@@ -657,7 +657,7 @@ def bc_api_base_deep_sand(d_r, sigv0_, calculation_dict):
 #     if q_b > q_b_lim:
 #         q_b = q_b_lim
 
-#     save_parameter = {'dr[input_b]': d_r,
+#     save_parameter = {'d_r[input_b]': d_r,
 #                       'sigv0_[input_b]': sigv0_,
 #                       'N_q[bc_api_sand_b]': N_q,
 #                       'q_b_lim[bc_api_sand_b]': q_b_lim}
@@ -696,7 +696,7 @@ def ucpt_base_sand(q_c_tot, z, z_tot, I_c, calculation_dict, d_cpt):
                       'A_r_eff[calc_b]': A_r_eff,
                       'i_c_corr[calc_b]': i_c_corr,
                       'q_p[calc_b]': q_p,
-                      'plug_output[calc_b]': plug_output}
+                      'plug_output[output_b]# - ? -': plug_output}
             
     return q_b, a_base, base_influence, plug_output, save_parameter
 
@@ -716,10 +716,10 @@ def ngi_base_sand(q_c, sigv0_, calculation_dict):
         q_b = q_c    
         plug_output = 'cored'
 
-    save_parameter = {'q_c[input_b]': q_c,
-                      'sigv0_[input_b]': sigv0_,
-                      'd_r_ngi[calc_b]': d_r_ngi,
-                      'plug_output[calc_b]': plug_output}
+    save_parameter = {'q_c[input_b]# q<sub>c</sub> (MPa) ? -': q_c,
+                      "sigv0_[input_b]# σ'<sub>v</sub> (kPa) ? -": sigv0_,
+                      'd_r_ngi[calc_b]# D<sub>r,NGI</sub> (-) ? -': d_r_ngi,
+                      'plug_output[output_b]# - ? -': plug_output}
             
     return q_b, a_base, base_influence, plug_output, save_parameter
 
@@ -736,7 +736,7 @@ def icp_base_sand(q_c_tot, z, z_tot, sigv0_, calculation_dict, d_cpt):
     base_influence = calculation_dict['b_outer_diff']
 
     if 'plugged' in calculation_dict['calculation_method']:
-        q_b = max(A_r, 0.15, (0.5-0.25*np.log10(D/d_cpt)))*q_p
+        q_b = max(A_r, 0.15 (0.5-0.25*np.log10(D/d_cpt)))*q_p
     else:
         q_b = A_r*q_p
 
@@ -747,11 +747,11 @@ def icp_base_sand(q_c_tot, z, z_tot, sigv0_, calculation_dict, d_cpt):
     else:
         plug_output = 'cored'
 
-    save_parameter = {'q_p[input_b]': q_p,
-                      'd_cpt[calc_b]': d_cpt,
-                      'd_r_icp[calc_b]': d_r_icp,
-                      'A_r[calc_b]': A_r,
-                      'plug_output[calc_b]': plug_output}
+    save_parameter = {'q_p[input_b]# q<sub>p</sub> (MPa) ? -': q_p,
+                      'd_cpt[calc_b]# d<sub>CPT</sub> (m) ? -': d_cpt,
+                      'd_r_icp[calc_b]# D<sub>r,ICP</sub> (-) ? -': d_r_icp,
+                      'A_r[calc_b]# A<sub>r</sub> (m<super>2</super>) ? -': A_r,
+                      'plug_output[output_b]# - ? -': plug_output}
         
     return q_b, a_base, base_influence, plug_output, save_parameter
 
@@ -785,13 +785,13 @@ def uwa_base_sand(q_c_tot, z, z_tot, calculation_dict, l_s, Q_s_inner_clay, q_b_
     else:
         plug_output = 'fail'
 
-    save_parameter = {'q_p[input_b]': q_p,
-                      'FFR[calc_b]': FFR,
-                      'D_star[calc_b]': D_star,
-                      'A_rb[calc_b]': A_rb,
-                      'l_s[calc_b]': l_s,
-                      'q_b_clay_limit[calc_b]': q_b_clay_limit,
-                      'plug_output[calc_b]': plug_output}
+    save_parameter = {'q_p[input_b]# q<sub>p</sub> (MPa) ? -': q_p,
+                      'FFR[calc_b]# FFR (-) ? -': FFR,
+                      'D_star[calc_b]# D* (m) ? -': D_star,
+                      'A_rb[calc_b]# A<sub>rb</sub> (m<super>2</super>) ? -': A_rb,
+                      'l_s[calc_b]# L<sub>sand</sub> (m) ? -': l_s,
+                      'q_b_clay_limit[calc_b]# q<sub>b,limit clay</sub> (MPa) ? -': q_b_clay_limit,
+                      'plug_output[output_b]# - ? -': plug_output}
         
     return q_b, a_base, base_influence, plug_output, save_parameter
 
@@ -820,11 +820,11 @@ def fugro_base_sand(q_c_tot, z, z_tot, calculation_dict, l_s, Q_s_inner_clay, q_
     else:
         plug_output = 'fail'
 
-    save_parameter = {'q_p[input_b]': q_p,
-                      'R_star[calc_b]': R_star,
-                      'l_s[calc_b]': l_s,
-                      'q_b_clay_limit[calc_b]': q_b_clay_limit,
-                      'plug_output[calc_b]': plug_output}
+    save_parameter = {'q_p[input_b]# q<sub>p</sub> (MPa) ? -': q_p,
+                      'R_star[calc_b]# R* (m) ? -': R_star,
+                      'l_s[calc_b]# L<sub>sand</sub> (m) ? -': l_s,
+                      'q_b_clay_limit[calc_b]# q<sub>b,limit clay</sub> (MPa) ? -': q_b_clay_limit,
+                      'plug_output[output_b]# - ? -': plug_output}
         
     return q_b, a_base, base_influence, plug_output, save_parameter
 
@@ -1001,10 +1001,10 @@ def base_resistance(depth_i, soil_data_dis_dict, dl_b,
             else:
                 q_b_ii, a_base_ii, base_influence_ii, plug_output_ii, save_parameter_ii = 0, 0, 0, calculation_method.lower(), {}
 
-            if calc_type in ['plug_bearing_installation'] or np.all(np.isin(np.char.lower(soil_type_dis), ['s', 's_c', 'si'])): 
+            if calc_type in ['plug_bearing_installation']: 
                 if soil_type_ii.lower() in ['c', 'c_s']:
                     q_b_ii = q_b_ii
-                elif soil_type_ii.lower() in ['s', 's_c', 'si']:
+                elif soil_type_ii.lower() in ['s', 's_c', 'si'] and np.all(np.isin(np.char.lower(soil_type_dis), ['s', 's_c', 'si'])):
                     q_b_ii = 0
                 a_base_ii = a_base_i_diff_i
             elif calc_type in ['plug_bearing_removal']: 
@@ -1026,23 +1026,23 @@ def base_resistance(depth_i, soil_data_dis_dict, dl_b,
             elif calc_type in ['installation']:
                 q_b_ii = q_b_ii*pf_soil_mat
 
-            Q_b_i = a_base_ii*q_b_ii
+            Q_b_i = a_base_ii*q_b_ii                       
 
             if calc_type in ['plug_bearing_installation', 'plug_bearing_removal']: 
                 save_parameter_ii = {key.replace('_b]', '_pb]'): value for key, value in save_parameter_ii.items()}
-                save_parameter_ii['soil_type_pb_section_' + str(idx+1) + '[input_pb]'] = soil_type_ii
-                save_parameter_ii['z_pb_section_' + str(idx+1) + '[calc_pb]'] = float(depth_ii_1)
-                save_parameter_ii['q_pb_section_' + str(idx+1) + '[calc_pb]'] = float(q_b_ii)
-                save_parameter_ii['a_pb_section_' + str(idx+1) + '[geometry_pb]'] = a_base_ii
-                save_parameter_ii['Q_pb_section_' + str(idx+1) + '[calc_pb]'] = float(Q_b_i)
+                save_parameter_ii['soil_type_pb_section_' + str(idx+1) + '[input_pb]# - ? Section'+str(idx+1)] = soil_type_ii
+                save_parameter_ii['z_pb_section_' + str(idx+1) + '[input_pb]# z (m) ? Section'+str(idx+1)] = float(depth_ii_1)
+                save_parameter_ii['q_pb_section_' + str(idx+1) + '[calc_pb2]# q<sub>b,pb</sub> (MPa) ? Section'+str(idx+1)] = float(q_b_ii)
+                save_parameter_ii['a_pb_section_' + str(idx+1) + '[geometry_pb]# A<sub>b,pb</sub> (m<super>2</super>) ? Section'+str(idx+1)] = a_base_ii
+                save_parameter_ii['Q_pb_section_' + str(idx+1) + '[calc_pb3]# Q<sub>b,pb</sub> (MN) ? Section'+str(idx+1)] = float(Q_b_i)
 
             else:
-                save_parameter_ii['soil_type_b_section_' + str(idx+1) + '[input_b]'] = soil_type_ii
-                save_parameter_ii['z_b_section_' + str(idx+1) + '[calc_b]'] = float(depth_ii_1)
-                save_parameter_ii['q_b_section_' + str(idx+1) + '[calc_b]'] = float(q_b_ii)
-                save_parameter_ii['a_b_section_' + str(idx+1) + '[geometry_b]'] = a_base_ii
-                save_parameter_ii['a_b_influence_section_' + str(idx+1) + '[geometry_b]'] = base_influence_ii
-                save_parameter_ii['Q_b_section_' + str(idx+1) + '[calc_b]'] = Q_b_i
+                save_parameter_ii['soil_type_b_section_' + str(idx+1) + '[input_b]# - ? Section'+str(idx+1)] = soil_type_ii
+                save_parameter_ii['z_b_section_' + str(idx+1) + '[input_b]# z (m) ? Section'+str(idx+1)] = float(depth_ii_1)
+                save_parameter_ii['q_b_section_' + str(idx+1) + '[calc_b2]# q<sub>b</sub> (MPa) ? Section'+str(idx+1)] = float(q_b_ii)
+                save_parameter_ii['a_b_section_' + str(idx+1) + '[geometry_b]# A<sub>b</sub> (m<super>2</super>) ? Section'+str(idx+1)] = a_base_ii
+                save_parameter_ii['base_influence_section_' + str(idx+1) + '[output_b]# t<sub>b</sub> (m) ? Section'+str(idx+1)] = base_influence_ii
+                save_parameter_ii['Q_b_section_' + str(idx+1) + '[calc_b3]# Q<sub>b</sub> (MN) ? Section'+str(idx+1)] = Q_b_i
             
             base_parameter_inc.append(save_parameter_ii)
 
@@ -1063,16 +1063,16 @@ def base_resistance(depth_i, soil_data_dis_dict, dl_b,
                     Q_pb_total = Q_pb_total + save_parameter_ii[key]
     
     if calc_type in ['plug_bearing_installation', 'plug_bearing_removal']: 
-        results_dict_base = {'Q_pb_total[output_pb]': Q_pb_total,
-                            'plug_output[output_pb]': plug_output_base,
-                            'base_parameter_inc_plug_bearing': base_parameter_inc,
-                             'pf_soil_mat[input_pb]': pf_soil_mat}
+        results_dict_base = {'Q_pb_total[output_pb]# Q<sub>b,pb</sub> (MN) ? -': Q_pb_total,
+                             'plug_output[output_pb]# - ? - ': plug_output_base,
+                             'base_parameter_inc_plug_bearing': base_parameter_inc,
+                             'pf_soil_mat[input_pb]# γ<sub>m,pb</sub> (-) ? -': pf_soil_mat}
         
     else:
-        results_dict_base = {'Q_b_total[output_b]': Q_b_total,
-                            'plug_output[output_b]': plug_output_base,
-                            'base_parameter_inc': base_parameter_inc,
-                            'base_influence[output_b]': base_influence_ii,
-                            'pf_soil_mat[input_b]': pf_soil_mat}
-        
+        results_dict_base = {'Q_b_total[output_b]# Q<sub>b</sub> (MN) ? -': Q_b_total,
+                             'plug_output[output_b]# - ? - ': plug_output_base,
+                             'base_parameter_inc': base_parameter_inc,
+                             'base_influence': base_influence_ii,
+                             'pf_soil_mat[input_b]# γ<sub>m</sub> (-) ? -': pf_soil_mat}
+                
     return results_dict_base, plug_output_base

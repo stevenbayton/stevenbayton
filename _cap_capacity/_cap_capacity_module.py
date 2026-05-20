@@ -131,8 +131,9 @@ def task(calculation_name,
                                                                                                 ratio_load_tip=ratio_load_tip)            
             
             for key, value in save_parameter.items():
-                if key not in output_result_plot_input:
-                    output_result_plot_input[key] = value
+                key_red = key.split('[')[0]
+                if key_red not in output_result_plot_input:
+                    output_result_plot_input[key_red] = value
 
             output_result_save_input[length_embedment_i] = save_parameter
         

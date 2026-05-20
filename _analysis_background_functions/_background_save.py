@@ -1,10 +1,14 @@
 # python modules
+import copy
 import numpy as np
 import pandas as pd
 import os
 from pathlib import Path
 import re
 import shutil
+
+# multiconsult modules
+import _background_pdf as pdf
 
 
 def extract_dict_inc(data, threshold, type):
@@ -50,8 +54,8 @@ def extract_dict_inc(data, threshold, type):
 
 
 def split_col(col):
-        
-        match = re.match(r"(.*?)\[(.*?)\]", col)
+                
+        match = re.match(r"(.*?)\[(.*?)\]", str(col))
         
         if match:
             return match.group(1), match.group(2)
@@ -84,16 +88,46 @@ def custom_sort_key(col, param_priority, method_priority):
     return (param_pri, method_pri, method_alpha, param_alpha)
 
 
-def export_param_method_excel(df, writer, sheet_name, parameter_first=("z")):
+def export_param_method_pdf(df, table_info, calc_symbol_info, parameter_symbol_info, setup_dict, calculation_name, save_file_name, output_folder, method_order, parameter_first=("z")):
 
-    method_order=("input", 
-                  "input_b", "geometry_b", "calc_b", "output_b", 
-                  "input_s", "geometry_s", "calc_s", "output_s", 
-                  "input_pb", "geometry_pb", "calc_pb", "output_pb", 
-                  "input_ps", "geometry_ps", "calc_ps", "output_ps", 
-                  "geometry", "calc", "output",
-                  "calc_t", "output_t",
-                  "output_grl")
+    info_pdf = {}
+    info_pdf['orientation'] = 'landscape'
+    info_pdf['main_title'] = table_info["main_title"]
+
+    if table_info["table_type"] == 'summary':
+        extra_title1 = ' (Summary output)'
+        extra_save = '_summary'
+    elif table_info["table_type"] == 'interval':
+        extra_title1 = ' (Detailed input at embedment depth, z = ' + str(round(table_info["table_limit"], 1)) + ')'
+        extra_save = '_z_' + str(round(table_info["table_limit"], 1))
+
+    info_pdf['sub_title1'] = table_info.get("sub_title1", "") + extra_title1
+    info_pdf['sub_title2'] = table_info.get("sub_title2", "")
+    info_pdf['sub_title3'] = table_info.get("sub_title3", "")
+
+    if info_pdf['sub_title3'].lower() == "input":
+        info_pdf['sub_title3'] = info_pdf['sub_title3'].strip()
+
+    info_pdf['doc_no'] = table_info.get("doc_no", "")
+
+    if table_info["fig_no"].lower() == "input":
+        info_pdf['table_no'] = table_info["fig_no_i"].strip()
+    else:
+        info_pdf['table_no'] = table_info["fig_no"]
+
+    info_pdf['calc_by'] = table_info["calc_by"]
+    info_pdf['check_by'] = table_info["check_by"]
+    info_pdf['approv_by'] = table_info["approv_by"]
+    info_pdf['table_type'] = table_info["table_type"]
+    
+    info_pdf['table_limit'] = table_info["table_limit"]
+
+    info_pdf['pdf_directory'] = Path(setup_dict["parent_input"]["calculations_location"])/setup_dict["parent_input"]["python_calculation_folder"]/setup_dict["parent_input"]["foundation_calculation_folder"]/output_folder/calculation_name/(str(info_pdf['table_no']) + '_' + save_file_name.split('.xlsx')[0] + extra_save + '_' + table_info["table_i"] + '.pdf')
+    
+    pdf.save_table_pdf(info_pdf, df, calc_symbol_info, parameter_symbol_info, method_order, parameter_first)
+
+
+def export_param_method_excel(df, writer, sheet_name, method_order, parameter_first=("z")):
 
     pairs = [split_col(c) for c in df.columns]
     df = df.apply(lambda col: col.explode()).reset_index(drop=True)
@@ -150,18 +184,44 @@ def export_param_method_excel(df, writer, sheet_name, parameter_first=("z")):
         for ins in inserts:
             blank_idx = ins + 1 + sum(ins > earlier for earlier in inserts)
             worksheet.write_blank(row_idx, blank_idx, None)
+   
 
-
-def execute_save(input_heading, parent_input, setup_dict_calc, output_dict, calculation_name, foundation_location_name):
+def execute_save(input_heading, parent_input, setup_dict, output_dict, calculation_name, foundation_location_name):
         
     input = output_dict['input']
     output = output_dict['output']
 
-    save_excel_task(input_heading, input, output, parent_input, setup_dict_calc, calculation_name, foundation_location_name)
+    save_excel_task(input_heading, input, output, parent_input, setup_dict, calculation_name, foundation_location_name)
 
 
-def save_excel_task(input_heading, input, output, parent_input, setup_dict_calc, calculation_name, foundation_location_name, output_folder='output'):
+def save_excel_task(input_heading, input, output, parent_input, setup_dict, calculation_name, foundation_location_name, output_folder='output'):
 
+    tables_for_input = setup_dict[calculation_name][input_heading]['table'].replace(" ", "").split(";")
+
+    sub_title3_for_input = str(setup_dict[calculation_name][input_heading]['sub_title3']).split(";")
+
+    if len(sub_title3_for_input) == 0:
+        sub_title3_for_input = [""]*len(tables_for_input)
+    else:
+        while len(sub_title3_for_input) < len(tables_for_input):
+            sub_title3_for_input.append(sub_title3_for_input[-1])
+
+    fig_no_for_input = str(setup_dict[calculation_name][input_heading]['fig_no']).split(";")
+    
+    if len(fig_no_for_input) == 0:
+        fig_no_for_input = [""]*len(tables_for_input)
+    else:
+        while len(fig_no_for_input) < len(tables_for_input):
+            fig_no_for_input.append(fig_no_for_input[-1])
+
+    method_order = ("input", "input_b", "input_s", "input_pb", "input_ps", 
+                    "geometry_b", "geometry_s", "geometry_pb", "geometry_ps", "geometry",
+                    "calc_b", "calc_s", "calc_pb", "calc_ps",
+                    "calc_b2", "calc_s2", "calc_pb2", "calc_ps2",
+                    "calc_b3", "calc_s3", "calc_pb3", "calc_ps3",
+                    "calc", "calc_t", 
+                    "output_b", "output_s", "output_pb", "output_ps", "output", "output_t", "output_grl")
+    
     length_embedment = 0
     for key in output.keys():
         if key not in ['capacity_dict']:
@@ -229,14 +289,14 @@ def save_excel_task(input_heading, input, output, parent_input, setup_dict_calc,
 
                 if save_interval_i in input_i:
                     df = pd.DataFrame.from_dict({k: v for k, v in input_i[save_interval_i].items()if k not in ["alpha_d_su", "alpha_updated", "su_ave_l", "su_ave_end_bear"]})
-                    export_param_method_excel(df, writer, 'input_' + str(save_interval_i))
+                    export_param_method_excel(df, writer, 'input_' + str(save_interval_i), method_order)
 
                 if save_interval_i in output_i:
 
                     if calculation_name in ['_cap_capacity']:
                         if calculation_method_i.lower() in ['cap', 'capt']:
                             df = pd.DataFrame.from_dict(output_i[save_interval_i])
-                            export_param_method_excel(df, writer, 'output_' + str(save_interval_i))
+                            export_param_method_excel(df, writer, 'output_' + str(save_interval_i), method_order)
 
                         elif calculation_method_i.lower() in ['carl']:
                             df = pd.DataFrame(output_i[save_interval_i]['SF[output]'], index=output_i[save_interval_i]['z[output]'], columns=output_i[save_interval_i]['x[output]'])
@@ -263,9 +323,26 @@ def save_excel_task(input_heading, input, output, parent_input, setup_dict_calc,
                         df2 = pd.Series(extract_dict)
                         df = pd.concat([df, df2.to_frame().T], ignore_index=True)
             
-            if calculation_name not in ['_cap_capacity', '_caisson_capacity', '_lateral_displacement', '_axial_displacement']:
-                df = df.sort_values(by='z[input]')
-                export_param_method_excel(df, writer, 'output_complete')
+            if calculation_name not in ['_cap_capacity', '_lateral_displacement', '_axial_displacement']:
+                export_param_method_excel(df, writer, 'output_complete', method_order)
+                
+                for table_i, sub_title3_i, fig_no_i in zip(tables_for_input, sub_title3_for_input, fig_no_for_input):
+
+                    if table_i not in setup_dict['tables']:
+                        continue
+
+                    axes = copy.deepcopy(setup_dict['tables'][table_i])
+                    table_info = axes["table_info"]
+                    table_info['table_i'] = table_i
+                    table_info['sub_title3_i'] = sub_title3_i
+                    table_info['fig_no_i'] = pdf.clean_fig_no(fig_no_i)
+                    table_info['table_limit'] = length_embedment
+                    table_info['table_type'] = 'summary'
+
+                    calc_symbol_info = axes["calc_symbol_info"]
+                    parameter_symbol_info = axes["parameter_symbol_info"]
+
+                    export_param_method_pdf(df, table_info, calc_symbol_info, parameter_symbol_info, setup_dict, calculation_name, save_file_name, output_folder, method_order)
 
             elif calculation_name in ['_lateral_displacement', '_axial_displacement']:
                 for save_interval_i in save_intervals:
@@ -275,11 +352,10 @@ def save_excel_task(input_heading, input, output, parent_input, setup_dict_calc,
                     y_background = df['y_background'].iloc[0]
                     z_background = df['z[input]'].iloc[0]
 
-                    df = df.sort_values(by='z[input]')
                     df = df.drop(["x_background", "y_background"], axis=1)   
-                    export_param_method_excel(df, writer, 'Load='+str(save_interval_i))
+                    export_param_method_excel(df, writer, 'Load='+str(save_interval_i), method_order)
 
-                spring_depth_intervals = setup_dict_calc[input_heading]['global_spring_depth_to_plot']
+                spring_depth_intervals = setup_dict[calculation_name][input_heading]['global_spring_depth_to_plot']
 
                 param_array = []
 
@@ -344,7 +420,7 @@ def save_excel_task(input_heading, input, output, parent_input, setup_dict_calc,
                                     'secant_stiffness[output]': secant_stiffness_array,
                                     'tangent_stiffness[output]': tangent_stiffness_array})
                     
-                    export_param_method_excel(df, writer, 'global_spring_'+str(round(spring_depth_interval_i, 1)))
+                    export_param_method_excel(df, writer, 'global_spring_'+str(round(spring_depth_interval_i, 1)), method_order)
 
                 y_background = np.column_stack(y_background)
                 x_y_save = np.column_stack((x_background, y_background))
@@ -356,12 +432,12 @@ def save_excel_task(input_heading, input, output, parent_input, setup_dict_calc,
                 df2.to_excel(writer, sheet_name='local_springs', index=False)
             
             elif calculation_name not in ['_cap_capacity', '_caisson_capacity']:
-                df = df.sort_values(by='z[input]')
-                export_param_method_excel(df, writer, 'output_complete')
 
-            # else:
-            #     df = df.sort_values(by='z[input]')
-            #     export_param_method_excel(df, writer, 'output_complete')
+                export_param_method_excel(df, writer, 'output_complete', method_order)
+                
+            else:
+
+                export_param_method_excel(df, writer, 'output_complete', method_order)
 
             if calculation_name in ['_installation']:
 
@@ -380,12 +456,12 @@ def save_excel_task(input_heading, input, output, parent_input, setup_dict_calc,
                         rows.append(row)
 
                     df = pd.DataFrame(rows)
-                    export_param_method_excel(df, writer, 'stress_fatigue')
+                    export_param_method_excel(df, writer, 'stress_fatigue', method_order)
                     
             if calculation_name not in ['_cap_capacity', '_caisson_capacity', '_lateral_displacement', '_axial_displacement']:
                 for idx2, save_interval_i in enumerate(save_intervals[::-1]):
 
-                    if idx2 % n_interval == 0:
+                    if idx2 % n_interval == 0 or round(save_interval_i, 2) == round(length_embedment, 2):
 
                         if 'base_parameter_inc' in output_breakdown_i[save_interval_i]:
                             extract_dict_base = extract_dict_inc(output_breakdown_i[save_interval_i]['base_parameter_inc'], save_interval_i, "base")
@@ -450,23 +526,48 @@ def save_excel_task(input_heading, input, output, parent_input, setup_dict_calc,
                                                                   **extract_dict_p_ult[save_interval_ii],
                                                                   **extract_dict_grl_soil_resistance[save_interval_ii]}
                                 
-                        df = pd.DataFrame.from_dict(extract_dict, orient='index').sort_values(by='z[input]')
-                        export_param_method_excel(df, writer, str(save_interval_i))
+                        df = pd.DataFrame.from_dict(extract_dict, orient='index')#.sort_values(by='z[input]')
+
+                        if round(save_interval_i, 2) == round(length_embedment, 2):
+                            sheet_name = "l_emb="+str(save_interval_i)
+                            for table_i, sub_title3_i, fig_no_i in zip(tables_for_input, sub_title3_for_input, fig_no_for_input):
+
+                                if table_i not in setup_dict['tables']:
+                                    continue
+
+                                axes = copy.deepcopy(setup_dict['tables'][table_i])
+                                table_info = axes["table_info"]
+                                table_info['table_i'] = table_i
+                                table_info['sub_title3_i'] = sub_title3_i
+                                table_info['fig_no_i'] = pdf.clean_fig_no(fig_no_i)
+                                table_info['table_limit'] = length_embedment
+                                table_info['table_type'] = 'interval'
+
+                                export_param_method_pdf(df, table_info, calc_symbol_info, parameter_symbol_info, setup_dict, calculation_name, save_file_name, output_folder, method_order)
+                                
+                        else:
+                            sheet_name = str(save_interval_i)
+                        export_param_method_excel(df, writer, sheet_name, method_order)
 
             if calculation_name in ['_installation']:
 
                 for idx2, save_interval_i in enumerate(save_intervals[::-1]):
+
+                    if round(save_interval_i, 2) == round(length_embedment, 2):
+                        sheet_name = "l_emb="+str(save_interval_i)
+                    else:
+                        sheet_name = str(save_interval_i)
 
                     if 'grl_pile_stress_inc' in output_breakdown_i[save_interval_i]:
                         extract_dict_grl_pile_stress = extract_dict_inc(output_breakdown_i[save_interval_i]['grl_pile_stress_inc'], np.inf, "grl")
 
                         try:                                                                                                 
                             df = pd.DataFrame.from_dict(extract_dict_grl_pile_stress, orient='index').sort_values(by='z_grl_section_1[output_grl]')
-                            export_param_method_excel(df, writer, "grl_stress_" + str(save_interval_i))
+                            export_param_method_excel(df, writer, "grl_stress_" + sheet_name)
                         except Exception:
                             continue
 
-        if calculation_name in ['_cap_capacity', '_caisson_capacity']:
+        if calculation_name in ['_cap_capacity', '_caisson_capacity']:  # HERE
             input_file_i = output[calculation_method_i]['input_file']
             input_file_move_i = os.path.basename(input_file_i)
             shutil.move(input_file_i, save_folder/calculation_name/input_file_move_i)

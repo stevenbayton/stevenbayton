@@ -1,5 +1,6 @@
 # python modules
 import numpy as np
+import pandas as pd
 import os
 import sys
 
@@ -161,6 +162,16 @@ def norm_n_cyclic_ratio(n):
     return n_tau_cyc_ratio
 
 
+def param_extract(col, soil_data, soil_data_length):
+
+    if col in soil_data:
+        s = soil_data[col]
+    else:
+        s = pd.Series(np.nan, index=range(soil_data_length))
+
+    return s
+
+
 def input_limit_equilibrium_design_profile(length_dimension_i, 
                                            soil_data, gdb_params, dl_capacity, dl_override,
                                            b_outer, l_outer, f_d_perm_fav_v_i,
@@ -202,143 +213,142 @@ def input_limit_equilibrium_design_profile(length_dimension_i,
 
     soil_data['depth'] = depth
 
+    soil_data_length = len(depth)
+
     dsig_found = 1000*max(0, f_d_perm_fav_v_i)/((b_outer + 2*(depth - length_dimension_i)/3)*(l_outer + 2*(depth - length_dimension_i)/3))
     if length_dimension_i > 0:
         dsig_found = np.where(depth <= length_dimension_i, 0, ratio_load_tip*dsig_found)
 
     eff_uw = soil_data['effunitweight_rep']
     sig_v_ = soil_data['sigveff_rep']
-    sig_under = np.nan_to_num(sig_v_) + dsig_found
-    sig_outside = np.nan_to_num(sig_v_)
+    sig_found = np.nan_to_num(sig_v_) + dsig_found
     soil_type = soil_data['Soil_Type']
 
-    s_uc = soil_data['suc_'+dl_capacity]
-    s_uc = np.array([s_uc_i if soil_type_i.lower() in ["c", "c_s"] else np.nan  for s_uc_i, soil_type_i in zip(s_uc, soil_type)])
-    phi_is = soil_data['phi_'+dl_capacity]
+    s_u_c = param_extract('suc_'+dl_capacity, soil_data, soil_data_length)
+    s_u_c = np.array([s_u_c_i if soil_type_i.lower() in ["c", "c_s"] else np.nan  for s_u_c_i, soil_type_i in zip(s_u_c, soil_type)])
+    phi_is = param_extract('phi_'+dl_capacity, soil_data, soil_data_length)
     phi_is = np.array([phi_is_i if soil_type_i.lower() in ["s", "s_c", "si"] else np.nan  for phi_is_i, soil_type_i in zip(phi_is, soil_type)])
-    d_r = soil_data['dr_'+dl_capacity]
+    d_r = param_extract('dr_'+dl_capacity, soil_data, soil_data_length)
     d_r = np.array([d_r_i if soil_type_i.lower() in ["s", "s_c", "si"] else np.nan  for d_r_i, soil_type_i in zip(d_r, soil_type)])
-    k_0 = soil_data['K0_rep']
+    k_0 = param_extract('K0_rep', soil_data, soil_data_length)
     k_0 = np.array([k_0_i if soil_type_i.lower() in ["s", "s_c", "si"] else np.nan  for k_0_i, soil_type_i in zip(k_0, soil_type)])
-    phi = np.array([bf.phi_adjust(sig_v__i, sig_under_i, phi_i, d_r_i) if not np.isnan(phi_i) else np.nan for sig_v__i, sig_under_i, phi_i, d_r_i in zip(sig_v_, sig_under, phi_is, d_r)])
+    phi_adj = np.array([bf.phi_adjust(sig_v__i, sig_under_i, phi_i, d_r_i) if not np.isnan(phi_i) else np.nan for sig_v__i, sig_under_i, phi_i, d_r_i in zip(sig_v_, sig_found, phi_is, d_r)])
         
     if dl_override is None or str(dl_override) == 'nan':
         
         if pf_soil_mat_application == 'local':
-            phi = np.array([np.degrees(np.atan(np.tan(np.radians(phi_i))/pf_soil_mat)) if soil_type_i.lower() in ["s", "s_c", "si"] else np.nan for phi_i, soil_type_i in zip(phi, soil_type)])
+            phi_adj = np.array([np.degrees(np.atan(np.tan(np.radians(phi_i))/pf_soil_mat)) if soil_type_i.lower() in ["s", "s_c", "si"] else np.nan for phi_i, soil_type_i in zip(phi_adj, soil_type)])
             pf_soil_mat_global = 1
         else:
             pf_soil_mat_global = pf_soil_mat
 
-        tau_C_sv_sand = np.array([norm_sand_drained(phi_i, k_0_i)[0] if soil_type_i.lower() in ["s", "s_c", "si"] else np.nan for phi_i, k_0_i, soil_type_i in zip(phi, k_0, soil_type)])
-        tau_D_sv_sand = np.array([norm_sand_drained(phi_i, k_0_i)[1] if soil_type_i.lower() in ["s", "s_c", "si"] else np.nan for phi_i, k_0_i, soil_type_i in zip(phi, k_0, soil_type)])
-        tau_E_sv_sand = np.array([norm_sand_drained(phi_i, k_0_i)[2] if soil_type_i.lower() in ["s", "s_c", "si"] else np.nan for phi_i, k_0_i, soil_type_i in zip(phi, k_0, soil_type)])
+        tau_C_sv_sand = np.array([norm_sand_drained(phi_i, k_0_i)[0] if soil_type_i.lower() in ["s", "s_c", "si"] else np.nan for phi_i, k_0_i, soil_type_i in zip(phi_adj, k_0, soil_type)])
+        tau_D_sv_sand = np.array([norm_sand_drained(phi_i, k_0_i)[1] if soil_type_i.lower() in ["s", "s_c", "si"] else np.nan for phi_i, k_0_i, soil_type_i in zip(phi_adj, k_0, soil_type)])
+        tau_E_sv_sand = np.array([norm_sand_drained(phi_i, k_0_i)[2] if soil_type_i.lower() in ["s", "s_c", "si"] else np.nan for phi_i, k_0_i, soil_type_i in zip(phi_adj, k_0, soil_type)])
 
-        su_C_sand_u = np.array([tau_i*sig_under_i/pf_soil_mat_global for tau_i, sig_under_i in zip(tau_C_sv_sand, sig_under)])
-        su_D_sand_u = np.array([tau_i*sig_under_i/pf_soil_mat_global for tau_i, sig_under_i in zip(tau_D_sv_sand, sig_under)])
-        su_E_sand_u = np.array([tau_i*sig_under_i/pf_soil_mat_global for tau_i, sig_under_i in zip(tau_E_sv_sand, sig_under)])
+        su_C_sand_found = np.array([tau_i*sig_under_i/pf_soil_mat_global for tau_i, sig_under_i in zip(tau_C_sv_sand, sig_found)])
+        su_D_sand_found = np.array([tau_i*sig_under_i/pf_soil_mat_global for tau_i, sig_under_i in zip(tau_D_sv_sand, sig_found)])
+        su_E_sand_found = np.array([tau_i*sig_under_i/pf_soil_mat_global for tau_i, sig_under_i in zip(tau_E_sv_sand, sig_found)])
 
-        su_C_sand_o = np.array([tau_i*sig_outside_i/pf_soil_mat_global for tau_i, sig_outside_i in zip(tau_C_sv_sand, sig_outside)])
-        su_D_sand_o = np.array([tau_i*sig_outside_i/pf_soil_mat_global for tau_i, sig_outside_i in zip(tau_D_sv_sand, sig_outside)])
-        su_E_sand_o = np.array([tau_i*sig_outside_i/pf_soil_mat_global for tau_i, sig_outside_i in zip(tau_E_sv_sand, sig_outside)])
+        su_C_sand = np.array([tau_i*sig_v_i/pf_soil_mat_global for tau_i, sig_v_i in zip(tau_C_sv_sand, sig_v_)])
+        su_D_sand = np.array([tau_i*sig_v_i/pf_soil_mat_global for tau_i, sig_v_i in zip(tau_D_sv_sand, sig_v_)])
+        su_E_sand = np.array([tau_i*sig_v_i/pf_soil_mat_global for tau_i, sig_v_i in zip(tau_E_sv_sand, sig_v_)])
 
-        su_C_clay = np.array([su_i/pf_soil_mat if soil_type_i.lower() in ["c", "c_s"] else np.nan for su_i, soil_type_i in zip(s_uc, soil_type)])
-        dss_suc = soil_data['sud-suc_rep']
-        sue_suc = soil_data['sue-suc_rep']
+        su_C_clay = np.array([su_i/pf_soil_mat if soil_type_i.lower() in ["c", "c_s"] else np.nan for su_i, soil_type_i in zip(s_u_c, soil_type)])
+        dss_suc = param_extract('sud-suc_rep', soil_data, soil_data_length)
+        sue_suc = param_extract('sue-suc_rep', soil_data, soil_data_length)
 
         su_D_clay = np.array([su_i*dss_suc_i if soil_type_i.lower() in ["c", "c_s"] else np.nan for su_i, dss_suc_i, soil_type_i in zip(su_C_clay, dss_suc, soil_type)])
         su_E_clay = np.array([su_i*sue_suc_i if soil_type_i.lower() in ["c", "c_s"] else np.nan for su_i, sue_suc_i, soil_type_i in zip(su_C_clay, sue_suc, soil_type)])
 
-        su_C_u = np.array([su_sand_i if np.isnan(su_clay_i) else su_clay_i if np.isnan(su_sand_i) else min(su_sand_i, su_clay_i) for su_sand_i, su_clay_i in zip(su_C_sand_u, su_C_clay)])
-        su_D_u = np.array([su_sand_i if np.isnan(su_clay_i) else su_clay_i if np.isnan(su_sand_i) else min(su_sand_i, su_clay_i) for su_sand_i, su_clay_i in zip(su_D_sand_u, su_D_clay)])
-        su_E_u = np.array([su_sand_i if np.isnan(su_clay_i) else su_clay_i if np.isnan(su_sand_i) else min(su_sand_i, su_clay_i) for su_sand_i, su_clay_i in zip(su_E_sand_u, su_E_clay)])
+        su_C_found = np.array([su_sand_i if np.isnan(su_clay_i) else su_clay_i if np.isnan(su_sand_i) else min(su_sand_i, su_clay_i) for su_sand_i, su_clay_i in zip(su_C_sand_found, su_C_clay)])
+        su_D_found = np.array([su_sand_i if np.isnan(su_clay_i) else su_clay_i if np.isnan(su_sand_i) else min(su_sand_i, su_clay_i) for su_sand_i, su_clay_i in zip(su_D_sand_found, su_D_clay)])
+        su_E_found = np.array([su_sand_i if np.isnan(su_clay_i) else su_clay_i if np.isnan(su_sand_i) else min(su_sand_i, su_clay_i) for su_sand_i, su_clay_i in zip(su_E_sand_found, su_E_clay)])
         
-        su_C_o = np.array([su_sand_i if np.isnan(su_clay_i) else su_clay_i if np.isnan(su_sand_i) else min(su_sand_i, su_clay_i) for su_sand_i, su_clay_i in zip(su_C_sand_o, su_C_clay)])
-        su_D_o = np.array([su_sand_i if np.isnan(su_clay_i) else su_clay_i if np.isnan(su_sand_i) else min(su_sand_i, su_clay_i) for su_sand_i, su_clay_i in zip(su_D_sand_o, su_D_clay)])
-        su_E_o = np.array([su_sand_i if np.isnan(su_clay_i) else su_clay_i if np.isnan(su_sand_i) else min(su_sand_i, su_clay_i) for su_sand_i, su_clay_i in zip(su_E_sand_o, su_E_clay)])
+        su_C = np.array([su_sand_i if np.isnan(su_clay_i) else su_clay_i if np.isnan(su_sand_i) else min(su_sand_i, su_clay_i) for su_sand_i, su_clay_i in zip(su_C_sand, su_C_clay)])
+        su_D = np.array([su_sand_i if np.isnan(su_clay_i) else su_clay_i if np.isnan(su_sand_i) else min(su_sand_i, su_clay_i) for su_sand_i, su_clay_i in zip(su_D_sand, su_D_clay)])
+        su_E = np.array([su_sand_i if np.isnan(su_clay_i) else su_clay_i if np.isnan(su_sand_i) else min(su_sand_i, su_clay_i) for su_sand_i, su_clay_i in zip(su_E_sand, su_E_clay)])
 
-        nans, x = bf.nan_helper(su_C_u)
-        su_C_u[nans] = np.interp(x(nans), x(~nans), su_C_u[~nans])
-        nans, x = bf.nan_helper(su_D_u)
-        su_D_u[nans] = np.interp(x(nans), x(~nans), su_D_u[~nans])
-        nans, x = bf.nan_helper(su_E_u)
-        su_E_u[nans] = np.interp(x(nans), x(~nans), su_E_u[~nans])
+        nans, x = bf.nan_helper(su_C_found)
+        su_C_found[nans] = np.interp(x(nans), x(~nans), su_C_found[~nans])
+        nans, x = bf.nan_helper(su_D_found)
+        su_D_found[nans] = np.interp(x(nans), x(~nans), su_D_found[~nans])
+        nans, x = bf.nan_helper(su_E_found)
+        su_E_found[nans] = np.interp(x(nans), x(~nans), su_E_found[~nans])
 
-        nans, x = bf.nan_helper(su_C_o)
-        su_C_o[nans] = np.interp(x(nans), x(~nans), su_C_o[~nans])
-        nans, x = bf.nan_helper(su_D_o)
-        su_D_o[nans] = np.interp(x(nans), x(~nans), su_D_o[~nans])
-        nans, x = bf.nan_helper(su_E_o)
-        su_E_o[nans] = np.interp(x(nans), x(~nans), su_E_o[~nans])
+        nans, x = bf.nan_helper(su_C)
+        su_C[nans] = np.interp(x(nans), x(~nans), su_C[~nans])
+        nans, x = bf.nan_helper(su_D)
+        su_D[nans] = np.interp(x(nans), x(~nans), su_D[~nans])
+        nans, x = bf.nan_helper(su_E)
+        su_E[nans] = np.interp(x(nans), x(~nans), su_E[~nans])
 
-        save_parameter = {'z[input]': depth,
-                        'soil_type[input]': soil_type,
-                        'sig_v_[input]': sig_v_,
-                        'B[input]': b_outer,
-                        'L[input]': l_outer,
-                        'z_emb[input]': length_dimension_i,
-                        'dsig_found[output]': dsig_found,
-                        'sig_under[output]': sig_under,
-                        'sig_outside[output]': sig_outside,
-                        's_uc[input]': s_uc,
-                        'phi_is[input]': phi_is,
-                        'phi[output]': phi,
-                        'd_r[input]': d_r,
-                        'k_0[input]': k_0,
-                        'sig_v_[input]': sig_v_,
-                        'pf_soil_mat[input]': pf_soil_mat,
-                        'su_C_clay[output]': su_C_clay,
-                        'dss_suc[output]': dss_suc,
-                        'su_D_clay[output]': su_D_clay,
-                        'sue_suc[output]': sue_suc,
-                        'su_E_clay[output]': su_E_clay,}
+        save_parameter = {'z[input]# z (m) ? -': depth,
+                        'soil_type[input]# - ? -': soil_type,
+                        "sig_v_[input]# σ'<sub>v</sub> (kPa) ? -": sig_v_,
+                        'B[input]# B<sub>eq</sub> (m) ? -': b_outer,
+                        'L[input]# L<sub>eq</sub> (m) ? -': l_outer,
+                        'z_emb[input]# z<sub>emb</sub> (m) ? -': length_dimension_i,
+                        's_u_c[input]# s<sub>u,c</sub> (kPa) ? -': s_u_c,
+                        'd_r[input]# D<sub>r</sub> (%) ? -': d_r,
+                        'k_0[input]# K<sub>0</sub> (-) ? -': k_0,
+                        'phi_is[input]# φ<sub>in situ</sub> (deg) ? -': phi_is,
+                        'pf_soil_mat[input]# γ<sub>m</sub> (-) ? -': pf_soil_mat,
+                        "dsig_found[output]# dσ'<sub>v,found</sub> (kPa) ? -": dsig_found,
+                        "sig_found[output]# σ'<sub>found</sub> (kPa) ? -": sig_found,
+                        'phi_adj[output]# φ<sub>adj</sub> (deg) ? -': phi_adj,
+                        'su_C_clay[output]# s<sub>u,c,clay</sub> (kPa) ? -': su_C_clay,
+                        'dss_suc[input]# s<sub>u,d</sub>/s<sub>u,c</sub> (-) ? -': dss_suc,
+                        'su_D_clay[output]# s<sub>u,d,clay</sub> (kPa) ? -': su_D_clay,
+                        'sue_suc[input]# s<sub>u,e</sub>/s<sub>u,c</sub> (-) ? -': sue_suc,
+                        'su_E_clay[output]# s<sub>u,e,clay</sub> (kPa) ? -': su_E_clay,}
                 
-        save_parameter_sand = {'tau_C_sv_sand[output]': tau_C_sv_sand,
-                               'tau_D_sv_sand[output]': tau_D_sv_sand,
-                               'tau_E_sv_sand[output]': tau_E_sv_sand,
-                               'su_C_sand_u[output]': su_C_sand_u,
-                               'su_D_sand_u[output]': su_D_sand_u,
-                               'su_E_sand_u[output]': su_E_sand_u,
-                               'su_C_sand_o[output]': su_C_sand_o,
-                               'su_D_sand_o[output]': su_D_sand_o,
-                               'su_E_sand_o[output]': su_E_sand_o}
+        save_parameter_sand = {"tau_C_sv_sand[output]# τ<sub>c,sand</sub>/σ'<sub>v</sub> (-) ? -": tau_C_sv_sand,
+                               "tau_D_sv_sand[output]# τ<sub>d,sand</sub>/σ'<sub>v</sub> (-) ? -": tau_D_sv_sand,
+                               "tau_E_sv_sand[output]# τ<sub>e,sand</sub>/σ'<sub>v</sub> (-) ? -": tau_E_sv_sand,
+                               'su_C_sand_found[output]# s<sub>u,c,sand found</sub> (kPa) ? -': su_C_sand_found,
+                               'su_D_sand_found[output]# s<sub>u,d,sand found</sub> (kPa) ? -': su_D_sand_found,
+                               'su_E_sand_found[output]# s<sub>u,e,sand found</sub> (kPa) ? -': su_E_sand_found,
+                               'su_C_sand[output]# s<sub>u,c,sand</sub> (kPa) ? -': su_C_sand,
+                               'su_D_sand[output]# s<sub>u,d,sand</sub> (kPa) ? -': su_D_sand,
+                               'su_E_sand[output]# s<sub>u,e,sand</sub> (kPa) ? -': su_E_sand}
 
     else:
 
-        su_ave = np.array([su_eq_i/pf_soil_mat for su_eq_i in soil_data[dl_override+'_'+dl_capacity]])
-        su_C_u = su_D_u = su_E_u = su_C_o = su_D_o = su_E_o = su_ave
+        su_ave = np.array([su_eq_i/pf_soil_mat for su_eq_i in param_extract(dl_override+'_'+dl_capacity, soil_data, soil_data_length)])
+        su_C_found = su_D_found = su_E_found = su_C = su_D = su_E = su_ave
         
-        save_parameter = {'z[input]': depth,
-                          'soil_type[input]': soil_type,
-                          'sig_v_[input]': sig_v_,
-                          'B[input]': b_outer,
-                          'L[input]': l_outer,
-                          'z_emb[input]': length_dimension_i,
-                          'su_ave[output]': su_ave,
-                          'pf_soil_mat[input]': pf_soil_mat}
+        save_parameter = {'z[input]# z (m) ? -': depth,
+                          'soil_type[input]# - ? -': soil_type,
+                          "sig_v_[input]# σ'<sub>v</sub> (kPa) ? -": sig_v_,
+                          'B[input]# B<sub>eq</sub> (m) ? -': b_outer,
+                          'L[input]# L<sub>eq</sub> (m) ? -': l_outer,
+                          'z_emb[input]# z<sub>emb</sub> (m) ? -': length_dimension_i,
+                          'su_ave[output]# s<sub>u,ave</sub> (kPa) ? -': su_ave,
+                          'pf_soil_mat[input]# γ<sub>m,pb</sub> (-) ? -': pf_soil_mat}
         
         save_parameter_sand = {}
     
-    save_parameter_2 = {'su_C_u[output]': su_C_u,
-                        'su_D_u[output]': su_D_u,
-                        'su_E_u[output]': su_E_u,
-                        'su_ave[output]': (su_C_u + su_D_u + su_E_o)/3,
-                        'su_C_o[output]': su_C_o,
-                        'su_D_o[output]': su_D_o,
-                        'su_E_o[output]': su_E_o}
+    save_parameter_2 = {'su_C_found[output]# s<sub>u,c found</sub> (kPa) ? -': su_C_found,
+                        'su_D_found[output]# s<sub>u,d found</sub> (kPa) ? -': su_D_found,
+                        'su_E_found[output]# s<sub>u,e found</sub> (kPa) ? -': su_E_found,
+                        'su_ave[output]# s<sub>u,ave</sub> (kPa) ? -': (su_C_found + su_D_found + su_E)/3,
+                        'su_C[output]# s<sub>u,c</sub> (kPa) ? -': su_C,
+                        'su_D[output]# s<sub>u,d</sub> (kPa) ? -': su_D,
+                        'su_E[output]# s<sub>u,e</sub> (kPa) ? -': su_E}
     
     save_parameter = {**save_parameter, **save_parameter_sand, **save_parameter_2}
 
-    su_input = (su_C_u + su_D_u + su_E_o)/3
+    su_input = (su_C_found + su_D_found + su_E)/3
     
     input_dict = {'z': depth,
                   'eff_uw': eff_uw,
-                  'su_C_u': su_C_u,
-                  'su_D_u': su_D_u,
-                  'su_E_u': su_E_u,
-                  'su_C_o': su_C_o,
-                  'su_D_o': su_D_o,
-                  'su_E_o': su_E_o,
+                  'su_C_found': su_C_found,
+                  'su_D_found': su_D_found,
+                  'su_E_found': su_E_found,
+                  'su_C': su_C,
+                  'su_D': su_D,
+                  'su_E': su_E,
                   'su_input': su_input}
             
     return input_dict, save_parameter

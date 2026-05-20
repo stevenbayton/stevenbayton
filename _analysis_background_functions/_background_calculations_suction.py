@@ -129,7 +129,7 @@ def suction_underpressure(depth_i, soil_data_dis_dict, dl_b,
     if flow_condition in ['no_flow']:
         Q_t_installation = Q_t_total
         S_n_cr = np.nan
-        add_dict = {'flow_condition[calc_t]': flow_condition}
+        add_dict = {'flow_condition[calc_t]# - ? -': flow_condition}
 
     elif flow_condition in ['full_flow']:
         p_0_z = p_0__i
@@ -200,20 +200,20 @@ def suction_underpressure(depth_i, soil_data_dis_dict, dl_b,
 
         z, z_t, z_t_index, z_b, z_b_div_D, z_div_D, z_div_t, flow_condition
 
-        add_dict = {'z_perm[calc_t]': z,
-                    'z_perm/D[calc_t]': z_div_D,
-                    'z_nonperm[calc_t]': z_t,
-                    'z_perm/t[calc_t]': z_div_t,
-                    'z_to_next_nonperm[calc_t]': z_b,
-                    'z_to_next_nonperm/D[calc_t]': z_b_div_D,
-                    'flow_condition[calc_t]': flow_condition,
-                    'W_eq[calc_t]': W_eq,
-                    'W_soil[calc_t]': W_soil_F,
-                    'Q_t_PF[calc_t]': Q_t_total_z,
-                    'W_eq/P_f_NF[calc_t]': off,
-                    'W_soil/P_f_NF[calc_t]': gR,
-                    'S_n/S_n_cr[calc_t]': S_n_div_S_n_cr,
-                    'P_f_PF/P_f_NF[calc_t]': Q_t_flow_Q_div_t_total,}
+        add_dict = {'z_perm[calc_t]# z<sub>perm</sub> (m) ? -': z,
+                    'z_perm/D[calc_t]# z<sub>perm</sub>/D (-) ? -': z_div_D,
+                    'z_nonperm[calc_t]# z<sub>non-perm</sub> (m) ? -': z_t,
+                    'z_perm/t[calc_t]# z<sub>perm</sub>/t (-) ? -': z_div_t,
+                    'z_to_next_nonperm[calc_t]# z<sub>to non-perm</sub> (m) ? -': z_b,
+                    'z_to_next_nonperm/D[calc_t]# z<sub>to non-perm</sub>/D (-) ? -': z_b_div_D,
+                    'flow_condition[calc_t]# Flow condition (-) ? -': flow_condition,
+                    'W_eq[calc_t]# W<sub>eq</sub> (MN) ? -': W_eq,
+                    'W_soil[calc_t]# W<sub>soil</sub> (MN) ? -': W_soil_F,
+                    'Q_t_PF[calc_t]# Q<sub>t,PF</sub> (MN) ? -': Q_t_total_z,
+                    'W_eq/P_f_NF[calc_t]# W<sub>eq</sub>/P<sub>f,NF</sub> (-) ? -': off,
+                    'W_soil/P_f_NF[calc_t]# W<sub>soil</sub>/P<sub>f,NF</sub> (-) ? -': gR,
+                    'S_n/S_n_cr[calc_t]# S<sub>n</sub>/S<sub>n,cr</sub> (-) ? -': S_n_div_S_n_cr,
+                    'P_f_PF/P_f_NF[calc_t]# P<sub>f,PF</sub>/P<sub>f,NF</sub> (-) ? -': Q_t_flow_Q_div_t_total,}
         
     if flow_condition in ['full_flow']:
         Q_t_flow = Q_t_total_z*Q_t_flow_Q_div_t_total
@@ -228,7 +228,7 @@ def suction_underpressure(depth_i, soil_data_dis_dict, dl_b,
         Q_t_installation = Q_t_flow + Q_s_inner_zt + Q_s_outer_zt
         U_req = max(0, U_eq + 1000*(W_soil_eq + Q_s_inner_zt)/base_area_outer_i)
 
-        add_dict['U_eq[output_t]'] = U_eq
+        add_dict['U_eq[output_t]# U<sub>eq</sub> (kPa) ? -'] = U_eq
 
         H_eq = max(0, U_eq / gamma_w)
 
@@ -239,12 +239,12 @@ def suction_underpressure(depth_i, soil_data_dis_dict, dl_b,
 
         q_i_div_k_i = H_eq / max(1e-10, z) * ((11/4*z_div_D + delta_w)/(alpha_w*(np.pi/4*ki_ko_i + beta_w + 11/4*z_div_D*chi_w)))
         q_i = q_i_div_k_i * k_i_i
-        add_dict['q/ki[output_t]'] = q_i_div_k_i
-        add_dict['q[output_t]'] = q_i
+        add_dict['q/ki[output_t]# q/k<sub>i</sub> (-) ? -'] = q_i_div_k_i
+        add_dict['q[output_t]# q (-) ? -'] = q_i
 
         t_ss = (gamma__i*np.power(z+2*b_outer_diff_i, 2))/(k_i_i*M_i)*T_ss
         d_t_ss = t_ss - t_ss_array[-1]
-        add_dict['d_t_ss[output_t]'] = d_t_ss
+        add_dict['d_t_ss[output_t]# d<sub>t,ss</sub> (-) ? -'] = d_t_ss
         d_heave_klinkvort = d_t_ss*q_i
 
     else:
@@ -261,8 +261,8 @@ def suction_underpressure(depth_i, soil_data_dis_dict, dl_b,
             inner_outer_heave_ratio = 1
 
     d_heave_klinkvort += 4*t_diff_i*(b_outer_diff_i - t_diff_i)*d_z_gdb/np.power(b_outer_diff_i - 2*t_diff_i, 2)*inner_outer_heave_ratio
-    add_dict['t_ss[output_t]'] = t_ss
-    add_dict['d_heave_klinkvort[output_t]'] = d_heave_klinkvort
+    add_dict['t_ss[output_t]# t<sub>ss</sub> (s) ? -'] = t_ss
+    add_dict['d_heave_klinkvort[output_t]# d<sub>heave,klinkvort</sub> (m) ? -'] = d_heave_klinkvort
     
     S_n = U_req / max(1e-10, p_0__i)
 
@@ -280,12 +280,12 @@ def suction_underpressure(depth_i, soil_data_dis_dict, dl_b,
     
     alpha = inner_outer_heave_ratio + (227.4*U_req + 1000*q_c_w_ave)/(830*100)
     d_heave_gunawan = 4*t_diff_i*(b_outer_diff_i - t_diff_i)*d_z_gdb/np.power(b_outer_diff_i - 2*t_diff_i, 2) * alpha
-    add_dict['d_heave_gunawan[output_t]'] = d_heave_gunawan
+    add_dict['d_heave_gunawan[output_t]# d<sub>heave,gunawan</sub> (-) ? -'] = d_heave_gunawan
 
-    results_dict_underpressure = {'U_req[output_t]': U_req,
-                                  'S_n[output_t]': S_n,
-                                  'S_n_cr[output_t]': S_n_cr,
-                                  'Q_t_ins[output_t]': Q_t_installation}
+    results_dict_underpressure = {'U_req[output_t]# U<sub>req</sub> (kPa) ? -': U_req,
+                                  'S_n[output_t]# S<sub>n</sub> (-) ? -': S_n,
+                                  'S_n_cr[output_t]# S<sub>n,cr</sub> (-) ? -': S_n_cr,
+                                  'Q_t_ins[output_t]# Q<sub>t,ins</sub> (MN) ? -': Q_t_installation}
     
     results_dict_underpressure = {**results_dict_underpressure, **add_dict}
 

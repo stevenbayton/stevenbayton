@@ -75,9 +75,9 @@ def calc(capacity_dict, sections_input, foundation_list, calculation_method_i, l
         if l_s > 8:
             for section_i in range(1, 10):
                 if any(['section_'+str(section_i) in key for key in shaft_parameter_inc_i.keys()]):
-                    if shaft_parameter_inc_i['soil_type_s_section_' + str(section_i) + '[input_s]'].lower() in ['c', 'c_s']:
-                        inner_ratio = shaft_parameter_inc_i['di_do_ratio_section_' + str(section_i) + '[geometry_s]']
-                        Q_s_inner_clay += inner_ratio*shaft_parameter_inc_i['Q_s_outer_section_' + str(section_i) + '[calc_s]']
+                    if shaft_parameter_inc_i[next(k for k in  shaft_parameter_inc_i if k.startswith('soil_type_s_section_' + str(section_i) + '[input_s]'))] in ['c', 'c_s']:
+                        inner_ratio = shaft_parameter_inc_i[next(k for k in  shaft_parameter_inc_i if k.startswith('di_do_ratio_section_' + str(section_i) + '[geometry_s]'))]
+                        Q_s_inner_clay += inner_ratio*shaft_parameter_inc_i[next(k for k in  shaft_parameter_inc_i if k.startswith('Q_s_outer_section_' + str(section_i) + '[calc_s]'))]
  
     results_dict_base, plug_output_base = b_calc_base.base_resistance(depth_i, soil_data_dis_dict, dl_b,
                                                                       capacity_dict, f_direction_i, pf_soil_mat, 
@@ -89,11 +89,12 @@ def calc(capacity_dict, sections_input, foundation_list, calculation_method_i, l
                                                                       l_s=l_s,
                                                                       Q_s_inner_clay=Q_s_inner_clay)  
                     
-    Q_b_total = results_dict_base["Q_b_total[output_b]"]
-    Q_s_total = results_dict_shaft["Q_s_total[output_s]"]
+    Q_b_total = results_dict_base[next(k for k in results_dict_base if k.startswith("Q_b_total[output_b]"))]
+
+    Q_s_total = results_dict_shaft[next(k for k in results_dict_shaft if k.startswith("Q_s_total[output_s]"))]
     Q_t_total = max(1e-10, Q_b_total + Q_s_total)
 
-    results_dict_total["Q_t_total[output_t]"] = Q_t_total
+    results_dict_total["Q_t_total[output_t]# True ? Total resistance ? Q<sub>t</sub> (MN) ? Total ? 2"] = Q_t_total
     
     if plug_output_base.lower() == 'cored':
         W_plug = 0
@@ -110,10 +111,10 @@ def calc(capacity_dict, sections_input, foundation_list, calculation_method_i, l
     elif f_direction_i.lower() == 'tension':
         W_t_total = -W_foundation - W_plug
 
-    results_dict_total["W_t_total[output_t]"] = W_t_total
+    results_dict_total["W_t_total[output_t][output_t]# True ? Total weight ? W (MN) ? Total ? 2"] = W_t_total
 
     Q_t_net_total = Q_t_total - W_t_total
-    results_dict_total["Q_t_net_total[output_t]"] = Q_t_net_total
+    results_dict_total["Q_t_net_total[output_t]# False ? Total (net) resistance ? Q<sub>t,net</sub> (MN) ? Total ? 2"] = Q_t_net_total
 
     results_dict = {'z[input]': depth_i, 
                     **results_dict_base, 
@@ -239,12 +240,12 @@ def task(calculation_name,
                 else:
                     output_result_save[depth_i][key] = value
 
-            output_result_plot.setdefault("Q_t_total_design", []).append(f_d_total_v + results_dict["W_t_total[output_t]"])   
+            output_result_plot.setdefault("Q_t_total_design", []).append(f_d_total_v + results_dict[next(k for k in results_dict if k.startswith("W_t_total[output_t]"))])
             output_result_plot.setdefault("Q_t_net_design", []).append(f_d_total_v)  
-            output_result_plot.setdefault("Utilisation_ratio", []).append((f_d_total_v + results_dict["W_t_total[output_t]"])/results_dict["Q_t_total[output_t]"])
-            output_result_save[depth_i]["Q_t_total_design[output_t]"] = f_d_total_v + results_dict["W_t_total[output_t]"]
-            output_result_save[depth_i]["Q_t_net_design[output_t]"] = f_d_total_v
-            output_result_save[depth_i]["Utilisation_ratio[output_t]"] = (f_d_total_v + results_dict["W_t_total[output_t]"])/results_dict["Q_t_total[output_t]"]
+            output_result_plot.setdefault("Utilisation_ratio", []).append((f_d_total_v + results_dict[next(k for k in results_dict if k.startswith("W_t_total[output_t]"))])/results_dict[next(k for k in results_dict if k.startswith("Q_t_total[output_t]"))])
+            output_result_save[depth_i]["Q_t_total_design[output_t]# False ? Total driving force ? Q<sub>v,total</sub> (MN) ? Total ? 2"] = f_d_total_v + results_dict[next(k for k in results_dict if k.startswith("W_t_total[output_t]"))]
+            output_result_save[depth_i]["Q_t_net_design[output_t]# False ? Net driving force ? Q<sub>v,net,total</sub> (MN) ? Total ? 2"] = f_d_total_v
+            output_result_save[depth_i]["Utilisation_ratio[output_t]# False ? Utilisation ratio ? UR (-) ? Total ? 2"] = (f_d_total_v + results_dict[next(k for k in results_dict if k.startswith("W_t_total[output_t]"))])/results_dict[next(k for k in results_dict if k.startswith("Q_t_total[output_t]"))]
 
         # --- FIND OPTIMAL FOUNDATION LENGTH ---
         if "optimise" in str(length_embedment):   

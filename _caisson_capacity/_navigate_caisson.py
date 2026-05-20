@@ -20,9 +20,9 @@ def write_caisson_file(foundation_location_name,
 
     z = input_dict['z']
     eff_uw = input_dict['eff_uw']
-    su_C = input_dict['su_C_u']
-    su_D = input_dict['su_D_u']
-    su_E = input_dict['su_E_o']
+    su_C = input_dict['su_C_found']
+    su_D = input_dict['su_D_found']
+    su_E = input_dict['su_E']
     su_ave = input_dict['su_input']
 
     if alpha_d_su == "Find slip surface":
@@ -85,7 +85,7 @@ def write_caisson_file(foundation_location_name,
     # Soil information
     soil_matrix = []
     su_D_contribution = []
-    
+
     for i in range(0, len(z) - 1, 2):
         zi = z[i]
         eff_uwi = eff_uw[i]
@@ -102,7 +102,8 @@ def write_caisson_file(foundation_location_name,
     
     NUMSL = len(soil_matrix)
     SOIL_MAT = '\n'.join([' '.join(i) for i in soil_matrix])
-    SOIL_MAT_BASE = str(round(z[i+1], 2))
+    # SOIL_MAT_BASE = str(round(z[i+1], 2))
+    SOIL_MAT_BASE = str(round(z[-1], 2))
     M_FAC = 1
 
     # Caisson model
@@ -130,6 +131,7 @@ def write_caisson_file(foundation_location_name,
 
     M_t = min(M_t_outer + M_t_inner, M_t_outer + M_t_plug)
     eta_t = 1000 * T_design / M_t
+
     alpha_fo_updated = alpha_fo * np.power(1 - np.power(eta_t, 2), 0.5)
     alpha_fi_updated = alpha_fi * np.power(1 - np.power(eta_t, 2), 0.5)
 
@@ -231,82 +233,82 @@ def read_ouput_file(output_file):
     return output_dict_i
 
 
-def wait_for_stable_screen(page,
-                           repeats=2, interval=300, timeout=100000):
+# def wait_for_stable_screen(page,
+#                            repeats=2, interval=300, timeout=100000):
 
-    start = time.time()
-    stable_count = 0
+#     start = time.time()
+#     stable_count = 0
 
-    last = page.screenshot()
+#     last = page.screenshot()
 
-    while (time.time() - start) * 1000 < timeout:
-        page.wait_for_timeout(interval)
-        current = page.screenshot()
+#     while (time.time() - start) * 1000 < timeout:
+#         page.wait_for_timeout(interval)
+#         current = page.screenshot()
 
-        if current == last:
-            stable_count += 1
-            if stable_count >= repeats:
-                return
-        else:
-            stable_count = 0
+#         if current == last:
+#             stable_count += 1
+#             if stable_count >= repeats:
+#                 return
+#         else:
+#             stable_count = 0
 
-        last = current
+#         last = current
 
-    raise TimeoutError("Screen did not become stable")
+#     raise TimeoutError("Screen did not become stable")
 
 
-def click_image(page, 
-                images,
-                image_name, 
-                count=0,
-                wait_for_stable=True,
-                critical=True,
-                ratio_x=0.5, ratio_y=0.5, threshold=0.95):
+# def click_image(page, 
+#                 images,
+#                 image_name, 
+#                 count=0,
+#                 wait_for_stable=True,
+#                 critical=True,
+#                 ratio_x=0.5, ratio_y=0.5, threshold=0.95):
 
-    screenshot_path = Path(images[image_name].parent / ("current_screen.png"))
-    page.screenshot(path=screenshot_path)
+#     screenshot_path = Path(images[image_name].parent / ("current_screen.png"))
+#     page.screenshot(path=screenshot_path)
 
-    screen = cv2.imread(str(screenshot_path))
-    template = cv2.imread(images[image_name])
+#     screen = cv2.imread(str(screenshot_path))
+#     template = cv2.imread(images[image_name])
 
-    result = cv2.matchTemplate(screen, template, cv2.TM_CCOEFF_NORMED)
-    _, max_val, _, max_loc = cv2.minMaxLoc(result)
+#     result = cv2.matchTemplate(screen, template, cv2.TM_CCOEFF_NORMED)
+#     _, max_val, _, max_loc = cv2.minMaxLoc(result)
 
-    if max_val < threshold:
-        if wait_for_stable and count < 20 and critical:
-            wait_for_stable_screen(page)
-            click_image(page, images, image_name)
+#     if max_val < threshold:
+#         if wait_for_stable and count < 20 and critical:
+#             wait_for_stable_screen(page)
+#             click_image(page, images, image_name)
 
-        elif count >= 20 or not critical:
-            print(f" ------ (Failed to find {image_name} button, trying again)")
-            return False, [None, None], count
+#         elif count >= 20 or not critical:
+#             print(f" ------ (Failed to find {image_name} button, trying again)")
+#             return False, [None, None], count
         
-    h, w, _ = template.shape
-    click_x = max_loc[0] + int(ratio_x * w)
-    click_y = max_loc[1] + int(ratio_y * h)
+#     h, w, _ = template.shape
+#     click_x = max_loc[0] + int(ratio_x * w)
+#     click_y = max_loc[1] + int(ratio_y * h)
 
-    flutter = page.locator("flutter-view")
-    flutter.wait_for()
+#     flutter = page.locator("flutter-view")
+#     flutter.wait_for()
 
-    page.evaluate("""([x, y]) => {
-                  const old = document.getElementById('playwright-click-marker');
-                  if (old) old.remove();
-                  const dot = document.createElement('div');
-                  dot.id = 'playwright-click-marker';
-                  dot.style.position = 'absolute';
-                  dot.style.left = x + 'px';
-                  dot.style.top = y + 'px';
-                  dot.style.width = '10px';
-                  dot.style.height = '10px';
-                  dot.style.background = 'red';
-                  dot.style.borderRadius = '50%';
-                  dot.style.zIndex = 9999;
-                  dot.style.pointerEvents = 'none';
-                  document.body.appendChild(dot);
-                  }""",
-                  [click_x, click_y],)
+#     page.evaluate("""([x, y]) => {
+#                   const old = document.getElementById('playwright-click-marker');
+#                   if (old) old.remove();
+#                   const dot = document.createElement('div');
+#                   dot.id = 'playwright-click-marker';
+#                   dot.style.position = 'absolute';
+#                   dot.style.left = x + 'px';
+#                   dot.style.top = y + 'px';
+#                   dot.style.width = '10px';
+#                   dot.style.height = '10px';
+#                   dot.style.background = 'red';
+#                   dot.style.borderRadius = '50%';
+#                   dot.style.zIndex = 9999;
+#                   dot.style.pointerEvents = 'none';
+#                   document.body.appendChild(dot);
+#                   }""",
+#                   [click_x, click_y],)
 
-    return True, [click_x, click_y], count
+#     return True, [click_x, click_y], count
 
 
 # def execute_main(page, 
@@ -491,11 +493,10 @@ def click_image(page,
 
 
 def execute_main(foundation_location_name,
-                 page, 
-                 images,
                  input_file_array, 
                  output_file_array):
     
+    # url_login = "https://dev.casksoftware.com/login"
     url_login = "https://app.casksoftware.com/login"
     username = "ingerid.jahren@multiconsult.no"
     password = "Cgje7fLwUE7nsQJv"
@@ -504,16 +505,17 @@ def execute_main(foundation_location_name,
     # password = "eR}RV=G7W&90"
 
     edge_location = r"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"
-    downloads_location = r"C:\Users\steb\Downloads"
-
-    subprocess.run([edge_location, url_login])
+    downloads_location = os.path.join(Path.home(), "Downloads")
+    print(f" ---- Location of downloads folder: {downloads_location}")
 
     print(f" ----- Username: {username}")
     print(f" ----- Password: {password}")        
-    print(f" ----- Input files path: {input_file_array[0].parent}")    
+    print(f" ----- Input files path: {input_file_array[0].parent}") 
+
+    subprocess.run([edge_location, url_login])     
 
     zip_file_name = input(f"------ Name of CAISSON project [{foundation_location_name}]: ") or foundation_location_name
-    zip_path = Path(downloads_location)/(zip_file_name + '.zip')
+    zip_path = os.path.join(downloads_location, (zip_file_name + '.zip'))
     
     zip_files = True
     output_file_missing_array = [os.path.basename(file_i) for file_i in output_file_array]
@@ -536,10 +538,5 @@ def execute_main(foundation_location_name,
             print(f" ----- All output files present")   
 
     os.remove(zip_path)    
-
-    # with zipfile.ZipFile(zip_path, "r") as z:
-    #     for name in z.namelist():
-    #         if name.endswith(".O01"):
-    #             z.extract(name, output_file_array[0].parent)
 
     return

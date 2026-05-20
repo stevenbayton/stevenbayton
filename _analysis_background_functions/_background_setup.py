@@ -1,5 +1,6 @@
 # python modules
 import numpy as np
+import pandas as pd
 
 # multiconsult modules
 import _background_functions as b_func
@@ -10,6 +11,7 @@ def extract_design_soil_profile(gdb_df, d_z, z_max, sections, foundation_list):
     soil_data_dis_dict = {}
 
     depth = depth_orig = np.array(gdb_df['depth'].astype(float))
+
     z_min = 0
     for foundation_i in sections.keys():
         if foundation_i in foundation_list:
@@ -23,13 +25,23 @@ def extract_design_soil_profile(gdb_df, d_z, z_max, sections, foundation_list):
         depth = depth[:idx_lim_row_1 + 1]
     else:
         z_max_ex = False
-        idx_lim_row_2 = len([row for row in depth if row < z_max])-1                  
+        if z_max > max(depth):
+            depth = np.append(depth, max(depth))
+            row_to_repeat = len(gdb_df) - 1
+            gdb_df = pd.concat([gdb_df.iloc[:row_to_repeat + 1], gdb_df.iloc[[row_to_repeat]], gdb_df.iloc[row_to_repeat + 1:]], ignore_index=True)
+            depth_orig = np.array(gdb_df['depth'].astype(float))
+
+        idx_lim_row_2 = len([row for row in depth if row < z_max])-1              
         depth_app = z_max
         depth = depth[:idx_lim_row_2 + 1]        
         depth = np.append(depth, depth_app)
-    
+        # add_depth_row = gdb_df.iloc[-1].copy()
+        # add_depth_row["depth"] = depth_app
+        # gdb_df = pd.concat([gdb_df, pd.DataFrame([add_depth_row])], ignore_index=True)
+            
     if d_z is not None:
         z_dis = np.round(np.arange(z_min, z_max+d_z, d_z), 2)
+        
     else:
         z_dis = np.array(depth)
 
@@ -57,7 +69,15 @@ def extract_design_soil_profile(gdb_df, d_z, z_max, sections, foundation_list):
             else:
                 param_data_i = np.array(param_data_i.astype(float))
                 if not z_max_ex:
-                    param_data_app_i = np.interp(z_max, depth_orig, param_data_i)
+
+                    if z_max > max(depth_orig):
+                        gR = (param_data_i[-3]-param_data_i[-2])/(depth_orig[-3]-depth_orig[-2])
+                        param_data_app_i = gR*(z_max - depth_orig[-3]) + param_data_i[-3]
+                        if np.isnan(param_data_app_i):
+                            param_data_app_i = np.interp(z_max, depth_orig, param_data_i)
+                    else:
+                        param_data_app_i = np.interp(z_max, depth_orig, param_data_i)
+
                     param_data_i = param_data_i[:idx_lim_row_2 + 1]
                     param_data_i = np.append(param_data_i, param_data_app_i)
 
@@ -72,66 +92,6 @@ def extract_design_soil_profile(gdb_df, d_z, z_max, sections, foundation_list):
     soil_data_dis_array = [soil_data_dis_dict[param_i] for param_i in gdb_params]
    
     return soil_data_dis_array, gdb_params
-
-
-# def extract_design_soil_profile(gdb_df, d_z, z_max, sections, foundation_list):
-
-#     soil_data_dis_dict = {}
-
-#     depth = np.array(gdb_df['depth'].astype(float))
-#     z_min = 0
-#     for foundation_i in sections.keys():
-#         if foundation_i in foundation_list:
-#             for section_i in sections[foundation_i].keys():
-#                 data_i = sections[foundation_i][section_i]
-#                 z_min = min(z_min, data_i['z1_from_soil_surface'])
-   
-#     if d_z is not None:
-#         z_dis = np.round(np.arange(z_min, z_max+d_z, d_z), 2)
-#     else:
-#         z_dis = depth
-
-#     soil_data_dis_dict['depth'] = z_dis
-
-#     gdb_params = gdb_df.columns
-#     gdb_params_final = np.array([])
-   
-#     for param_i in gdb_params:
-
-#         if param_i == 'depth':
-            
-#             if param_i not in gdb_params_final:
-#                 gdb_params_final = np.append(gdb_params_final, param_i)
-#             continue
-
-#         param_data_i = np.array(gdb_df[param_i])#to_numpy()
-        
-#         nan_condition = np.array([str(x) != 'nan' for x in param_data_i])
-#         param_data_non_nan_i = param_data_i[nan_condition]
-#         depth_non_nan_i = depth[nan_condition]  
-
-#         if len(depth_non_nan_i) == 0:
-#             continue
-        
-#         if param_i not in gdb_params_final:
-#             gdb_params_final = np.append(gdb_params_final, param_i)
-
-#         if any(isinstance(param_data_ii, str) for param_data_ii in param_data_non_nan_i):
-#             if param_i == 'sbt':
-#                 param_data_non_nan_i[np.where(param_data_non_nan_i.astype(str) == str(np.nan))] = ""
-
-#             soil_data_dis_dict[param_i] = b_func.param_fill(z_dis, depth_non_nan_i, param_data_non_nan_i)
-
-#         else:
-#             param_data_non_nan_i = np.array(param_data_non_nan_i.astype(float))
-#             soil_data_dis_dict[param_i] = np.interp(z_dis, depth_non_nan_i, param_data_non_nan_i)
-#             soil_data_dis_dict[param_i] = b_func.param_mask(soil_data_dis_dict[param_i])
-                        
-#         soil_data_dis_dict[param_i][np.round(z_dis, 2) < 0] = np.nan
-
-#     soil_data_dis_array = [soil_data_dis_dict[param_i] for param_i in gdb_params_final]
-       
-#     return soil_data_dis_array, gdb_params_final
 
 
 def section_setup(depth_i, z_dis, length_dimension, sections, foundation_list, d_z, pf_load_perm, calc_type, uw_s_steel=6850, add_section=False):

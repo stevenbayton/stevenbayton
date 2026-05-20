@@ -28,22 +28,22 @@
           UNITS USED : MN/M                            
           WIDTH OF FOUNDATION                                 B =       6.600
           LENGTH OF FOUNDATION                                L =       6.600
-          DEPTH OF EMBEDMENT , START VALUE                  ZSS =      10.500
-          DEPTH OF EMBEDMENT , FINAL VALUE                  ZSF =      10.500
+          DEPTH OF EMBEDMENT , START VALUE                  ZSS =       7.500
+          DEPTH OF EMBEDMENT , FINAL VALUE                  ZSF =       7.500
           DEPTH OF EMBEDMENT , STEP  VALUE               ZSSTEP =       0.000
           SOIL TOTAL UNIT WEIGHT                           GAMS =       0.019
           WATER UNIT WEIGHT                                GAMW =       0.010
 
-          SUBMERGED WEIGHT OF STRUCTURE , START VALUE       PVS =       3.028
-          SUBMERGED WEIGHT OF STRUCTURE , FINAL VALUE       PVF =       3.028
+          SUBMERGED WEIGHT OF STRUCTURE , START VALUE       PVS =       3.073
+          SUBMERGED WEIGHT OF STRUCTURE , FINAL VALUE       PVF =       3.073
           SUBMERGED WEIGHT OF STRUCTURE , STEP  VALUE    PVSTEP =       0.000
-          HORIZONTAL FORCE AT MUDLINE                        PH =       1.456
-          OVERTURNING MOMENT AT MUDLINE                       M =       9.248
+          HORIZONTAL FORCE AT MUDLINE                        PH =       0.378
+          OVERTURNING MOMENT AT MUDLINE                       M =       2.940
           EXCESS WATER PRESSURE OUTSIDE HEEL              DELPH =       0.000
           EXCESS WATER PRESSURE OUTSIDE TOE               DELPT =       0.000
           LOAD FACTORS TO BE USED                            LF =         1.0
 
-          MAXIMUM DEPTH OF SLIP SURFACE BELOW BASE         ZMAX =      30.400
+          MAXIMUM DEPTH OF SLIP SURFACE BELOW BASE         ZMAX =      27.400
           STEP VALUE FOR SLIP SURFACE DEPTH               ZSTEP =       0.200
           REDUCTION FACTOR SIDE, BASE/SOIL                REDBS =       0.500
           REDUCTION FACTOR SIDE, SOIL/SOIL                REDSS =       0.400
@@ -59,42 +59,50 @@
              BELOW      COMPRESSION  SHEAR        EXTENSION    HORIZONTAL
              MUDLINE    STRENGTH     STRENGTH     STRENGTH     STRENGTH
 
-               0.000      0.007        0.007        0.007        0.001
-               0.500      0.008        0.008        0.008        0.008
-               0.500      0.008        0.008        0.008        0.008
-               1.000      0.010        0.010        0.010        0.010
-               1.000      0.010        0.010        0.010        0.010
-               2.000      0.013        0.013        0.013        0.013
-               2.000      0.013        0.013        0.013        0.013
-               3.000      0.016        0.016        0.016        0.016
-               3.000      0.016        0.016        0.016        0.016
-               4.000      0.020        0.020        0.020        0.020
-               4.000      0.020        0.020        0.020        0.020
-               6.000      0.026        0.026        0.026        0.026
-               6.000      0.026        0.026        0.026        0.026
-               8.000      0.032        0.032        0.032        0.032
-               8.000      0.032        0.032        0.032        0.032
-              10.500      0.040        0.040        0.040        0.040
-              10.510      0.040        0.040        0.040        0.040
-              11.300      0.043        0.043        0.043        0.043
-              11.300      0.006        0.006        0.006        0.006
-              12.500      0.007        0.007        0.007        0.007
-              12.500      0.044        0.044        0.044        0.044
-              13.500      0.047        0.047        0.047        0.047
-              13.500      0.047        0.047        0.047        0.047
-              14.000      0.049        0.049        0.049        0.049
-              14.000      0.049        0.049        0.049        0.049
-              15.000      0.051        0.051        0.051        0.051
-              30.400      0.051        0.051        0.051        0.051
+               0.000      0.001        0.001        0.001        0.001
+               0.200      0.002        0.001        0.001        0.001
+               0.200      0.007        0.006        0.005        0.006
+               0.700      0.008        0.007        0.006        0.007
+               0.700      0.008        0.007        0.006        0.007
+               1.000      0.009        0.008        0.006        0.008
+               1.000      0.009        0.008        0.006        0.008
+               2.000      0.011        0.010        0.008        0.010
+               2.000      0.011        0.010        0.008        0.010
+               2.700      0.013        0.011        0.009        0.011
+               2.700      0.014        0.007        0.018        0.007
+               3.800      0.022        0.012        0.029        0.012
+               3.800      0.015        0.014        0.011        0.014
+               4.200      0.016        0.014        0.012        0.014
+               4.200      0.024        0.013        0.032        0.013
+               4.500      0.026        0.014        0.035        0.014
+               4.500      0.018        0.016        0.014        0.016
+               4.900      0.019        0.017        0.014        0.017
+               4.900      0.019        0.017        0.014        0.017
+               6.800      0.022        0.020        0.016        0.020
+               6.800      0.022        0.020        0.016        0.020
+               7.300      0.022        0.020        0.017        0.020
+               7.300      0.039        0.021        0.051        0.021
+               7.500      0.040        0.022        0.053        0.022
+               7.510      0.040        0.022        0.053        0.022
+               8.700      0.049        0.027        0.065        0.027
+               8.700      0.037        0.022        0.048        0.022
+              10.000      0.044        0.026        0.057        0.026
+              10.000      0.046        0.027        0.061        0.027
+              11.000      0.052        0.030        0.069        0.030
+              11.000      0.070        0.037        0.092        0.037
+              12.000      0.077        0.041        0.102        0.041
+              12.000      0.069        0.038        0.091        0.038
+              13.000      0.076        0.042        0.100        0.042
+              13.000      0.076        0.042        0.100        0.042
+              15.000      0.089        0.050        0.118        0.050
+              27.400      0.089        0.050        0.118        0.050
 
                                                                          1/ 4
-                              NUMBER OF ITERATIONS EXCEEDS 101                              SF COMPUTED IN LAST ITERATION         :     2.938                              SF COMPUTED IN LAST BUT ONE ITERATION :     3.122
-                              NUMBER OF ITERATIONS EXCEEDS 101                              SF COMPUTED IN LAST ITERATION         :     3.203                              SF COMPUTED IN LAST BUT ONE ITERATION :     2.876
 1
           BEARING CAPACITY CALCULATED BY SLIP SURFACES             PAGE  2/ 4
 
           PROJECT : Project Information                                         
-          LOAD FACTOR : 1.00  SUBMERGED WEIGHT :       3.0  BASE EMB :  10.50
+          LOAD FACTOR : 1.00  SUBMERGED WEIGHT :       3.1  BASE EMB :   7.50
 
 
           SAFETY FACTOR VERSUS DEPTH
@@ -105,9 +113,102 @@
           MUDLINE         ANGLE                    S(A*SA)    S(B) 
                 Z          ALPHA       SF
 
+               7.500       0.000     13.671    -0.5168E+01    0.3780E+00
+               7.700       2.250     10.340    -0.5429E+01    0.5250E+00
+               7.900       4.433      8.586    -0.5706E+01    0.6646E+00
+               8.100       6.564      7.515    -0.5998E+01    0.7981E+00
+               8.300       8.662      6.800    -0.6305E+01    0.9272E+00
+               8.500      10.740      6.294    -0.6628E+01    0.1053E+01
+               8.700      12.808      5.922    -0.6966E+01    0.1176E+01
+               8.900      14.848      5.569    -0.7213E+01    0.1295E+01
+               9.100      16.884      5.290    -0.7468E+01    0.1412E+01
+               9.300      18.914      5.050    -0.7703E+01    0.1525E+01
+               9.500      20.963      4.915    -0.8052E+01    0.1638E+01
+               9.700      23.034      4.775    -0.8360E+01    0.1751E+01
+               9.900      25.107      4.637    -0.8626E+01    0.1860E+01
+              10.100      27.277      4.563    -0.9015E+01    0.1976E+01
+              10.300      29.443      4.486    -0.9359E+01    0.2087E+01
+              10.500      31.689      4.435    -0.9759E+01    0.2200E+01
+              10.700      33.996      4.401    -0.1019E+02    0.2315E+01
+              10.900      36.241      4.323    -0.1045E+02    0.2418E+01
+              11.100      38.767      4.364    -0.1108E+02    0.2539E+01
+              11.300      41.513      4.398    -0.1174E+02    0.2671E+01
+              11.500      44.161      4.392    -0.1223E+02    0.2785E+01
 
 
+          MINIMUM SAFETY FACTOR          SF =  4.323
+          FOUND FOR DEPTH                 Z = 10.900
+          AND SLIP SURFACE ANGLE      ALPHA = 36.241
+1
+          BEARING CAPACITY CALCULATED BY SLIP SURFACES             PAGE  3/ 4
 
-                    EFFECTIVE WIDTH B0 IS LESS THAN OR EQUAL TO ZERO:
+          PROJECT : Project Information                                         
+          LOAD FACTOR : 1.00  SUBMERGED WEIGHT :       3.1  BASE EMB :   7.50
 
-                    COMPUTATION TERMINATED FOR PRESENT LOAD CASE.
+
+          FORCES CALCULATED FOR CRITICAL SURFACE
+          **************************************
+
+          MINIMUM SAFETY FACTOR          SF =  4.323
+          FOUND FOR DEPTH                 Z = 10.900
+          AND SLIP SURFACE ANGLE      ALPHA = 36.241
+
+
+          K(N) = A(N) * SA(N)/SF  + B(N)
+
+           N    CODE       K(N)         A(N)      SA(N)  SA(N)/SF      B(N)
+
+           1    PH     0.3780E+00   0.0000E+00    0.000    0.000   0.3780E+00
+
+           2    PA     0.1208E+01  -0.1273E+03    0.016    0.004   0.1671E+01
+
+           3   -RH    -0.2851E-01  -0.5602E+01    0.022    0.005   0.0000E+00
+
+           4    HA     0.3368E+01  -0.5542E+02    0.041    0.010   0.3898E+01
+
+           5   -PP    -0.1959E+01  -0.9900E+02    0.013    0.003  -0.1671E+01
+
+           6   -HP    -0.2556E+01  -0.5769E+02    0.052    0.012  -0.1858E+01
+
+           7   -RS1   -0.1531E+00  -0.4950E+02    0.013    0.003   0.0000E+00
+
+           8   -RS2   -0.9839E-01  -0.1749E+02    0.024    0.006   0.0000E+00
+
+           9   -RS3   -0.1588E+00  -0.5135E+02    0.013    0.003   0.0000E+00
+
+          11    DHA01  0.0000E+00   0.0000E+00    0.000    0.000   0.0000E+00
+
+          12    DHA02  0.0000E+00   0.0000E+00    0.013    0.003   0.0000E+00
+
+          15    DHA05  0.0000E+00   0.0000E+00    0.011    0.002   0.0000E+00
+
+          17    DHA07  0.0000E+00   0.0000E+00    0.011    0.002   0.0000E+00
+
+          19    DHA09  0.0000E+00   0.0000E+00    0.011    0.002   0.0000E+00
+
+          20    DHA10  0.0000E+00   0.0000E+00    0.016    0.004   0.0000E+00
+
+1
+          BEARING CAPACITY CALCULATED BY SLIP SURFACES             PAGE  4/ 4
+
+          PROJECT : Project Information                                         
+          SUMMARY OF RESULTS OF STABILITY CALCULATIONS
+          ********************************************
+
+          IN ADDITON THE FOLLOWING RESULTS HAVE BEEN INCLUDED : 
+
+          AVERAGE MOBILIZED SHEAR STRESS ALONG SLIP SURFACECSS = -S(B)/S(A)
+          MOBILIZED SHEAR STRESS ACCORDING TO BRINCH HANSEN FORMULA = CB  *)
+          MOBILIZED SHEAR STRESS ACCORDING TO MEYERHOF  FORMULA      = CM  *)
+
+
+          LOAD  SUBMERGED DEPTH SAFETY  DEPTH  SLIP    MOB  MOB     MOB    
+          FACT  PLATFORM  BASE  FACTOR  SLIP   SURFA   SHEAR  SHEAR   SHEAR
+          USED  WEIGHT    EMBED         SURFA  ANGLE   NGI  BR.HA   M"HOF
+
+           LF      PV      ZS     SF      Z    ALPHA    CSS   CB      CM  
+
+          1.00       3.1   7.5   4.32   10.90  36.2    0.0052  0.0066  0.0069
+
+          *)
+          THE TWO MENTIONED FORMULAS ARE BASED ON THE EFFECTIVE AREA CONCEPT

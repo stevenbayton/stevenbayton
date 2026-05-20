@@ -24,7 +24,7 @@ def task(calculation_name,
          setup_input, 
          parent_input,
          input_heading, 
-         output_dict={}, d_z=None, url_main="https://app.casksoftware.com/home"):
+         output_dict={}, d_z=None):
 
     output_dict = {}
 
@@ -32,8 +32,8 @@ def task(calculation_name,
     if type(foundation_list) is not list:
         foundation_list = [foundation_list]
 
-    z_max = setup_input['z_max']
     length_embedment = setup_input['length_embedment']
+    z_max = int(2*length_embedment)
     
     pf_load_var = setup_input['load_factor_variable']
     pf_load_perm_fav = setup_input['load_factor_permanent_fav']
@@ -136,7 +136,7 @@ def task(calculation_name,
                                                                                             soil_data_dis_dict, gdb_params, dl_capacity, dl_override,
                                                                                             b_outer, l_outer, f_d_perm_fav_v_i,
                                                                                             pf_soil_mat, pf_soil_mat_application, 
-                                                                                            xecutable="caisson",
+                                                                                            executable="caisson",
                                                                                             ratio_load_tip=ratio_load_tip)
         
         
@@ -158,8 +158,9 @@ def task(calculation_name,
         output_result_save_input[length_embedment_i] = save_parameter
 
         for key, value in save_parameter.items():
-            if key not in output_result_plot_input:
-                output_result_plot_input[key] = value
+            key_red = key.split('[')[0]
+            if key_red not in output_result_plot_input:
+                output_result_plot_input[key_red] = value
 
         output_dict[calculation_method]['input_file'] = input_file
         output_dict[calculation_method]['output_file'] = output_file

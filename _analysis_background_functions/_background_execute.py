@@ -22,7 +22,7 @@ def remove_nan_values(original_dict):
 def load_parent_input(calculations_location, python_calculation_folder="python", shared_input_folder="_shared_inputs", parent_input_file="_parent_input.xlsx", setup_dict={}):
 
     calculations_location = Path(calculations_location)
-    parent_input_file = pd.read_excel(calculations_location/python_calculation_folder/shared_input_folder/parent_input_file).set_index("Parent input")
+    parent_input_file = pd.read_excel(os.path.join(calculations_location, python_calculation_folder, shared_input_folder, parent_input_file)).set_index("Parent input")
     
     parent_input_file = parent_input_file.dropna(subset=['Input'])
     
@@ -38,7 +38,7 @@ def load_gdb_input(setup_dict):
     gdb_file_location = setup_dict["parent_input"]["gdb_file_location"]
     gdb_file_name = setup_dict["parent_input"]["gdb_file_name"]
 
-    gdb_dict = pd.read_excel(Path(gdb_file_location)/gdb_file_name, sheet_name=None, skiprows=2)
+    gdb_dict = pd.read_excel(os.path.join(Path(gdb_file_location), gdb_file_name), sheet_name=None, skiprows=2)
     for sheet, gdb_df in gdb_dict.items():
         try:
             gdb_dict[sheet] = gdb_df.dropna(subset=['depth'])
@@ -67,6 +67,8 @@ def clean_gdb_df(gdb_df):
         else:
             gdb_df[col] = pd.to_numeric(gdb_df[col], errors='coerce')
             gdb_df[col] = (gdb_df.set_index("depth")[col].interpolate(method="index", limit_direction="both", limit_area="inside").values)
+
+    gdb_df = gdb_df.dropna(axis=1, how='all')
             
     return gdb_df
 
@@ -132,13 +134,12 @@ def scour_introduce(gdb_df, setup_input, sections_input, overburden_red_depth_co
         gdb_df_scour['sigv_rep_ls'] = np.array(gdb_df_scour['sigv_rep_gs'])
         gdb_df_scour['sigveff_rep_ls'] = np.array(gdb_df_scour['sigveff_rep_gs'])
         
-    # Cone resistance
-    if z_gs > 0:
+    if z_gs != 0 or z_ls != 0:
         if large_general_scour:
             K0 = np.array(gdb_df_scour['K0_rep'])
             gdb_df_scour['chi'] = np.array([0 if z_i <= z_gs else 1/(1+2*K0_i)*np.sqrt(((z_i-z_gs)+2*K0_i*np.sqrt(z_gs*(z_i-z_gs)+np.power(z_i-z_gs, 2)))/(z_gs+(z_i-z_gs))) for z_i, K0_i in zip(z, K0)])
         else:
-            gdb_df_scour['chi'] = np.array([sigveff_gs_recalc_i/max(1e-10, sigveff_i) for sigveff_i, sigveff_gs_recalc_i in zip(gdb_df_scour['sigveff_rep'], gdb_df_scour['sigveff_rep_gs'])])
+            gdb_df_scour['chi'] = np.array([sigveff_ls_recalc_i/max(1e-10, sigveff_i) for sigveff_i, sigveff_ls_recalc_i in zip(gdb_df_scour['sigveff_rep'], gdb_df_scour['sigveff_rep_ls'])])
     else:
         gdb_df_scour['chi'] = np.ones(len(gdb_df_scour['sigveff_rep']))
 
@@ -163,21 +164,33 @@ def scour_introduce(gdb_df, setup_input, sections_input, overburden_red_depth_co
 
 def load_cpt_input(setup_dict):
     
-    pog_global_location = setup_dict["parent_input"]["pog_global_location"]
-    cpt_files_location = Path(pog_global_location)/"Output"/"Data"
+    if "pog_global_location" in setup_dict["parent_input"]:
+        pog_global_location = setup_dict["parent_input"]["pog_global_location"]
+        cpt_files_location = os.path.join(Path(pog_global_location), "Output", "Data")
 
-    cpt_files = list(filter(lambda f: f.endswith('.csv'), os.listdir(cpt_files_location)))
+        if os.path.exists(cpt_files_location):
+            cpt_files = list(filter(lambda f: f.endswith('.csv'), os.listdir(cpt_files_location)))
+        else:
+            cpt_files = []
+
+        location_details_location = os.path.join(Path(pog_global_location), "Interpretation", "Location_details.xlsx")
+
+        if os.path.exists(location_details_location):
+            location_details_file = pd.read_excel(location_details_location).dropna(subset=['Borehole'])
+        else:
+            location_details_file = None
+       
+    else:
+        cpt_files = []
+        location_details_file = None
+
+    setup_dict["location_details"] = location_details_file
 
     cpt_dict = {}
     for cpt_file_i in cpt_files:
         cpt_name_i = cpt_file_i.split("_CPT_processed")[0]
         cpt_dict[cpt_name_i] = pd.read_csv(cpt_files_location/cpt_file_i, skiprows=[1])
-
-    location_details_location = Path(pog_global_location)/"Interpretation"/"Location_details.xlsx"
-    location_details_file = pd.read_excel(location_details_location).dropna(subset=['Borehole'])
-
-    setup_dict["location_details"] = location_details_file
-
+   
     return cpt_dict, setup_dict
 
 
@@ -191,12 +204,12 @@ def load_sections_input(setup_dict, foundation_location_name, input_folder="inpu
     python_calculation_folder = setup_dict["parent_input"]["python_calculation_folder"]
     
     section_file_name = "_sections_input_" + foundation_location_name + ".xlsx"
-    if os.path.exists(calculations_location/python_calculation_folder/foundation_calculation_folder/input_folder/section_file_name):
-        sections_file = pd.read_excel(calculations_location/python_calculation_folder/foundation_calculation_folder/input_folder/section_file_name)
+    if os.path.exists(os.path.join(calculations_location, python_calculation_folder, foundation_calculation_folder, input_folder, section_file_name)):
+        sections_file = pd.read_excel(os.path.join(calculations_location, python_calculation_folder, foundation_calculation_folder, input_folder, section_file_name))
         print(" -- Section file from individual foundation folder")
     else:
         section_file_name_shared = "_sections_input_shared.xlsx"
-        sections_file = pd.read_excel(calculations_location/python_calculation_folder/shared_input_folder/section_file_name_shared)
+        sections_file = pd.read_excel(os.path.join(calculations_location, python_calculation_folder, shared_input_folder, section_file_name_shared))
         print(" -- Section file from shared folder")
 
     sections_dict = {}
@@ -241,12 +254,12 @@ def load_calculation_input(setup_dict, calculation_name, foundation_location_nam
     input_folder = setup_dict["parent_input"]["input_folder"]
 
     calculation_input_file = calculation_name  + "_input_" + foundation_location_name + ".xlsx"
-    if os.path.exists(calculations_location/python_calculation_folder/foundation_calculation_folder/input_folder/calculation_input_file):
-        calculation_input_file = pd.read_excel(calculations_location/python_calculation_folder/foundation_calculation_folder/input_folder/calculation_input_file, sheet_name=None)
+    if os.path.exists(os.path.join(calculations_location, python_calculation_folder, foundation_calculation_folder, input_folder, calculation_input_file)):
+        calculation_input_file = pd.read_excel(os.path.join(calculations_location, python_calculation_folder, foundation_calculation_folder, input_folder, calculation_input_file), sheet_name=None)
         print(" -- Calculation input file from individual foundation folder")
     else:
         section_file_name_shared = calculation_name + "_input_shared.xlsx"
-        calculation_input_file = pd.read_excel(calculations_location/python_calculation_folder/shared_input_folder/section_file_name_shared, sheet_name=None)
+        calculation_input_file = pd.read_excel(os.path.join(calculations_location, python_calculation_folder, shared_input_folder, section_file_name_shared), sheet_name=None)
         print(" -- Calculation input file from shared folder")
 
     setup_dict[calculation_name] = {}
@@ -264,9 +277,29 @@ def load_calculation_input(setup_dict, calculation_name, foundation_location_nam
 
     for sheet in calculation_input_file:
         if 'plot' in sheet.lower():
-            plotting_input = calculation_input_file[sheet].dropna(subset=['label']).set_index("label")
-            plotting_input = plotting_input.to_dict('index')
+            plot_main_info = calculation_input_file[sheet][["plot_info", "plot_info_input"]].dropna(subset=['plot_info']).set_index("plot_info")["plot_info_input"].to_dict()
+            plotting_input = calculation_input_file[sheet].dropna(subset=['label']).set_index("label").to_dict('index')
+            plotting_input["plot_info"] = plot_main_info
             setup_dict['plotting'][sheet] = remove_nan_values(plotting_input)
+
+    setup_dict['tables'] = {}
+
+    for sheet in calculation_input_file:
+        if 'table' in sheet.lower():
+            table_main_info = calculation_input_file[sheet][["table_info", "table_info_input"]].dropna(subset=['table_info']).set_index("table_info")["table_info_input"].to_dict()
+            tables_input = {}
+            tables_input["table_info"] = table_main_info
+            
+            try:
+                calc_symbol_info = calculation_input_file[sheet][["calc_symbol", "calc_type", "calc_description", "calc_decimal_places", "calc_include?"]].dropna(subset=['calc_symbol'])
+                parameter_symbol_info = calculation_input_file[sheet][["parameter_symbol", "parameter_type", "parameter_description", "parameter_decimal_places", "parameter_include?"]].dropna(subset=['parameter_symbol'])
+                tables_input["calc_symbol_info"] = calc_symbol_info
+                tables_input["parameter_symbol_info"] = parameter_symbol_info
+            except Exception:
+                tables_input["calc_symbol_info"] = pd.DataFrame()
+                tables_input["parameter_symbol_info"] = pd.DataFrame()
+            
+            setup_dict['tables'][sheet] = remove_nan_values(tables_input)
 
     return setup_dict
 
@@ -351,21 +384,6 @@ def execute_caisson_task(input_headings,
     
     import _caisson_capacity._navigate_caisson as caisson
 
-    images = {}
-    images['username'] = Path.cwd()/calculation_name/'_templates'/'username.png'
-    images['password'] = Path.cwd()/calculation_name/'_templates'/'password.png'
-    images['sign_in'] = Path.cwd()/calculation_name/'_templates'/'sign_in.png'
-    images['caisson'] = Path.cwd()/calculation_name/'_templates'/'caisson.png'
-    images['new_project'] = Path.cwd()/calculation_name/'_templates'/'new_project.png'
-    images['project_name'] = Path.cwd()/calculation_name/'_templates'/'project_name.png'
-    images['upload'] = Path.cwd()/calculation_name/'_templates'/'upload.png'
-    images['calculate'] = Path.cwd()/calculation_name/'_templates'/'calculate.png'
-    images['save'] = Path.cwd()/calculation_name/'_templates'/'save.png'
-    images['cancel'] = Path.cwd()/calculation_name/'_templates'/'cancel.png'
-    images['cancel_confirm'] = Path.cwd()/calculation_name/'_templates'/'cancel_confirm.png'
-    images['delete'] = Path.cwd()/calculation_name/'_templates'/'delete.png'
-    images['account'] = Path.cwd()/calculation_name/'_templates'/'account.png'
-
     output_dict = {}
 
     url_info_update = [p, browser, context, page]
@@ -406,7 +424,7 @@ def execute_caisson_task(input_headings,
 
     print(f' ---- Executing caisson')
 
-    caisson.execute_main(foundation_location_name, page, images, input_file_array, output_file_array)
+    caisson.execute_main(foundation_location_name, input_file_array, output_file_array) # HERE
 
     for input_heading, calculation_method in zip(input_headings_calcuated, calculation_method_array):
 
@@ -430,7 +448,7 @@ def load_param_map(setup_dict, shared_input_folder="_shared_inputs"):
     python_calculation_folder = setup_dict["parent_input"]["python_calculation_folder"]
     
     map_file_name_shared = "_plot_input_shared.xlsx"
-    map_file = pd.read_excel(calculations_location/python_calculation_folder/shared_input_folder/map_file_name_shared, skiprows=2, sheet_name=None)
+    map_file = pd.read_excel(os.path.join(calculations_location, python_calculation_folder, shared_input_folder, map_file_name_shared), skiprows=2, sheet_name=None)
     
     setup_dict['cpt_map'] = map_file["cpt_map"].set_index('cpt_name').to_dict("index")
     setup_dict['param_map'] = map_file["param_map"].set_index('param_name').to_dict("index")
