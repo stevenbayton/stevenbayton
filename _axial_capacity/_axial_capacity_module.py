@@ -94,7 +94,7 @@ def calc(capacity_dict, sections_input, foundation_list, calculation_method_i, l
     Q_s_total = results_dict_shaft[next(k for k in results_dict_shaft if k.startswith("Q_s_total[output_s]"))]
     Q_t_total = max(1e-10, Q_b_total + Q_s_total)
 
-    results_dict_total["Q_t_total[output_t]# True ? Total resistance ? Q<sub>t</sub> (MN) ? Total ? 2"] = Q_t_total
+    results_dict_total["Q_t_total[output_t]# Q<sub>t</sub> (MN) ? Total ? 2"] = Q_t_total
     
     if plug_output_base.lower() == 'cored':
         W_plug = 0
@@ -111,12 +111,13 @@ def calc(capacity_dict, sections_input, foundation_list, calculation_method_i, l
     elif f_direction_i.lower() == 'tension':
         W_t_total = -W_foundation - W_plug
 
-    results_dict_total["W_t_total[output_t][output_t]# True ? Total weight ? W (MN) ? Total ? 2"] = W_t_total
+    results_dict_total["W_t_total[output_t][output_t]# W (MN) ? Total ? 2"] = W_t_total
 
     Q_t_net_total = Q_t_total - W_t_total
-    results_dict_total["Q_t_net_total[output_t]# False ? Total (net) resistance ? Q<sub>t,net</sub> (MN) ? Total ? 2"] = Q_t_net_total
+    results_dict_total["Q_t_net_total[output_t]# Q<sub>t,net</sub> (MN) ? Total ? 2"] = Q_t_net_total
 
-    results_dict = {'z[input]': depth_i, 
+    results_dict = {'z[input]# z (m) ? -': depth_i, 
+                    'soil_type[input]# - ? -': soil_type_i, 
                     **results_dict_base, 
                     **results_dict_shaft,
                     **results_dict_total}
@@ -216,10 +217,10 @@ def task(calculation_name,
                 continue
             
             output_result_save[depth_i] = {}
-            output_result_save[depth_i]['structure_sw_factor[input]'] = structure_sw_factor
+            output_result_save[depth_i]['structure_sw_factor[input]# Gross/Net (-) ? -'] = structure_sw_factor
             output_result_save_breakdown[depth_i] = {}
             output_result_save_breakdown[depth_i]["total_save_parameter"] = {}
-            output_result_save_breakdown[depth_i]["total_save_parameter"]['z[input]'] = depth_i
+            output_result_save_breakdown[depth_i]["total_save_parameter"]['z[input]# z (m) ? -'] = depth_i
                                                                                                                                     
             results_dict, l_s, plug_output_base = calc(capacity_dict, sections_input, foundation_list, calculation_method_i, l_s, 
                                                        f_direction_i, pf_load_perm_fav, pf_load_perm_unfav, pf_soil_mat, clay_reconsolidation_time,
@@ -242,10 +243,10 @@ def task(calculation_name,
 
             output_result_plot.setdefault("Q_t_total_design", []).append(f_d_total_v + results_dict[next(k for k in results_dict if k.startswith("W_t_total[output_t]"))])
             output_result_plot.setdefault("Q_t_net_design", []).append(f_d_total_v)  
-            output_result_plot.setdefault("Utilisation_ratio", []).append((f_d_total_v + results_dict[next(k for k in results_dict if k.startswith("W_t_total[output_t]"))])/results_dict[next(k for k in results_dict if k.startswith("Q_t_total[output_t]"))])
-            output_result_save[depth_i]["Q_t_total_design[output_t]# False ? Total driving force ? Q<sub>v,total</sub> (MN) ? Total ? 2"] = f_d_total_v + results_dict[next(k for k in results_dict if k.startswith("W_t_total[output_t]"))]
-            output_result_save[depth_i]["Q_t_net_design[output_t]# False ? Net driving force ? Q<sub>v,net,total</sub> (MN) ? Total ? 2"] = f_d_total_v
-            output_result_save[depth_i]["Utilisation_ratio[output_t]# False ? Utilisation ratio ? UR (-) ? Total ? 2"] = (f_d_total_v + results_dict[next(k for k in results_dict if k.startswith("W_t_total[output_t]"))])/results_dict[next(k for k in results_dict if k.startswith("Q_t_total[output_t]"))]
+            output_result_plot.setdefault("utilisation_ratio", []).append((f_d_total_v + results_dict[next(k for k in results_dict if k.startswith("W_t_total[output_t]"))])/results_dict[next(k for k in results_dict if k.startswith("Q_t_total[output_t]"))])
+            output_result_save[depth_i]["Q_t_total_design[output_t]# Q<sub>v,total</sub> (MN) ? -"] = f_d_total_v + results_dict[next(k for k in results_dict if k.startswith("W_t_total[output_t]"))]
+            output_result_save[depth_i]["Q_t_net_design[output_t]# Q<sub>v,net,total</sub> (MN) ? -"] = f_d_total_v
+            output_result_save[depth_i]["utilisation_ratio[output]# UR (-) ? -"] = (f_d_total_v + results_dict[next(k for k in results_dict if k.startswith("W_t_total[output_t]"))])/results_dict[next(k for k in results_dict if k.startswith("Q_t_total[output_t]"))]
 
         # --- FIND OPTIMAL FOUNDATION LENGTH ---
         if "optimise" in str(length_embedment):   
@@ -254,7 +255,7 @@ def task(calculation_name,
                 length_emb_punch_through = z_max
                 output_result_plot['length_embedment'] = length_embedment_i
                 output_result_plot['length_embedment_punch_through'] = length_emb_punch_through
-                output_result_plot['Utilisation_ratio_length_emb'] = np.inf
+                output_result_plot['utilisation_ratio_length_emb'] = np.inf
                 idx_pass = len(output_result_plot["z"])-1
             
             else:
@@ -272,7 +273,7 @@ def task(calculation_name,
                         length_emb_punch_through = output_result_plot["z"][idx_pass_2]
                         output_result_plot['length_embedment'] = length_embedment_i
                         output_result_plot['length_embedment_punch_through'] = length_emb_punch_through
-                        output_result_plot['Utilisation_ratio_length_emb'] = (f_d_total_v + output_result_plot["W_t_total"][idx_pass])/output_result_plot["Q_t_total"][idx_pass]
+                        output_result_plot['utilisation_ratio_length_emb'] = (f_d_total_v + output_result_plot["W_t_total"][idx_pass])/output_result_plot["Q_t_total"][idx_pass]
                         break
         else:
             idx_pass = [i for i, j in enumerate(output_result_plot["z"]) if j >= length_embedment][0]
@@ -286,7 +287,7 @@ def task(calculation_name,
             length_emb_punch_through = output_result_plot["z"][idx_pass_2]
             output_result_plot['length_embedment'] = length_embedment_i
             output_result_plot['length_embedment_punch_through'] = length_emb_punch_through
-            output_result_plot['Utilisation_ratio_length_emb'] = (f_d_total_v + output_result_plot["W_t_total"][idx_pass])/output_result_plot["Q_t_total"][idx_pass]
+            output_result_plot['utilisation_ratio_length_emb'] = (f_d_total_v + output_result_plot["W_t_total"][idx_pass])/output_result_plot["Q_t_total"][idx_pass]
         
         output_result_plot['Design_utilisation'] = utilisation_ratio
         output_result_plot['Q_t_net_design_utilisation'] = f_d_total_v/utilisation_ratio

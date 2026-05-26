@@ -266,8 +266,8 @@ def uwa_shaft_clay(q_t, sigv0_, z, z_tip, delta_int, calculation_dict):
                       'delta_int[input_s]# δ<sub>int</sub> (deg) ? -': delta_int,
                       'z_tip[calc_s]# z<sub>tip</sub> (m) ? -': z_tip,
                       'h[calc_s]# h (m) ? -': h,
-                      'R_star[calc_s]': R_star,
-                      'h_R[calc_s]': h_R}
+                      'R_star[calc_s]# R* (m) ? -': R_star,
+                      'h_R[calc_s]# h/R (-) ? -': h_R}
             
     return q_s, inner_ratio, save_parameter
 
@@ -378,14 +378,14 @@ def almhamre_shaft_sand(q_c, sigv0_, z, z_tip, d_r, case, calculation_dict, k_ss
     q_s = max(0, q_s)
 
     save_parameter = {'q_c[input_s]# q<sub>c</sub> (MPa) ? -': q_c,
-                      'd_r[input_s]': d_r,
+                      'd_r[input_s]# D<sub>r</sub> (%) ? -': d_r,
                       "sigv0_[input_s]# σ'<sub>v</sub> (kPa) ? -": sigv0_,
                       'delta_int[calc_s]': delta_int,
-                      'k[calc_s]': k,
-                      'K[calc_s]': K,
-                      'k_ss[calc_s]': k_ss,
-                      'qs_res[calc_s]': qs_res,
-                      'qs_init[calc_s]': qs_init,
+                      'k[calc_s]# k (-) ? -': k,
+                      'K[calc_s]# K (-) ? -': K,
+                      'k_ss[calc_s]# k<sub>ss</sub> (-) ? -': k_ss,
+                      'qs_res[calc_s]# q<sub>s,res</sub> (MPa) ? -': qs_res,
+                      'qs_init[calc_s]# q<sub>s,ini</sub> (MPa) ? -': qs_init,
                       'z_tip[calc_s]# z<sub>tip</sub> (m) ? -': z_tip,
                       'h[calc_s]# h (m) ? -': h,
                       'mult[calc_s]# mult (-) ? -': multiplier}
@@ -450,10 +450,10 @@ def beta_iso_api_shaft_sand(d_r, sigv0_, calculation_dict):
     if q_s > q_s_lim:
         q_s = q_s_lim
 
-    save_parameter = {'d_r[input_s]': d_r,
+    save_parameter = {'d_r[input_s]# D<sub>r</sub> (%) ? -': d_r,
                       "sigv0_[input_s]# σ'<sub>v</sub> (kPa) ? -": sigv0_,
-                      'q_s_lim[calc_s]': q_s_lim,
-                      'beta[calc_s]': beta}
+                      'q_s_lim[calc_s]# q<sub>s,lim</sub> (MPa) ? -': q_s_lim,
+                      'beta[calc_s]# β (-) ? -': beta}
     
     return q_s, inner_ratio, save_parameter
 
@@ -495,16 +495,16 @@ def ucpt_shaft_sand(q_c, sigv0_, z, z_tip, I_c, delta_int, calculation_dict, f_d
 
     save_parameter = {'q_c[input_s]# q<sub>c</sub> (MPa) ? -': q_c,
                       "sigv0_[input_s]# σ'<sub>v</sub> (kPa) ? -": sigv0_,
-                      'I_c[input_s]': I_c,
+                      'I_c[input_s]# I<sub>c</sub> (-) ? -': I_c,
                       'delta_int[input_s]# δ<sub>int</sub> (deg) ? -': delta_int,
                       'z_tip[calc_s]# z<sub>tip</sub> (m) ? -': z_tip,
                       'h[calc_s]# h (m) ? -': h,
-                      'PLR[calc_s]': PLR,
-                      'A_r_eff[calc_s]': A_r_eff,
-                      'i_c_corr[calc_s]': i_c_corr,
-                      'ft_fc[calc_s]': ft_fc,
-                      'sig_rc_[calc_s]': sig_rc_,
-                      'dsig_rd_[calc_s]': dsig_rd_}
+                      'PLR[calc_s]# PLR (-) ? -': PLR,
+                      'A_r_eff[calc_s]# A<sub>r,eff</sub> (m<super>2</super>) ? -': A_r_eff,
+                      'i_c_corr[calc_s]# I<sub>c,corr</sub> (-) ? -': i_c_corr,
+                      'ft_fc[calc_s]# f<sub>t</sub>/f<sub>c</sub> (-) ? -': ft_fc,
+                      "sig_rc_[calc_s]# σ'<sub>rc</sub> (kPa) ? -": sig_rc_,
+                      "dsig_rd_[calc_s]# dσ'<sub>rd</sub> (kPa) ? -": dsig_rd_}
     
     return q_s, inner_ratio, save_parameter
 
@@ -537,12 +537,12 @@ def ngi_shaft_sand(q_c, sigv0_, z, z_tip, calculation_dict, f_direction, materia
     save_parameter = {'q_c[input_s]# q<sub>c</sub> (MPa) ? -': q_c,
                       "sigv0_[input_s]# σ'<sub>v</sub> (kPa) ? -": sigv0_,
                       'z_tip[calc_s]# z<sub>tip</sub> (m) ? -': z_tip,
-                      'd_r_ngi[calc_s]': d_r_ngi,
-                      'F_dr[calc_s]': F_dr,
-                      'F_sig[calc_s]': F_sig,
-                      'F_load[calc_s]': F_load,
-                      'F_tip[calc_s]': F_tip,
-                      'F_mat[calc_s]': F_mat}
+                      'd_r_ngi[calc_s]# D<sub>r,NGI</sub> (%) ? -': 100*d_r_ngi,
+                      'F_dr[calc_s]# F<sub>dr</sub> (-) ? -': F_dr,
+                      'F_sig[calc_s]# F<sub>σ</sub> (-) ? -': F_sig,
+                      'F_load[calc_s]# F<sub>load</sub> (-) ? -': F_load,
+                      'F_tip[calc_s]# F<sub>tip</sub> (-) ? -': F_tip,
+                      'F_mat[calc_s]# F<sub>mat</sub> (-) ? -': F_mat}
     
     return q_s, inner_ratio, save_parameter
 
@@ -590,14 +590,14 @@ def icp_shaft_sand(q_c, sigv0_, z, z_tip, delta_int, calculation_dict, f_directi
                       "sigv0_[input_s]# σ'<sub>v</sub> (kPa) ? -": sigv0_,
                       'z_tip[calc_s]# z<sub>tip</sub> (m) ? -': z_tip,
                       'h[calc_s]# h (m) ? -': h,
-                      'R_star[calc_s]': R_star,
-                      'G[calc_s]': G,
-                      'h_R[calc_s]': h_R,
-                      'sig_rc_[calc_s]': sig_rc_,
-                      'dsig_rd_[calc_s]': dsig_rd_,
-                      'dr[calc_s]': dr,
-                      'a[calc_s]': a,
-                      'b[calc_s]': b}
+                      'R_star[calc_s]# R* (-) ? -': R_star,
+                      'G[calc_s]# G (MPa) ? -': G,
+                      'h_R[calc_s]# h/R (-) ? -': h_R,
+                      "sig_rc_[calc_s]# σ'<sub>rc</sub> (kPa) ? -": sig_rc_,
+                      "dsig_rd_[calc_s]# dσ'<sub>rd</sub> (kPa) ? -": dsig_rd_,
+                      'dr[calc_s]# d<sub>r</sub> (-) ? -': dr,
+                      'a[calc_s]# a (-) ? -': a,
+                      'b[calc_s]# b (-) ? -': b}
             
     return q_s, inner_ratio, save_parameter
 
@@ -610,9 +610,9 @@ def uwa_shaft_sand(q_c, sigv0_, z, z_tip, delta_int, calculation_dict, f_directi
     D_i = calculation_dict['b_inner']
 
     if f_direction.lower() == 'compression':
-        f_fc = 1
+        ft_fc = 1
     elif f_direction.lower() == 'tension':
-        f_fc = 0.75
+        ft_fc = 0.75
         
     IFR = min(1, np.power(D_i/1.5, 0.2))
         
@@ -630,19 +630,19 @@ def uwa_shaft_sand(q_c, sigv0_, z, z_tip, delta_int, calculation_dict, f_directi
 
     tan_delta = min(0.55, np.tan(np.radians(delta_int)))
         
-    q_s = (f_fc)*(sig_rc + dsig_rd_)*tan_delta
+    q_s = (ft_fc)*(sig_rc + dsig_rd_)*tan_delta
 
     save_parameter = {'q_c[input_s]# q<sub>c</sub> (MPa) ? -': q_c,
                       "sigv0_[input_s]# σ'<sub>v</sub> (kPa) ? -": sigv0_,
                       'delta_int[input_s]# δ<sub>int</sub> (deg) ? -': delta_int,
                       'z_tip[calc_s]# z<sub>tip</sub> (m) ? -': z_tip,
                       'h[calc_s]# h (m) ? -': h,
-                      'h_D[calc_s]': h_D,
-                      'IFR[calc_s]': IFR,
-                      'A_r_eff[calc_s]': A_r_eff,
-                      'ft_fc[calc_s]': f_fc,
-                      'sig_rc[calc_s]': sig_rc,
-                      'dsig_rd_[calc_s]': dsig_rd_}
+                      'h_D[calc_s]# h/D (-) ? -': h_D,
+                      'IFR[calc_s]# IFR (-) ? -': IFR,
+                      'A_r_eff[calc_s]# A<sub>r,eff</sub> (m<super>2</super>) ? -': A_r_eff,
+                      'ft_fc[calc_s]# f<sub>t</sub>/<sub>c</sub> (-) ? -': ft_fc,
+                      "sig_rc[calc_s]# σ'<sub>rc</sub> (kPa) ? -": sig_rc,
+                      "dsig_rd_[calc_s]# dσ'<sub>rd</sub> (kPa) ? -": dsig_rd_}
     
     return q_s, inner_ratio, save_parameter
 
@@ -673,8 +673,8 @@ def fugro_shaft_sand(q_c, sigv0_, z, z_tip, calculation_dict, f_direction, min_h
                       "sigv0_[input_s]# σ'<sub>v</sub> (kPa) ? -": sigv0_,
                       'z_tip[calc_s]# z<sub>tip</sub> (m) ? -': z_tip,
                       'h[calc_s]# h (m) ? -': h,
-                      'R_star[calc_s]': R_star,
-                      'h_R_star[calc_s]': h_R_star}
+                      'R_star[calc_s]# R* (-) ? -': R_star,
+                      'h_R_star[calc_s]# h/R (-) ? -': h_R_star}
     
     return q_s, inner_ratio, save_parameter
 
@@ -791,38 +791,47 @@ def shaft_resistance(depth_i, soil_data_dis_dict, dl_s,
                 # ALPHA METHOD, DNV, CLAY
                 if 'alpha_dnv' in capacity_dict[sub_capacity_entry].lower():
                     q_s_ii, inner_ratio_ii, save_parameter_ii = alpha_dnv_shaft_clay(s_u_c_s_ii, alpha_s_ii, dss_suc_ii, calculation_dict)
+                    save_parameter_ii = {f"{key}${"alpha_dnv_shaft_clay"}": value for key, value in save_parameter_ii.items()}
 
                 # ALPHA METHOD, ISO + API, CLAY
                 elif 'alpha_iso' in capacity_dict[sub_capacity_entry].lower() or 'alpha_api' in capacity_dict[sub_capacity_entry].lower():
                     q_s_ii, inner_ratio_ii, save_parameter_ii = alpha_iso_api_shaft_clay(s_u_c_s_ii, p_0__ii, dss_suc_ii, calculation_dict)
+                    save_parameter_ii = {f"{key}${"alpha_iso_api_shaft_clay"}": value for key, value in save_parameter_ii.items()}
 
                 # ALM & HAMRE METHOD, CLAY
                 elif 'alm_hamre' in capacity_dict[sub_capacity_entry].lower():
                     q_s_ii, inner_ratio_ii, save_parameter_ii = almhamre_shaft_clay(q_c_s_ii, f_s_s_ii, p_0__ii, depth_ii_1, depth_i, capacity_dict[sub_capacity_entry].lower(), calculation_dict)
+                    save_parameter_ii = {f"{key}${"almhamre_shaft_clay"}": value for key, value in save_parameter_ii.items()}
                 
                 # UNIFIED CPT METHOD, CLAY
                 elif 'ucpt' in capacity_dict[sub_capacity_entry].lower():
                     q_s_ii, inner_ratio_ii, save_parameter_ii = ucpt_shaft_clay(q_t_s_ii, depth_ii_1, depth_i, calculation_dict)
+                    save_parameter_ii = {f"{key}${"ucpt_shaft_clay"}": value for key, value in save_parameter_ii.items()}
                 
                 # CPT METHOD, CLAY
                 elif 'cpt' in capacity_dict[sub_capacity_entry].lower():
                     q_s_ii, inner_ratio_ii, save_parameter_ii = cpt_shaft_clay(q_c_s_ii, sbt_ii, capacity_dict[sub_capacity_entry].lower(), calculation_dict)
+                    save_parameter_ii = {f"{key}${"cpt_shaft_clay"}": value for key, value in save_parameter_ii.items()}
 
                 # NGI-05 METHOD, CLAY
                 elif 'ngi' in capacity_dict[sub_capacity_entry].lower():
                     q_s_ii, inner_ratio_ii, save_parameter_ii = ngi_shaft_clay(s_u_c_s_ii, p_0__ii, uu_suc_ii, i_p_ii, calculation_dict)
+                    save_parameter_ii = {f"{key}${"ngi_shaft_clay"}": value for key, value in save_parameter_ii.items()}
 
                 # ICP METHOD, CLAY
                 elif 'icp' in capacity_dict[sub_capacity_entry].lower():
                     q_s_ii, inner_ratio_ii, save_parameter_ii = icp_shaft_clay(p_0__ii, ocr_ii, depth_ii_1, depth_i, st_ii, delta_int_ii, calculation_dict)
+                    save_parameter_ii = {f"{key}${"icp_shaft_clay"}": value for key, value in save_parameter_ii.items()}
 
                 # UWA METHOD, CLAY
                 elif 'uwa' in capacity_dict[sub_capacity_entry].lower():
                     q_s_ii, inner_ratio_ii, save_parameter_ii = uwa_shaft_clay(q_t_s_ii, p_0__ii, depth_ii_1, depth_i, delta_int_ii, calculation_dict)
+                    save_parameter_ii = {f"{key}${"uwa_shaft_clay"}": value for key, value in save_parameter_ii.items()}
 
                 # FUGRO METHOD, CLAY
                 elif 'fugro' in capacity_dict[sub_capacity_entry].lower():
                     q_s_ii, inner_ratio_ii, save_parameter_ii = fugro_shaft_clay(q_t_s_ii, p_0__ii, p_0_ii, depth_ii_1, depth_i)
+                    save_parameter_ii = {f"{key}${"fugro_shaft_clay"}": value for key, value in save_parameter_ii.items()}
                 
                 else:
                     q_s_ii, inner_ratio_ii, save_parameter_ii = 0, 0, {}
@@ -838,38 +847,47 @@ def shaft_resistance(depth_i, soil_data_dis_dict, dl_s,
                 # BETA METHOD, DNV, SAND
                 if 'beta_dnv' in capacity_dict[sub_capacity_entry].lower():
                     q_s_ii, inner_ratio_ii, save_parameter_ii = beta_dnv_shaft_sand(phi_s_ii, phi_rep_s_ii, p_0__ii, calculation_dict)
+                    save_parameter_ii = {f"{key}${"beta_dnv_shaft_sand"}": value for key, value in save_parameter_ii.items()}
                 
                 # BETA METHOD, ISO + API, SAND
                 elif 'beta_iso' in capacity_dict[sub_capacity_entry].lower() or 'beta_api' in capacity_dict[sub_capacity_entry].lower():
                     q_s_ii, inner_ratio_ii, save_parameter_ii = beta_iso_api_shaft_sand(d_r_s_ii, p_0__ii, calculation_dict)
+                    save_parameter_ii = {f"{key}${"beta_iso_api_shaft_sand"}": value for key, value in save_parameter_ii.items()}
 
                 # ALM & HAMRE METHOD, SAND
                 elif 'alm_hamre' in capacity_dict[sub_capacity_entry].lower():
                     q_s_ii, inner_ratio_ii, save_parameter_ii = almhamre_shaft_sand(q_c_s_ii, p_0__ii, depth_ii_1, depth_i, d_r_s_ii, capacity_dict[sub_capacity_entry].lower(), calculation_dict)
+                    save_parameter_ii = {f"{key}${"almhamre_shaft_sand"}": value for key, value in save_parameter_ii.items()}
 
                 # UNIFIED CPT METHOD, SAND
                 elif 'ucpt' in capacity_dict[sub_capacity_entry].lower():
                     q_s_ii, inner_ratio_ii, save_parameter_ii = ucpt_shaft_sand(q_c_s_ii, p_0__ii, depth_ii_1, depth_i, i_c_ii, delta_int_ii, calculation_dict, f_direction, d_cpt)
+                    save_parameter_ii = {f"{key}${"ucpt_shaft_sand"}": value for key, value in save_parameter_ii.items()}
                 
                 # CPT METHOD, SAND
                 elif 'cpt' in capacity_dict[sub_capacity_entry].lower():
                     q_s_ii, inner_ratio_ii, save_parameter_ii = cpt_shaft_sand(q_c_s_ii, sbt_ii, capacity_dict[sub_capacity_entry].lower(), calculation_dict)
+                    save_parameter_ii = {f"{key}${"cpt_shaft_sand"}": value for key, value in save_parameter_ii.items()}
 
                 # NGI-99 METHOD, SAND
                 elif 'ngi' in capacity_dict[sub_capacity_entry].lower():
                     q_s_ii, inner_ratio_ii, save_parameter_ii = ngi_shaft_sand(q_c_s_ii, p_0__ii, depth_ii_1, depth_i, calculation_dict, f_direction)
+                    save_parameter_ii = {f"{key}${"ngi_shaft_sand"}": value for key, value in save_parameter_ii.items()}
 
                 # ICP METHOD, SAND
                 elif 'icp' in capacity_dict[sub_capacity_entry].lower():
                     q_s_ii, inner_ratio_ii, save_parameter_ii = icp_shaft_sand(q_c_s_ii, p_0__ii, depth_ii_1, depth_i, delta_int_ii, calculation_dict, f_direction)
+                    save_parameter_ii = {f"{key}${"icp_shaft_sand"}": value for key, value in save_parameter_ii.items()}
 
                 # UWA METHOD, SAND
                 elif 'uwa' in capacity_dict[sub_capacity_entry].lower():
                     q_s_ii, inner_ratio_ii, save_parameter_ii = uwa_shaft_sand(q_c_s_ii, p_0__ii, depth_ii_1, depth_i, delta_int_ii, calculation_dict, f_direction)
+                    save_parameter_ii = {f"{key}${"uwa_shaft_sand"}": value for key, value in save_parameter_ii.items()}
 
                 # FUGRO METHOD, SAND
                 elif 'fugro' in capacity_dict[sub_capacity_entry].lower():
                     q_s_ii, inner_ratio_ii, save_parameter_ii = fugro_shaft_sand(q_c_s_ii, p_0__ii, depth_ii_1, depth_i, calculation_dict, f_direction)
+                    save_parameter_ii = {f"{key}${"fugro_shaft_sand"}": value for key, value in save_parameter_ii.items()}
                 
                 else:
                     q_s_ii, inner_ratio_ii, save_parameter_ii = 0, 0, {}
@@ -903,6 +921,7 @@ def shaft_resistance(depth_i, soil_data_dis_dict, dl_s,
                 save_parameter_ii['q_ps_section_' + str(idx+1) + '[calc_ps2]# q<sub>s,pb</sub> (MPa) ? Section'+str(idx+1)] = float(q_s_ii)
                 save_parameter_ii['a_ps_inner_section_' + str(idx+1) + '[geometry_ps]# A<sub>s,pb</sub> (m<super>2</super>) ? Section'+str(idx+1)] = inner_ratio_ii*a_shaft_inner_diff_ii
                 save_parameter_ii['Q_ps_inner_section_' + str(idx+1) + '[calc_ps3]# ΔQ<sub>s,pb</sub> (MN ? Section'+str(idx+1)] = Q_s_inner_section_i
+                save_parameter_ii['pf_soil_mat[input_ps]# γ<sub>m</sub> (-) ? -'] = pf_soil_mat
             else:
                 save_parameter_ii['soil_type_s_section_' + str(idx+1) + '[input_s]# - ? Section'+str(idx+1)] = soil_type_ii
                 save_parameter_ii['z_s_section_' + str(idx+1) + '[input_s]#  z (m) ? Section'+str(idx+1)] = float(depth_ii_1)
@@ -914,6 +933,7 @@ def shaft_resistance(depth_i, soil_data_dis_dict, dl_s,
                 save_parameter_ii['Q_s_inner_section_' + str(idx+1) + '[calc_s3]# ΔQ<sub>s,inner</sub> (MN) ? Section'+str(idx+1)] = Q_s_inner_section_i
                 save_parameter_ii['Q_s_outer_section_' + str(idx+1) + '[calc_s3]# ΔQ<sub>s,outer</sub> (MN) ? Section'+str(idx+1)] = Q_s_outer_section_i
                 save_parameter_ii['Q_s_total_section_' + str(idx+1) + '[calc_s3]# ΔQ<sub>s</sub> (MN) ? Section'+str(idx+1)] = Q_s_inner_section_i + Q_s_outer_section_i
+                save_parameter_ii['pf_soil_mat[input_s]# γ<sub>m</sub> (-) ? -'] = pf_soil_mat
      
             shaft_parameter_inc.append(save_parameter_ii)
 
@@ -945,6 +965,6 @@ def shaft_resistance(depth_i, soil_data_dis_dict, dl_s,
                               'Q_s_inner[output_s]# Q<sub>s,inner</sub> (MN) ? -': Q_s_inner,
                               'Q_s_outer[output_s]# Q<sub>s,outer</sub> (MN) ? -': Q_s_outer,
                               'shaft_parameter_inc': shaft_parameter_inc,
-                              'pf_soil_mat[input_s]# γ<sub>m</sub> (-) ? -': pf_soil_mat}
+                              'pf_soil_mat[input]# γ<sub>m</sub> (-) ? -': pf_soil_mat}
     
     return results_dict_shaft

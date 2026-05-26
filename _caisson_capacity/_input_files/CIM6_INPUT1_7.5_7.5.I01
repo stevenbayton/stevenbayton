@@ -1,0 +1,100 @@
+! PIDATA: read in PROJECT IDENTIFICATION data cards 1.*
+CIM6_INPUT1_7.5_7.5.I01			                      ! card 1.1 IFILE_DUMMY = copy of input filename       [255 char]
+CIM6_INPUT1_7.5_7.5.O01  					      ! card 1.2 OFILE  = output text filename              [255 char]
+CIM6_INPUT1_7.5_7.5.PDF                                               ! card 1.3 PFILE  = output plot filename [PDF format] [255 char]
+CAISSON_VHM                                               ! card 1.4 CPROG  = program name = 'CAISSON_VHM'      [020 char]
+INPUT1			                      ! card 1.5 RTITLE = a/n run title                     [132 char]
+EMPTY                                              ! card 1.6 PTITLE = a/n project(plate) title          [132 char]
+EMPTY                                              ! card 1.7 PROJNO = a/n report/project number         [030 char]
+CIM6                                              ! card 1.8 LOCATN = a/n location name                 [030 char]
+
+! ------!------------------------!----------------------------!------------------------!
+! MODE  ! FIND                   ! FOR GIVEN                  ! FOUNDATION             !
+!  _VHM !                        ! CAISSON     LOAD           ! TYPE                   !
+! ------!------------------------!----------------------------!------------------------!
+!  10   ! Lopt                   ! D           VHM            ! support                !
+!  11   ! Lopt_fix,Mopt          ! D           VH-            ! support (fixed head)   !
+!  12   ! FOS_MH                 ! D, L        -HM            ! support (L/D>1,V*<<1)  !
+!  13   ! FOS_VHM                ! D, L        VHM            ! support (L/D<2)        !
+!  14   ! FOS_Hmax               ! D, L        -H-            ! support (fixed head)   !
+!  15   ! FOS_VHmax              ! D, L        VH-            ! support (fixed head)   !
+!  16   ! VH                     ! D, L        ex (ex=M/V)    ! support (DNV,1992)     !
+!  17   ! VM                     ! D, L        ez (ez=M/H)    ! support (FEBV,2013)    !
+! ------!------------------------!----------------------------!------------------------!
+!  20   ! Lopt_fix, zlug_opt_fix ! D           z, Tz, theta_z ! anchor (chain profile) !
+!  21   ! Lopt_fix, zlug_opt_fix ! D           Tlug, theta_lug! anchor                 !
+!  22   ! Tlug                   ! D, L, zlug  theta_lug      ! anchor                 !
+!  23   ! FOS_Tlug               ! D, L, zlug  z, Tz, theta_z ! anchor (chain profile) !
+! ------!------------------------!----------------------------!------------------------!
+
+! GMDATA: read in GROUND MODEL data cards 2.*
+18                                ! card  2.1 NUMSL: #soil layers
+! z    gsub   su_t    su_b             ! cards 2.2 SOIL_MAT: soil data matrix
+! [m] [kN/m3] [kPa]   [kPa]            ! cards 2.2 SOIL_MAT [NUMSL+1 rows, 4 numbers per row]
+0.0 4.5 0.98 1.37 !
+0.2 5.2 5.89 6.93 !
+0.7 5.2 6.93 7.55 !
+1.0 5.2 7.55 9.62 !
+2.0 5.2 9.62 11.07 !
+2.7 7.9 12.86 20.9 !
+3.8 5.2 13.37 14.21 !
+4.2 7.9 22.85 25.07 !
+4.5 5.2 16.1 16.63 !
+4.9 5.45 16.63 19.19 !
+6.8 5.45 19.19 19.87 !
+7.3 7.9 37.05 38.44 !
+7.5 7.9 38.44 46.78 !
+8.7 7.9 35.51 42.36 !
+10.0 7.9 44.79 50.34 !
+11.0 7.9 66.23 73.54 !
+12.0 7.9 65.94 72.49 !
+13.0 7.9 72.49 85.6 !
+15.0                        ! ZBOT: bottom of soil profile
+1                                ! card  2.3 MFAC: soil strength material factor
+
+! PSDATA: read in PROBLEM SOLUTION DATA - cards 3.*
+kay+palix_2011                            ! card  3.1 VHM_MODEL: model
+13                             ! card  3.2 MODE_VHM: problem solution mode pointer
+
+! CFDATA: read in CAISSON FOUNDATION GEOMETRY DATA - cards 4.*
+1                               ! card  4.1 NCGEOM: #caisson geometries
+circular                                ! card  4.2 CGEOM: a/n caisson geometry = 'CIRCULAR'
+0 0.003 0.003         ! card  4.3 NFHXP; #x-plates  WT_D_SIDE  WT_D_TOP: wt/D ratios
+0.0 0.0                 ! card  4.4 IRO_LUG  R_LUG [2 numbers]
+
+! INPUT CARDS 4.5 IF MODE_VHM = 10 through 15 (support foundation)
+! INPUT CARDS 4.6 IF MODE_VHM = 20 or 21 or 22 (anchor foundation)
+
+!    D     ?L                          ! cards 4.5 CAISSON_MAT: caisson geometry matrix
+!   [m]    [m]                         ! cards 4.5 CAISSON_MAT: [NCGEOM rows, 2 columns]
+7.5 7.5
+
+! SSIDAT: read in STEEL-SOIL INTERACTION DATA - cards 5.*
+0.6 0.6 1         ! card  5.1 ALPHA_Fo  ALPHA_Fi  ETA_FO
+1 0.5 1 0.0 ! card  5.2 ETA_REB  ALPHA_D_SU  IPLUG_VMODE  VMAX_USER
+1.0 1.0 1.0        ! card  5.3 ETA_AMH  ETA_BMH  ETA_PHIMH
+
+! INPUT CARDS 6 if MODE_VHM = 10 through 15 (support foundation)
+! INPUT CARDS 7 and 8 if MODE_VHM = 20, 21 or 22 (anchor foundation)
+
+! LDATA_SUPPORT: read in LOAD DATA - cards  6.*
+1 1.0                       ! card  6.1 NLC: #load cases  NLFAC_LC: #load factors per load case
+! INPUT CARD  6.2 IF NLFAC_LC > 0
+1.0                              ! card  6.2 LFAC_LC: load factors per load case
+
+! INPUT CARDS 6.3 IF MODE_VHM = 10, 11, 12 or 13 (support foundation, VHM load)
+! INPUT CARDS 6.4 IF MODE_VHM = 14 or 15 (support foundation, ex, ez load)
+
+! OMIT LOAD FACTOR COLUMN(S) IF NLFAC_LC > 0
+!   V       H       M      (lfac)      ! cards 6.3 LOAD_MAT: load data matrix
+!  [kN]    [kN]   [kNm]     [-]        ! cards 6.3 LOAD_MAT: [NLC rows, 3or4 columns for MODE_VHM=10]
+2726.5 425.0 4824.0 1.0
+
+! MISDAT: read in MISCELLANEOUS OUTPUT DATA - cards 9.*
+0 23                        ! card 9.1 IOUTD  IOUTE [2 numbers]
+0.0001 15 5        ! card 9.2 EPS_INT  JMAX_INT  JMIN_INT
+
+-------------- end of data input - CAISSON_VHM 00.11
+!     INPUT FORMAT CHANGE(S)
+!     SSIDAT card 5.3 ETA_AMH, ETA_BMH, ETA_PHIMH [3 numbers]
+!     was    card 5.3 ETA_AMH, ETA_BMH [2 numbers]

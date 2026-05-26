@@ -18,6 +18,7 @@ def calc(length_embedment, H, V,
          capacity_dict, sections_input, foundation_list, calculation_method_i,
          pf_load_perm_unfav, pf_soil_mat,
          d_z, soil_data_dis_dict, dl_p_y,
+         steel_yield_strength, pf_steel_mat,
          calc_type="p_y_displacement", global_scour=0):
                             
     z_dis = np.array(soil_data_dis_dict['depth'])[(np.round(soil_data_dis_dict['depth'], 2) <= round(length_embedment, 2))]
@@ -29,6 +30,7 @@ def calc(length_embedment, H, V,
     results_dict = b_calc_p_y.p_y_deflection(soil_data_dis_dict, dl_p_y, pf_soil_mat, capacity_dict,
                                              length_embedment, H, V, calculation_method_i,
                                              b_outer_dis, thickness_dis, global_scour,
+                                             steel_yield_strength, pf_steel_mat,
                                              d_z)
                     
     return results_dict
@@ -57,6 +59,8 @@ def task(calculation_name,
     pf_soil_mat = setup_input['soil_material_factor']
 
     utilisation_ratio = setup_input['utilisation_ratio']
+    steel_yield_strength = setup_input['steel_yield_strength']
+    pf_steel_mat = setup_input['steel_material_factor']
 
     z_gs = setup_input["z_gs"]
             
@@ -141,7 +145,7 @@ def task(calculation_name,
         f_d_total_hr = np.sqrt(np.power(f_d_total_h1, 2)+np.power(f_d_total_h2, 2))
 
         f_d_total_hr_array = np.array([0, 0.2, 0.4, 0.6, 0.8, 1, 1.25, 1.5, 2, 3, 4]) * f_d_total_hr
-        # f_d_total_hr_array = np.array([0, 0.8, 1]) * f_d_total_hr
+        # f_d_total_hr_array = np.array([0.9, 1, 1.1]) * f_d_total_hr
     
         for calculation_method_i in calculation_method_list:
 
@@ -157,24 +161,26 @@ def task(calculation_name,
 
                 output_result_plot[f_d_total_hr_i] = {}
                 output_result_save[f_d_total_hr_i] = {}
-                output_result_save_breakdown[f_d_total_hr_i] = {}
+                output_result_save_breakdown[f_d_total_hr_i] = {}                
 
                 results_dict = calc(length_embedment, f_d_total_hr_i, f_d_total_v,
                                     capacity_dict, sections_input, foundation_list, calculation_method_i,
                                     pf_load_perm_unfav, pf_soil_mat,
                                     d_z, soil_data_dis_dict, dl_p_y,
+                                    steel_yield_strength, pf_steel_mat,
                                     global_scour=z_gs)
                 
                 for key, value in results_dict.items():
                     key_red = key.split('[')[0]
                     output_result_plot[f_d_total_hr_i][key_red] = value
-                    if key in ["save_parameter_inc"]:
+                    if key in ["p_y_parameter_inc"]:
                         output_result_save_breakdown[f_d_total_hr_i][key] = value
                     else:
                         output_result_save[f_d_total_hr_i][key] = value
 
             output_result_plot['length_embedment'] = length_embedment
             output_result_plot['design_load'] = round(f_d_total_hr, 2)
+            output_result_save['design_load'] = round(f_d_total_hr, 2)
 
             output_dict[calculation_method_i]['plot_output'] = output_result_plot
             output_dict[calculation_method_i]['save_output'] = output_result_save

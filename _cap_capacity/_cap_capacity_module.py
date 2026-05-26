@@ -33,8 +33,8 @@ def task(calculation_name,
     if type(foundation_list) is not list:
         foundation_list = [foundation_list]
     
-    z_max = setup_input['z_max']
     length_embedment = setup_input['length_embedment']
+    z_max = int(2*length_embedment)
     
     pf_load_var = setup_input['load_factor_variable']
     pf_load_perm_fav = setup_input['load_factor_permanent_fav']
@@ -155,8 +155,9 @@ def task(calculation_name,
             output_dict[calculation_method_i]['output_file'] = output_file
 
             for key, value in results_dict.items():
-                if key not in output_result_plot_output:
-                    output_result_plot_output[key] = value
+                key_red = key.split('[')[0]
+                if key_red not in output_result_plot_output:
+                    output_result_plot_output[key_red] = value
 
             output_result_save_output[length_embedment_i] = results_dict
 

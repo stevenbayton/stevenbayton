@@ -36,6 +36,8 @@ def calc(capacity_dict, sections_input, foundation_list,
         if abs((i2 + i3) - (a_shaft_global_dis[-1][1] + a_shaft_global_dis[-1][2])) > 0:
             a_shaft_diff_dis.append([i1, i2, i3, i4, i5])
             a_shaft_global_dis.append([i1, i2, i3, i4, i5])
+
+    soil_type_i = np.array(soil_data_dis_dict['Soil_Type'])[(np.round(soil_data_dis_dict['depth'], 2) <= round(depth_i, 2))][-1]
     
     results_dict_lateral = b_calc_p_y.p_ult_resistance(depth_i, soil_data_dis_dict, dl, 
                                                        capacity_dict, pf_soil_mat, 
@@ -43,7 +45,8 @@ def calc(capacity_dict, sections_input, foundation_list,
                                                        d_z)
         
 
-    results_dict = {'z[input]': depth_i, 
+    results_dict = {'z[input]# z (m) ? -': depth_i, 
+                    'soil_type[input]# - ? -': soil_type_i, 
                     **results_dict_lateral}
                 
     return results_dict
@@ -122,7 +125,7 @@ def task(calculation_name,
             output_result_save[depth_i] = {}
             output_result_save_breakdown[depth_i] = {}
             output_result_save_breakdown[depth_i]["total_save_parameter"] = {}
-            output_result_save_breakdown[depth_i]["total_save_parameter"]['z[input]'] = depth_i
+            output_result_save_breakdown[depth_i]["total_save_parameter"]['z[input]# z (m) ? -'] = depth_i
                                                                        
             results_dict = calc(capacity_dict, sections_input, foundation_list,
                                 pf_load_perm_unfav, pf_soil_mat,
@@ -137,16 +140,16 @@ def task(calculation_name,
                     output_result_save_breakdown[depth_i][key] = value
                 else:
                     output_result_save[depth_i][key] = value
-
-            output_result_plot.setdefault("Utilisation_ratio", []).append(f_d_total_h/results_dict["P_ult[output]"])
-            output_result_save[depth_i]["Utilisation_ratio[output]"] = f_d_total_h/max(1e-10, results_dict["P_ult[output]"])
+                
+            output_result_plot.setdefault("utilisation_ratio", []).append(f_d_total_h/results_dict[next(k for k in results_dict if k.startswith("P_ult"))])
+            output_result_save[depth_i]["utilisation_ratio[output]# UR (-) ? -"] = f_d_total_h/max(1e-10, results_dict[next(k for k in results_dict if k.startswith("P_ult"))])
 
         # --- FIND OPTIMAL FOUNDATION LENGTH ---
         if "optimise" in str(length_embedment):   
             if len([i for i in range(len(output_result_plot['P_ult'])) if (abs(f_d_total_h/output_result_plot['P_ult'][i]) <= utilisation_ratio)]) == 0:
                 length_embedment_i = z_max
                 output_result_plot['length_embedment'] = length_embedment_i
-                output_result_plot['Utilisation_ratio_length_emb'] = np.inf
+                output_result_plot['utilisation_ratio_length_emb'] = np.inf
                 idx_pass = len(output_result_plot["z"])-1
             
             else:

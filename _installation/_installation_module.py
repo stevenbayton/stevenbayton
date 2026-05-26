@@ -117,8 +117,8 @@ def calc(capacity_dict, sections_input, foundation_list, calculation_method_i, l
     W_t_total = (W_foundation + W_plug) + f_d_total_v_i
     results_dict_total["W_t_total[output_t]# W (MN) ? -"] = W_t_total
 
-    Q_net_total = Q_t_total - W_t_total
-    results_dict_total["Q_net_total[output_t]# Q<sub>t,net</sub> (MN) ? -"] = Q_net_total
+    Q_t_net_total = Q_t_total - W_t_total
+    results_dict_total["Q_t_net_total[output_t]# Q<sub>t,net</sub> (MN) ? -"] = Q_t_net_total
     
     if 'suction' in calculation_method_i:
         capacity_dict_plug_bearing = {'sand_base': 'bc_deep_dnv',
@@ -153,7 +153,7 @@ def calc(capacity_dict, sections_input, foundation_list, calculation_method_i, l
         Q_ps_inner = results_dict_shaft_plug_bearing[next(k for k in results_dict_shaft_plug_bearing if k.startswith("Q_ps_inner[output_ps]"))]
         Q_p_total = max(1e-10, Q_pb_total + Q_ps_inner)
         U_allowable_plug = 1000*Q_p_total/a_base_diff_dis[0][3]
-        results_dict_total["U_allowable_plug[output_t]# U<sub>allow</sub> (kPa) ? -"] = U_allowable_plug
+        results_dict_total["U_allowable_plug[output_u]# U<sub>allow</sub> (kPa) ? -"] = U_allowable_plug
 
         results_dict_underpressure = b_calc_suction.suction_underpressure(depth_i, soil_data_dis_dict, dl_b,
                                                                           calculation_method_i,
@@ -163,11 +163,11 @@ def calc(capacity_dict, sections_input, foundation_list, calculation_method_i, l
                                                                           t_ss_array,
                                                                           d_z)
         
-        t_ss_append = results_dict_underpressure[next(k for k in results_dict_underpressure if k.startswith("t_ss[output_t]"))]
+        t_ss_append = results_dict_underpressure[next(k for k in results_dict_underpressure if k.startswith("t_ss[output_u]"))]
         t_ss_array.append(t_ss_append)
-        U_req = results_dict_underpressure[next(k for k in results_dict_underpressure if k.startswith("U_req[output_t]"))]
+        U_req = results_dict_underpressure[next(k for k in results_dict_underpressure if k.startswith("U_req[output_u]"))]
         U_utilisation_plug = min(100, U_allowable_plug/max(1e-10, U_req))
-        results_dict_total["U_utilisation_plug[output_t]# UR<sub>plug</sub> (-) ? -"] = U_utilisation_plug
+        results_dict_total["U_utilisation_plug[output_u]# UR<sub>plug</sub> (-) ? -"] = U_utilisation_plug
                     
     elif 'driven' in calculation_method_i:
 
@@ -396,7 +396,7 @@ def task(calculation_name,
             output_result_save[depth_i]['structure_sw_factor[input]# Gross/Net (-) ? -'] = structure_sw_factor
             output_result_save_breakdown[depth_i] = {}
             output_result_save_breakdown[depth_i]["total_save_parameter"] = {}
-            output_result_save_breakdown[depth_i]["total_save_parameter"]['z[input]# z (m) ? -'] = depth_i
+            output_result_save_breakdown[depth_i]["total_save_parameter"]['z[input]# z (m) ? here'] = depth_i
                                                                                                                                     
             results_dict, t_ss_array, a_base_global_dis, a_shaft_global_dis = calc(capacity_dict, sections_input, foundation_list, calculation_method_i, length_embedment,
                                                                                    pf_load_perm, pf_soil_mat, pf_load_plug_bearing, clay_reconsolidation_time,
@@ -424,16 +424,16 @@ def task(calculation_name,
             output_result_save[depth_i]["Q_t_total_design[output_t]# Q<sub>v,total</sub> (MN) ? -"] = output_result_plot['W_t_total'][-1]
 
             if 'suction' in calculation_method_i:
-                d_heave_klinkvort = results_dict[next(k for k in results_dict if k.startswith("d_heave_klinkvort[output_t]"))]
+                d_heave_klinkvort = results_dict[next(k for k in results_dict if k.startswith("d_heave_klinkvort[output_u]"))]
                 heave_klinkvort += d_heave_klinkvort
-                output_result_save[depth_i]["heave_klinkvort[output_t]# z<sub>heave,Klinkvort</sub> (m) ? -"] = heave_klinkvort
+                output_result_save[depth_i]["heave_klinkvort[output_u]# z<sub>heave,Klinkvort</sub> (m) ? -"] = heave_klinkvort
                 if "heave_klinkvort" not in output_result_plot:
                     output_result_plot["heave_klinkvort"] = []
                 output_result_plot["heave_klinkvort"].append(heave_klinkvort)
 
-                d_heave_gunawan = results_dict[next(k for k in results_dict if k.startswith("d_heave_gunawan[output_t]"))]
+                d_heave_gunawan = results_dict[next(k for k in results_dict if k.startswith("d_heave_gunawan[output_u]"))]
                 heave_gunawan += d_heave_gunawan
-                output_result_save[depth_i]["heave_gunawan[output_t]# z<sub>heave,Gunawan</sub> (m) ? -"] = heave_gunawan
+                output_result_save[depth_i]["heave_gunawan[output_u]# z<sub>heave,Gunawan</sub> (m) ? -"] = heave_gunawan
                 if "heave_gunawan" not in output_result_plot:
                     output_result_plot["heave_gunawan"] = []
                 output_result_plot["heave_gunawan"].append(heave_gunawan)

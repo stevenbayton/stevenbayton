@@ -6,26 +6,26 @@ import _background_functions as bf
 
 # %% --- P-Y CLAY ---
 
-def p_ult_clay_iso_old_static(D, z, su, p_0_, J=0.25):
+def p_ult_clay_iso_old_static(D, z, su, sigv0_, J=0.25):
 
     if z <= 0:
         p_ult = 0
     else:
-        p_ult1 = (3*su + p_0_)*D + J*su*z
+        p_ult1 = (3*su + sigv0_)*D + J*su*z
         p_ult2 = 9*su*D
 
         p_ult = 0.001*min(p_ult1, p_ult2)
 
-    save_parameter = {'s_u_p_y[input]': su,
-                      'p_0_[input]': p_0_,
-                      'J[input]': J}
+    save_parameter = {'s_u_c[input_py]# s<sub>u,c</sub> (kPa) ? -': su,
+                      "sigv0_[input_py]# σ'<sub>v</sub> (kPa) ? -": sigv0_,
+                      'J[input_py]# J (-) ? -': J}
 
     return p_ult, save_parameter
 
 
-def p_y_clay_iso_old_static(y, D, z, su, p_0_, ep_c=0.01):
+def p_y_clay_iso_old_static(y, D, z, su, sigv0_, ep_c=0.01):
 
-    p_ult, save_parameter_p_ult = p_ult_clay_iso_old_static(D, z, su, p_0_)
+    p_ult, save_parameter_p_ult = p_ult_clay_iso_old_static(D, z, su, sigv0_)
 
     y_c = 2.5*ep_c*D
 
@@ -70,11 +70,11 @@ def p_y_clay_iso_old_static(y, D, z, su, p_0_, ep_c=0.01):
     m = ((p2 - p1)*p_ult)/((y2 - y1)*y_c)
     p = mult*(m*y + p1*p_ult - m*y1*y_c)
     
-    save_parameter = {'ep_c[input]': ep_c,
-                      'p_ult[calc_py]': p_ult,
-                      'y_c[calc_py]': y_c,
-                      'p_calc[calc_py]': p,
-                      'y_calc[calc_py]': y}
+    save_parameter = {'ep_c[input_py]# ε<sub>c</sub> (-) ? -': ep_c,
+                      'p_ult[calc_py]# p<sub>ult</sub> (MN/m) ? -': p_ult,
+                      'y_c[calc_py]# y<sub>c</sub> (m) ? -': y_c,
+                      'p_calc[calc_py]# p (MN/m) ? -': p,
+                      'y_calc[calc_py]# y (m) ? -': y}
     
     save_parameter = {**save_parameter, **save_parameter_p_ult}
 
@@ -91,14 +91,14 @@ def p_y_clay_iso_old_static(y, D, z, su, p_0_, ep_c=0.01):
 #         N_pd = 9 + 3*alpha_ave
 #         p_ult = 0.001*N_pd*su*D
 
-#     save_parameter = {'s_u_p_y[input]': su,
+#     save_parameter = {'s_u_p_y[input_py]': su,
 #                       'alpha_ave[calc_py]': alpha_ave,
 #                       'N_pd[calc_py]': N_pd}
 
 #     return p_ult, save_parameter
 
 
-def p_ult_clay_iso_static(D, z, su, p_0_, alpha_ave, start_clay_s_u, start_clay_depth, gapping=False):
+def p_ult_clay_iso_static(D, z, su, sigv0_, alpha_ave, start_clay_s_u, start_clay_depth, gapping=False):
 
     if z <= 0:
         p_ult = 0
@@ -114,7 +114,7 @@ def p_ult_clay_iso_static(D, z, su, p_0_, alpha_ave, start_clay_s_u, start_clay_
             N_p0 = min(N_pd, N_1 - (1 - alpha_ave) - (N_1 - N_2)*np.power(max(0, 1 - np.power(z/(d*D), 0.6)), 1.35))
 
             if gapping:
-                N_p = min(N_p0 + z*p_0_/su, N_pd)
+                N_p = min(N_p0 + z*sigv0_/su, N_pd)
             else:
                 N_p = min(2*N_p0, N_pd)
         else:
@@ -122,16 +122,16 @@ def p_ult_clay_iso_static(D, z, su, p_0_, alpha_ave, start_clay_s_u, start_clay_
 
         p_ult = 0.001*N_p*su*D
 
-    save_parameter = {'s_u_p_y[input]': su,
-                      'alpha_ave[calc_py]': alpha_ave,
-                      'N_p[calc_py]': N_p}
+    save_parameter = {'s_u_c[input_py]# s<sub>u,c</sub> (kPa) ? -': su,
+                      'alpha_ave[calc_py]# α<sub>ave</sub> (-) ? -': alpha_ave,
+                      'N_p[calc_py]# N<sub>p</sub> (-) ? -': N_p}
 
     return p_ult, save_parameter
 
 
-def p_y_clay_iso_static(y, D, z, su, p_0_, Ip, OCR, alpha_ave, start_clay_s_u, start_clay_depth):
+def p_y_clay_iso_static(y, D, z, su, sigv0_, i_p, OCR, alpha_ave, start_clay_s_u, start_clay_depth):
 
-    p_ult, save_parameter_p_ult = p_ult_clay_iso_static(D, z, su, p_0_, alpha_ave, start_clay_s_u, start_clay_depth)
+    p_ult, save_parameter_p_ult = p_ult_clay_iso_static(D, z, su, sigv0_, alpha_ave, start_clay_s_u, start_clay_depth)
 
     if y < 0:
         mult = -1
@@ -140,18 +140,18 @@ def p_y_clay_iso_static(y, D, z, su, p_0_, Ip, OCR, alpha_ave, start_clay_s_u, s
 
     y = abs(y)
 
-    Ip_gr_30_OCR_leq_2 = [0.0003, 0.003, 0.0053, 0.009, 0.014, 0.022, 0.032, 0.05, 0.082, 0.15, 0.25, 1e10]
-    Ip_gr_30_OCR_4 = [0.0004, 0.004, 0.008, 0.015, 0.024, 0.036, 0.055, 0.084, 0.14, 0.23, 0.30, 1e10]
-    Ip_gr_30_OCR_10 = [0.0005, 0.005, 0.011, 0.021, 0.034, 0.052, 0.078, 0.12, 0.19, 0.30, 0.40, 1e10]
+    i_p_gr_30_OCR_leq_2 = [0.0003, 0.003, 0.0053, 0.009, 0.014, 0.022, 0.032, 0.05, 0.082, 0.15, 0.25, 1e10]
+    i_p_gr_30_OCR_4 = [0.0004, 0.004, 0.008, 0.015, 0.024, 0.036, 0.055, 0.084, 0.14, 0.23, 0.30, 1e10]
+    i_p_gr_30_OCR_10 = [0.0005, 0.005, 0.011, 0.021, 0.034, 0.052, 0.078, 0.12, 0.19, 0.30, 0.40, 1e10]
 
-    Ip_leq_30_OCR_leq_2 = [0.0001, 0.001, 0.0018, 0.003, 0.0048, 0.0073, 0.011, 0.017, 0.027, 0.05, 0.083, 1e10]
-    Ip_leq_30_OCR_4 = [0.0002, 0.002, 0.004, 0.0075, 0.012, 0.018, 0.027, 0.042, 0.07, 0.11, 0.15, 1e10]
-    Ip_leq_30_OCR_10 = [0.0003, 0.0033, 0.0073, 0.014, 0.023, 0.035, 0.052, 0.08, 0.13, 0.20, 0.27, 1e10]
+    i_p_leq_30_OCR_leq_2 = [0.0001, 0.001, 0.0018, 0.003, 0.0048, 0.0073, 0.011, 0.017, 0.027, 0.05, 0.083, 1e10]
+    i_p_leq_30_OCR_4 = [0.0002, 0.002, 0.004, 0.0075, 0.012, 0.018, 0.027, 0.042, 0.07, 0.11, 0.15, 1e10]
+    i_p_leq_30_OCR_10 = [0.0003, 0.0033, 0.0073, 0.014, 0.023, 0.035, 0.052, 0.08, 0.13, 0.20, 0.27, 1e10]
 
-    if Ip <= 30:
-        p_y_shape = [np.interp(OCR, [2, 4, 10], [x1, x2, x3], left=x1, right=x3) for x1, x2, x3 in zip(Ip_leq_30_OCR_leq_2, Ip_leq_30_OCR_4, Ip_leq_30_OCR_10)]
+    if i_p <= 30:
+        p_y_shape = [np.interp(OCR, [2, 4, 10], [x1, x2, x3], left=x1, right=x3) for x1, x2, x3 in zip(i_p_leq_30_OCR_leq_2, i_p_leq_30_OCR_4, i_p_leq_30_OCR_10)]
     else:
-        p_y_shape = [np.interp(OCR, [2, 4, 10], [x1, x2, x3], left=x1, right=x3) for x1, x2, x3 in zip(Ip_gr_30_OCR_leq_2, Ip_gr_30_OCR_4, Ip_gr_30_OCR_10)]
+        p_y_shape = [np.interp(OCR, [2, 4, 10], [x1, x2, x3], left=x1, right=x3) for x1, x2, x3 in zip(i_p_gr_30_OCR_leq_2, i_p_gr_30_OCR_4, i_p_gr_30_OCR_10)]
 
     if y/D <= p_y_shape[0]:
         y1 = 0
@@ -217,37 +217,37 @@ def p_y_clay_iso_static(y, D, z, su, p_0_, Ip, OCR, alpha_ave, start_clay_s_u, s
     m = ((p2 - p1)*p_ult)/((y2 - y1))
     p = mult*(m*y/D + p1*p_ult - m*y1)
     
-    save_parameter = {'OCR[input]': OCR,
-                      'Ip[input]': Ip,
-                      'p_ult[calc_py]': p_ult,
-                      'p_calc[calc_py]': p,
-                      'y_calc[calc_py]': y}
+    save_parameter = {'OCR[input_py]# OCR (-) ? -': OCR,
+                      'i_p[input_py]# I<sub>p</sub> (-) ? -': i_p,
+                      'p_ult[calc_py]# p<sub>ult</sub> (MN/m) ? -': p_ult,
+                      'p_calc[calc_py]# p (MN/m) ? -': p,
+                      'y_calc[calc_py]# y (m) ? -': y}
     
     save_parameter = {**save_parameter, **save_parameter_p_ult}
 
     return p, p_ult, save_parameter
 
 
-def p_ult_soft_clay_api_static(D, z, su, p_0_, J=0.25):
+def p_ult_soft_clay_api_static(D, z, su, sigv0_, J=0.25):
 
     if z <= 0:
         p_ult = 0
     else:
-        p_ult1 = (3*su + p_0_)*D + J*su*z
+        p_ult1 = (3*su + sigv0_)*D + J*su*z
         p_ult2 = 9*su*D
 
         p_ult = 0.001*min(p_ult1, p_ult2)
 
-    save_parameter = {'s_u_p_y[input]': su,
-                      'p_0_[input]': p_0_,
-                      'J[input]': J}
+    save_parameter = {'s_u_c[input_py]# s<sub>u,c</sub> (kPa) ? -': su,
+                      "sigv0_[input_py]# σ'<sub>v</sub> (kPa) ? -": sigv0_,
+                      'J[input_py]# J (-) ? -': J}
     
     return p_ult, save_parameter
 
 
-def p_y_soft_clay_api_static(y, D, z, su, p_0_, ep_c=0.01):
+def p_y_soft_clay_api_static(y, D, z, su, sigv0_, ep_c=0.01):
 
-    p_ult, save_parameter_p_ult = p_ult_soft_clay_api_static(D, z, su, p_0_)
+    p_ult, save_parameter_p_ult = p_ult_soft_clay_api_static(D, z, su, sigv0_)
 
     y_c = 2.5*ep_c*D
 
@@ -282,39 +282,39 @@ def p_y_soft_clay_api_static(y, D, z, su, p_0_, ep_c=0.01):
     m = ((p2 - p1)*p_ult)/((y2 - y1)*y_c)
     p = mult*(m*y + p1*p_ult - m*y1*y_c)
 
-    save_parameter = {'ep_c[input]': ep_c,
-                      'p_ult[calc_py]': p_ult,
-                      'y_c[calc_py]': y_c,
-                      'p_calc[calc_py]': p,
-                      'y_calc[calc_py]': y}
+    save_parameter = {'ep_c[input_py]# ε<sub>c</sub> (-) ? -': ep_c,
+                      'p_ult[calc_py]# p<sub>ult</sub> (MN/m) ? -': p_ult,
+                      'y_c[calc_py]# y<sub>c</sub> (m) ? -': y_c,
+                      'p_calc[calc_py]# p (MN/m) ? -': p,
+                      'y_calc[calc_py]# y (m) ? -': y}
     
     save_parameter = {**save_parameter, **save_parameter_p_ult}
 
     return p, p_ult, save_parameter
 
 
-def p_ult_stiff_clay_api_static(D, z, su, su_tot, z_tot, p_0_):
+def p_ult_stiff_clay_api_static(D, z, su, su_tot, z_tot, sigv0_):
 
     if z < 0:
         s_u_ave = np.nan
         p_ult = 0
     else:
         s_u_ave = np.average(np.array(su_tot)[(np.round(np.array(z_tot), 2) <= round(z, 2)) & (np.round(np.array(z_tot), 2) >= 0)])
-        p_ult1 = (2*s_u_ave + p_0_)*D + 2.83*s_u_ave*z
+        p_ult1 = (2*s_u_ave + sigv0_)*D + 2.83*s_u_ave*z
         p_ult2 = 11*su*D
 
         p_ult = 0.001*min(p_ult1, p_ult2)
 
-    save_parameter = {'s_u_p_y[input]': su,
-                      's_u_ave_p_y[input]': s_u_ave,
-                      'p_0_[input]': p_0_}
+    save_parameter = {'s_u_c[input_py]# s<sub>u,c</sub> (kPa) ? -': su,
+                      's_u_ave_c[input_py]# s<sub>u,c,ave</sub> (kPa) ? -': s_u_ave,
+                      "sigv0_[input_py]# σ'<sub>v</sub> (kPa) ? -": sigv0_}
         
     return p_ult, save_parameter
 
 
-def p_y_stiff_clay_api_static(y, D, z, su, su_tot, z_tot, p_0_):
+def p_y_stiff_clay_api_static(y, D, z, su, su_tot, z_tot, sigv0_):
 
-    p_ult, save_parameter_p_ult = p_ult_stiff_clay_api_static(D, z, su, su_tot, z_tot, p_0_)
+    p_ult, save_parameter_p_ult = p_ult_stiff_clay_api_static(D, z, su, su_tot, z_tot, sigv0_)
 
     if su < 100:
         ep_50 = 0.007
@@ -385,13 +385,13 @@ def p_y_stiff_clay_api_static(y, D, z, su, su_tot, z_tot, p_0_):
 
     p = mult*p
 
-    save_parameter = {'ep_50[input]': ep_50,
-                      'p_ult[calc_py]': p_ult,
-                      'y_50[calc_py]': y_50,
-                      'A[calc_py]': A,
-                      'k[calc_py]': k,
-                      'p_calc[calc_py]': p,
-                      'y_calc[calc_py]': y}
+    save_parameter = {'ep_50[input_py]# ε<sub>50</sub> (kPa) ? -': ep_50,
+                      'p_ult[calc_py]# p<sub>ult</sub> (MN/m) ? -': p_ult,
+                      'y_50[calc_py]# y<sub>50</sub> (m) ? -': y_50,
+                      'A[calc_py]# A (-) ? -': A,
+                      'k[calc_py]# k (MPa/m) ? -': k,
+                      'p_calc[calc_py]# p (MN/m) ? -': p,
+                      'y_calc[calc_py]# y (m) ? -': y}
     
     save_parameter = {**save_parameter, **save_parameter_p_ult}
 
@@ -399,7 +399,7 @@ def p_y_stiff_clay_api_static(y, D, z, su, su_tot, z_tot, p_0_):
 
 # %% --- P-Y SAND ---
 
-def p_ult_sand_dnv_static(D, z, phi, p_0_):
+def p_ult_sand_dnv_static(D, z, phi, sigv0_):
 
     a = [3.528E-04, 1.388E-04, 2.920E-02]
     b = [-2.520E-02, -1.112E-02, -2.561E+00]
@@ -415,22 +415,22 @@ def p_ult_sand_dnv_static(D, z, phi, p_0_):
     if z < 0:
         p_ult = 1e-10
     elif z < z_r:
-        p_ult = 0.001*max(1e-10, (C1*z + C2*D)*p_0_)
+        p_ult = 0.001*max(1e-10, (C1*z + C2*D)*sigv0_)
     else:
-        p_ult = 0.001*C3*D*p_0_
+        p_ult = 0.001*C3*D*sigv0_
 
-    save_parameter = {'phi_p_y[input]': phi,
-                      'p_0_[input]': p_0_,
-                      'C1[calc_py]': C1,
-                      'C2[calc_py]': C2,
-                      'C3[calc_py]': C3}
+    save_parameter = {'phi[input_py]# φ (deg) ? -': phi,
+                      "sigv0_[input_py]# σ'<sub>v</sub> (kPa) ? -": sigv0_,
+                      'C1[calc_py]# C<sub>1</sub> (-) ? -': C1,
+                      'C2[calc_py]# C<sub>2</sub> (-) ? -': C2,
+                      'C3[calc_py]# C<sub>3</sub> (-) ? -': C3}
 
     return p_ult, save_parameter
 
 
-def p_y_sand_dnv_static(y, D, z, phi, p_0_):
+def p_y_sand_dnv_static(y, D, z, phi, sigv0_):
 
-    p_ult, save_parameter_p_ult = p_ult_sand_dnv_static(D, z, phi, p_0_)
+    p_ult, save_parameter_p_ult = p_ult_sand_dnv_static(D, z, phi, sigv0_)
 
     A = max(0.9, 3 - 0.8*z/D)
 
@@ -443,18 +443,18 @@ def p_y_sand_dnv_static(y, D, z, phi, p_0_):
 
     p = A*p_ult*np.tanh((k*z/A/max(1e-10, p_ult))*y)
 
-    save_parameter = {'p_ult[calc_py]': p_ult,
-                      'A[calc_py]': A,
-                      'k[calc_py]': k,
-                      'p_calc[calc_py]': p,
-                      'y_calc[calc_py]': y}
+    save_parameter = {'p_ult[calc_py]# p<sub>ult</sub> (MN/m) ? -': p_ult,
+                      'A[calc_py]# A (-) ? -': A,
+                      'k[calc_py]# k (MPa/m) ? -': k,
+                      'p_calc[calc_py]# p (MN/m) ? -': p,
+                      'y_calc[calc_py]# y (m) ? -': y}
     
     save_parameter = {**save_parameter, **save_parameter_p_ult}
 
     return p, p_ult, save_parameter
 
 
-def p_ult_sand_iso_static(D, z, phi, p_0_):
+def p_ult_sand_iso_static(D, z, phi, sigv0_):
 
     a = [3.528E-04, 1.388E-04, 2.920E-02]
     b = [-2.520E-02, -1.112E-02, -2.561E+00]
@@ -473,22 +473,22 @@ def p_ult_sand_iso_static(D, z, phi, p_0_):
     if z < 0:
         p_ult = 1e-10
     elif z < z_r:
-        p_ult = 0.001*max(1e-10, (C1*z + C2*D)*p_0_)
+        p_ult = 0.001*max(1e-10, (C1*z + C2*D)*sigv0_)
     else:
-        p_ult = 0.001*C3*D*p_0_
+        p_ult = 0.001*C3*D*sigv0_
 
-    save_parameter = {'phi_p_y[input]': phi,
-                      'p_0_[input]': p_0_,
-                      'C1[calc_py]': C1,
-                      'C2[calc_py]': C2,
-                      'C3[calc_py]': C3}
+    save_parameter = {'phi[input_py]# φ (deg) ? -': phi,
+                      "sigv0_[input_py]# σ'<sub>v</sub> (kPa) ? -": sigv0_,
+                      'C1[calc_py]# C<sub>1</sub> (-) ? -': C1,
+                      'C2[calc_py]# C<sub>2</sub> (-) ? -': C2,
+                      'C3[calc_py]# C<sub>3</sub> (-) ? -': C3}
 
     return p_ult, save_parameter
 
 
-def p_y_sand_iso_static(y, D, z, phi, p_0_):
+def p_y_sand_iso_static(y, D, z, phi, sigv0_):
 
-    p_ult, save_parameter_p_ult = p_ult_sand_iso_static(D, z, phi, p_0_)
+    p_ult, save_parameter_p_ult = p_ult_sand_iso_static(D, z, phi, sigv0_)
 
     A = max(0.9, 3 - 0.8*z/D)
 
@@ -503,18 +503,18 @@ def p_y_sand_iso_static(y, D, z, phi, p_0_):
 
     p = A*p_ult*np.tanh((k*z/A/max(1e-10, p_ult))*y)
 
-    save_parameter = {'p_ult[calc_py]': p_ult,
-                      'A[calc_py]': A,
-                      'k[calc_py]': k,
-                      'p_calc[calc_py]': p,
-                      'y_calc[calc_py]': y}
+    save_parameter = {'p_ult[calc_py]# p<sub>ult</sub> (MN/m) ? -': p_ult,
+                      'A[calc_py]# A (-) ? -': A,
+                      'k[calc_py]# k (MPa/m) ? -': k,
+                      'p_calc[calc_py]# p (MN/m) ? -': p,
+                      'y_calc[calc_py]# y (m) ? -': y}
     
     save_parameter = {**save_parameter, **save_parameter_p_ult}
 
     return p, p_ult, save_parameter
 
 
-def p_ult_sand_api_static(D, z, phi, p_0_):
+def p_ult_sand_api_static(D, z, phi, sigv0_):
 
     a = [3.528E-04, 1.388E-04, 2.920E-02]
     b = [-2.520E-02, -1.112E-02, -2.561E+00]
@@ -544,23 +544,23 @@ def p_ult_sand_api_static(D, z, phi, p_0_):
     if z < 0:
         p_ult = 1e-10
     else:
-        p_ult1 = max(1e-10, (C1*z + C2*D)*p_0_)
-        p_ult2 = C3*D*p_0_
+        p_ult1 = max(1e-10, (C1*z + C2*D)*sigv0_)
+        p_ult2 = C3*D*sigv0_
 
         p_ult = 0.001*min(p_ult1, p_ult2)
 
-    save_parameter = {'phi_p_y[input]': phi,
-                      'p_0_[input]': p_0_,
-                      'C1[calc_py]': C1,
-                      'C2[calc_py]': C2,
-                      'C3[calc_py]': C3}
+    save_parameter = {'phi[input_py]# φ (deg) ? -': phi,
+                      "sigv0_[input_py]# σ'<sub>v</sub> (kPa) ? -": sigv0_,
+                      'C1[calc_py]# C<sub>1</sub> (-) ? -': C1,
+                      'C2[calc_py]# C<sub>2</sub> (-) ? -': C2,
+                      'C3[calc_py]# C<sub>3</sub> (-) ? -': C3}
     
     return p_ult, save_parameter
 
 
-def p_y_sand_api_static(y, D, z, phi, p_0_):
+def p_y_sand_api_static(y, D, z, phi, sigv0_):
 
-    p_ult, save_parameter_p_ult = p_ult_sand_api_static(D, z, phi, p_0_)
+    p_ult, save_parameter_p_ult = p_ult_sand_api_static(D, z, phi, sigv0_)
 
     A = max(0.9, 3 - 0.8*z/D)
 
@@ -589,11 +589,11 @@ def p_y_sand_api_static(y, D, z, phi, p_0_):
 
     p = A*p_ult*np.tanh((k*z/A/max(1e-10, p_ult))*y)
 
-    save_parameter = {'p_ult[calc_py]': p_ult,
-                      'A[calc_py]': A,
-                      'k[calc_py]': k,
-                      'p_calc[calc_py]': p,
-                      'y_calc[calc_py]': y}
+    save_parameter = {'p_ult[calc_py]# p<sub>ult</sub> (MN/m) ? -': p_ult,
+                      'A[calc_py]# A (-) ? -': A,
+                      'k[calc_py]# k (MPa/m) ? -': k,
+                      'p_calc[calc_py]# p (MN/m) ? -': p,
+                      'y_calc[calc_py]# y (m) ? -': y}
     
     save_parameter = {**save_parameter, **save_parameter_p_ult}
 
@@ -610,7 +610,7 @@ def p_ult_resistance(depth_i, soil_data_dis_dict, dl_p_ult,
                      su_api_thres=96):
     
     depth_dis = soil_data_dis_dict['depth'][(np.round(soil_data_dis_dict['depth'], 2) <= round(depth_i, 2))]
-    p_0__dis = soil_data_dis_dict['sigveff_rep'][(np.round(soil_data_dis_dict['depth'], 2) <= round(depth_i, 2))]
+    sigv0__dis = soil_data_dis_dict['sigveff_rep'][(np.round(soil_data_dis_dict['depth'], 2) <= round(depth_i, 2))]
     soil_type_dis = soil_data_dis_dict['Soil_Type'][(np.round(soil_data_dis_dict['depth'], 2) <= round(depth_i, 2))]
     s_u_dis = soil_data_dis_dict['suc_'+dl_p_ult][(np.round(soil_data_dis_dict['depth'], 2) <= round(depth_i, 2))]
 
@@ -620,7 +620,7 @@ def p_ult_resistance(depth_i, soil_data_dis_dict, dl_p_ult,
     start_clay_s_u = s_u_dis[start_clay_index]
 
     L_D_dis = depth_dis/b_outer_dis[-1]
-    psi_dis = np.array([s_u_i/max(1e-10, p_0__i) for s_u_i, p_0__i, L_D_i in zip(s_u_dis, p_0__dis, L_D_dis) if (L_D_i <= 20 and L_D_i >= 0)])
+    psi_dis = np.array([s_u_i/max(1e-10, sigv0__i) for s_u_i, sigv0__i, L_D_i in zip(s_u_dis, sigv0__dis, L_D_dis) if (L_D_i <= 20 and L_D_i >= 0)])
     alpha_dis = np.array([0.5*np.power(psi_i, -0.5) if psi_i <= 1 else 0.5*np.power(psi_i, -0.25) for psi_i in psi_dis])
     if len(alpha_dis) > 0:
         if all([str(alpha_i) == 'nan' for alpha_i in alpha_dis]):
@@ -649,9 +649,7 @@ def p_ult_resistance(depth_i, soil_data_dis_dict, dl_p_ult,
         length = len(depth_in_soil_dis)
 
         soil_type_dis = bf.extract_array_from_dl(soil_data_dis_dict, f'Soil_Type', mask=mask, length=length)
-
-        p_0__dis = bf.extract_array_from_dl(soil_data_dis_dict, f'sigveff_rep', mask=mask, length=length)
-            
+        sigv0__dis = bf.extract_array_from_dl(soil_data_dis_dict, f'sigveff_rep', mask=mask, length=length)
         s_u_c_dis = bf.extract_array_from_dl(soil_data_dis_dict, f'suc_{dl_p_ult}', mask=mask, length=length)
         phi_dis = bf.extract_array_from_dl(soil_data_dis_dict, f'phi_{dl_p_ult}', mask=mask, length=length)
 
@@ -667,23 +665,27 @@ def p_ult_resistance(depth_i, soil_data_dis_dict, dl_p_ult,
             soil_type_ii = soil_type_dis[idx2]
             sus_u_c_ii_ii = s_u_c_dis[idx2]
             phi_ii = phi_dis[idx2]
-            p_0__ii = p_0__dis[idx2]
+            sigv0__ii = sigv0__dis[idx2]
 
             if soil_type_ii.lower() in ['c', 'c_s']:
 
                 sub_capacity_entry = 'clay'
                 
                 if 'iso_old' in capacity_dict[sub_capacity_entry].lower():
-                    p_ult_ii, save_parameter_ii = p_ult_clay_iso_old_static(b_outer_i, depth_ii_1, sus_u_c_ii_ii, p_0__ii)
+                    p_ult_ii, save_parameter_ii = p_ult_clay_iso_old_static(b_outer_i, depth_ii_1, sus_u_c_ii_ii, sigv0__ii)
+                    save_parameter_ii = {f"{key}${"p_y_clay_iso_old_static"}": value for key, value in save_parameter_ii.items()}
 
                 elif 'iso' in capacity_dict[sub_capacity_entry].lower():
-                    p_ult_ii, save_parameter_ii = p_ult_clay_iso_static(b_outer_i, depth_ii_1, sus_u_c_ii_ii, p_0__ii, alpha_ave, start_clay_s_u, start_clay_depth)
+                    p_ult_ii, save_parameter_ii = p_ult_clay_iso_static(b_outer_i, depth_ii_1, sus_u_c_ii_ii, sigv0__ii, alpha_ave, start_clay_s_u, start_clay_depth)
+                    save_parameter_ii = {f"{key}${"p_y_clay_iso_static"}": value for key, value in save_parameter_ii.items()}
 
                 elif 'api' in capacity_dict[sub_capacity_entry].lower():
                     if sus_u_c_ii_ii <= su_api_thres:
-                        p_ult_ii, save_parameter_ii = p_ult_soft_clay_api_static(b_outer_i, depth_ii_1, sus_u_c_ii_ii, p_0__ii)
+                        p_ult_ii, save_parameter_ii = p_ult_soft_clay_api_static(b_outer_i, depth_ii_1, sus_u_c_ii_ii, sigv0__ii)
+                        save_parameter_ii = {f"{key}${"p_y_soft_clay_api_static"}": value for key, value in save_parameter_ii.items()}
                     else:
-                        p_ult_ii, save_parameter_ii = p_ult_stiff_clay_api_static(b_outer_i, depth_ii_1, sus_u_c_ii_ii, s_u_c_dis, depth_in_soil_dis, p_0__ii)
+                        p_ult_ii, save_parameter_ii = p_ult_stiff_clay_api_static(b_outer_i, depth_ii_1, sus_u_c_ii_ii, s_u_c_dis, depth_in_soil_dis, sigv0__ii)
+                        save_parameter_ii = {f"{key}${"p_y_stiff_clay_api_static"}": value for key, value in save_parameter_ii.items()}
 
                 else:
                     p_ult_ii, save_parameter_ii = 0, {}
@@ -694,13 +696,16 @@ def p_ult_resistance(depth_i, soil_data_dis_dict, dl_p_ult,
                 sub_capacity_entry = 'sand'
 
                 if 'dnv' in capacity_dict[sub_capacity_entry].lower():
-                    p_ult_ii, save_parameter_ii = p_ult_sand_dnv_static(b_outer_i, depth_ii_1, phi_ii, p_0__ii)
+                    p_ult_ii, save_parameter_ii = p_ult_sand_dnv_static(b_outer_i, depth_ii_1, phi_ii, sigv0__ii)
+                    save_parameter_ii = {f"{key}${"p_y_sand_dnv_static"}": value for key, value in save_parameter_ii.items()}
 
                 elif 'api' in capacity_dict[sub_capacity_entry].lower():
-                    p_ult_ii, save_parameter_ii = p_ult_sand_api_static(b_outer_i, depth_ii_1, phi_ii, p_0__ii)
+                    p_ult_ii, save_parameter_ii = p_ult_sand_api_static(b_outer_i, depth_ii_1, phi_ii, sigv0__ii)
+                    save_parameter_ii = {f"{key}${"p_y_sand_api_static"}": value for key, value in save_parameter_ii.items()}
 
                 elif 'iso' in capacity_dict[sub_capacity_entry].lower():
-                    p_ult_ii, save_parameter_ii = p_ult_sand_iso_static(b_outer_i, depth_ii_1, phi_ii, p_0__ii)
+                    p_ult_ii, save_parameter_ii = p_ult_sand_iso_static(b_outer_i, depth_ii_1, phi_ii, sigv0__ii)
+                    save_parameter_ii = {f"{key}${"p_y_sand_iso_static"}": value for key, value in save_parameter_ii.items()}
 
                 else:
                     p_ult_ii, save_parameter_ii = 0, {}
@@ -710,11 +715,12 @@ def p_ult_resistance(depth_i, soil_data_dis_dict, dl_p_ult,
 
             P_ult_i = b_outer_i*d_z_gdb*p_ult_ii
             
-            save_parameter_ii['soil_type_section_' + str(idx+1) + '[input]'] = soil_type_ii
-            save_parameter_ii['z_section_' + str(idx+1) + '[calc]'] = float(depth_ii_1)
-            save_parameter_ii['p_ult_section_' + str(idx+1) + '[calc]'] = float(p_ult_ii)
-            save_parameter_ii['b_outer_section_' + str(idx+1) + '[geometry]'] = b_outer_i
-            save_parameter_ii['P_ult_section_' + str(idx+1) + '[calc]'] = P_ult_i
+            save_parameter_ii['soil_type_py_section_' + str(idx+1) + '[input_py]# - ? Section'+str(idx+1)] = soil_type_ii
+            save_parameter_ii['z_py_section_' + str(idx+1) + '[input_py]# z (m) ? Section'+str(idx+1)] = float(depth_ii_1)
+            save_parameter_ii['p_ult_py_section_' + str(idx+1) + '[calc_py]# p<sub>ult</sub> (MN/m) ? Section'+str(idx+1)] = float(p_ult_ii)
+            save_parameter_ii['b_outer_py_section_' + str(idx+1) + '[geometry_py]# B (m) ? Section'+str(idx+1)] = b_outer_i
+            save_parameter_ii['P_ult_py_section_' + str(idx+1) + '[calc_py]# P<sub>ult</sub> (MN) ? Section'+str(idx+1)] = P_ult_i
+            save_parameter_ii['pf_soil_mat[input_py]# γ<sub>m</sub> (-) ? -'] = pf_soil_mat
 
             p_ult_parameter_inc.append(save_parameter_ii)
     
@@ -725,9 +731,9 @@ def p_ult_resistance(depth_i, soil_data_dis_dict, dl_p_ult,
             if 'P_ult' in key:
                 P_ult = P_ult + save_parameter_ii[key]
         
-    results_dict = {'P_ult[output]': P_ult,
+    results_dict = {'P_ult[output_py]# P<sub>ult</sub> (MN) ? -': P_ult,
                     'p_ult_parameter_inc': p_ult_parameter_inc,
-                    'pf_soil_mat[input]': pf_soil_mat}
+                    'pf_soil_mat[input]# γ<sub>m</sub> (-) ? -': pf_soil_mat}
                         
     return results_dict
 
@@ -736,11 +742,20 @@ def p_ult_resistance(depth_i, soil_data_dis_dict, dl_p_ult,
 def p_y_deflection(soil_data_dis_dict, dl_p_y, pf_soil_mat, capacity_dict,
                    length_embedment_i, H, V, calculation_method_i,
                    b_outer_dis, thickness_dis, z_gs, 
+                   steel_yield_strength, pf_steel_mat,
                    d_z_gdb,
                    su_api_thres=96, count_lim=1000, k_M_rot_stiff_factor=-8000, P_s_0=100, E_pile=210e3):
+    
+    '''
+    Update to have EI(i) with depth
+    2D loads? V, Fx, Fy, Mx, My?
+    Add moment load at the head
+    Torsion load into steel utilisation
+    Vertical load reduces with depth (integrate t-z formulation)
+    '''
        
     depth_dis = soil_data_dis_dict['depth'][(np.round(soil_data_dis_dict['depth'], 2) <= round(length_embedment_i, 2))]
-    p_0__dis = soil_data_dis_dict['sigveff_rep'][(np.round(soil_data_dis_dict['depth'], 2) <= round(length_embedment_i, 2))]
+    sigv0__dis = soil_data_dis_dict['sigveff_rep'][(np.round(soil_data_dis_dict['depth'], 2) <= round(length_embedment_i, 2))]
     soil_type_dis = soil_data_dis_dict['Soil_Type'][(np.round(soil_data_dis_dict['depth'], 2) <= round(length_embedment_i, 2))]
     s_u_dis = soil_data_dis_dict['suc_'+dl_p_y][(np.round(soil_data_dis_dict['depth'], 2) <= round(length_embedment_i, 2))]
     phi_dis = soil_data_dis_dict['phi_'+dl_p_y][(np.round(soil_data_dis_dict['depth'], 2) <= round(length_embedment_i, 2))]
@@ -753,7 +768,7 @@ def p_y_deflection(soil_data_dis_dict, dl_p_y, pf_soil_mat, capacity_dict,
     start_clay_s_u = s_u_dis[start_clay_index]
 
     L_D_dis = depth_dis/b_outer_dis
-    psi_dis = np.array([s_u_i/max(1e-10, p_0__i) for s_u_i, p_0__i, L_D_i in zip(s_u_dis, p_0__dis, L_D_dis) if (L_D_i <= 20 and L_D_i >= 0)])
+    psi_dis = np.array([s_u_i/max(1e-10, sigv0__i) for s_u_i, sigv0__i, L_D_i in zip(s_u_dis, sigv0__dis, L_D_dis) if (L_D_i <= 20 and L_D_i >= 0)])
     alpha_dis = np.array([0.5*np.power(psi_i, -0.5) if psi_i <= 1 else 0.5*np.power(psi_i, -0.25) for psi_i in psi_dis])
     if len(alpha_dis) > 0:
         if all([str(alpha_i) == 'nan' for alpha_i in alpha_dis]):
@@ -778,8 +793,16 @@ def p_y_deflection(soil_data_dis_dict, dl_p_y, pf_soil_mat, capacity_dict,
     Err = [1]
     k = k_M_rot_stiff_factor
 
+    ### HERE UPGRADE
     I_annulus_dis = np.pi/64*(np.power(b_outer_dis, 4) - np.power(b_outer_dis - 2*thickness_dis, 4))
     I_annulus_ave = np.average(I_annulus_dis)
+    
+    A_annulus_dis = np.pi/4*(np.power(b_outer_dis, 2) - np.power(b_outer_dis - 2*thickness_dis, 2))
+    A_annulus_ave = np.average(A_annulus_dis)
+
+    stree_lever_dis = b_outer_dis/2
+    stree_lever_ave = np.average(stree_lever_dis)
+    ### HERE UPGRADE
 
     while Err[-1] > 1e-6 and count < count_lim:
 
@@ -846,6 +869,7 @@ def p_y_deflection(soil_data_dis_dict, dl_p_y, pf_soil_mat, capacity_dict,
             if round(z1_ii, 2) < 0:
                 p_i[idx] = 0
                 save_parameter_ii = {}
+                soil_type_ii = np.nan
             else:
                 z2_ii = depth_dis[idx] - z_gs
                 soil_type_ii = soil_type_dis[idx]
@@ -853,7 +877,7 @@ def p_y_deflection(soil_data_dis_dict, dl_p_y, pf_soil_mat, capacity_dict,
                 phi_ii = phi_dis[idx]
                 ip_ii = ip_dis[idx]
                 ocr_ii = ocr_dis[idx]
-                p_0__ii = p_0__dis[idx]
+                sigv0__ii = sigv0__dis[idx]
                 b_outer_diff_ii = b_outer_dis[idx]
 
                 if soil_type_ii.lower() in ['c', 'c_s']:
@@ -861,22 +885,26 @@ def p_y_deflection(soil_data_dis_dict, dl_p_y, pf_soil_mat, capacity_dict,
                     sub_capacity_entry = 'clay'
 
                     if 'iso_old' in capacity_dict[sub_capacity_entry].lower():
-                        p_ii, p_ult_ii, save_parameter_ii = p_y_clay_iso_old_static(y_i[idx], b_outer_diff_ii, z2_ii, su_ii, p_0__ii)
+                        p_ii, p_ult_ii, save_parameter_ii = p_y_clay_iso_old_static(y_i[idx], b_outer_diff_ii, z2_ii, su_ii, sigv0__ii)
+                        save_parameter_ii = {f"{key}${"p_y_clay_iso_old_static"}": value for key, value in save_parameter_ii.items()}
                         p_ult[idx] = p_ult_ii
                         p_i[idx] = p_ii
 
                     elif 'iso' in capacity_dict[sub_capacity_entry].lower():
-                        p_ii, p_ult_ii, save_parameter_ii = p_y_clay_iso_static(y_i[idx], b_outer_diff_ii, z2_ii, su_ii, p_0__ii, ip_ii, ocr_ii, alpha_ave, start_clay_s_u, start_clay_depth)
+                        p_ii, p_ult_ii, save_parameter_ii = p_y_clay_iso_static(y_i[idx], b_outer_diff_ii, z2_ii, su_ii, sigv0__ii, ip_ii, ocr_ii, alpha_ave, start_clay_s_u, start_clay_depth)
+                        save_parameter_ii = {f"{key}${"p_y_clay_iso_static"}": value for key, value in save_parameter_ii.items()}
                         p_ult[idx] = p_ult_ii
                         p_i[idx] = p_ii
 
                     elif 'api' in capacity_dict[sub_capacity_entry].lower():
                         if su_ii <= su_api_thres:
-                            p_ii, p_ult_ii, save_parameter_ii = p_y_soft_clay_api_static(y_i[idx], b_outer_diff_ii, z2_ii, su_ii, p_0__ii)
+                            p_ii, p_ult_ii, save_parameter_ii = p_y_soft_clay_api_static(y_i[idx], b_outer_diff_ii, z2_ii, su_ii, sigv0__ii)
+                            save_parameter_ii = {f"{key}${"p_y_soft_clay_api_static"}": value for key, value in save_parameter_ii.items()}
                             p_ult[idx] = p_ult_ii
                             p_i[idx] = p_ii
                         else:
-                            p_ii, p_ult_ii, save_parameter_ii = p_y_stiff_clay_api_static(y_i[idx], b_outer_diff_ii, z2_ii, su_ii, s_u_dis, depth_dis, p_0__ii)
+                            p_ii, p_ult_ii, save_parameter_ii = p_y_stiff_clay_api_static(y_i[idx], b_outer_diff_ii, z2_ii, su_ii, s_u_dis, depth_dis, sigv0__ii)
+                            save_parameter_ii = {f"{key}${"p_y_stiff_clay_api_static"}": value for key, value in save_parameter_ii.items()}
                             p_ult[idx] = p_ult_ii
                             p_i[idx] = p_ii
 
@@ -885,21 +913,27 @@ def p_y_deflection(soil_data_dis_dict, dl_p_y, pf_soil_mat, capacity_dict,
                     sub_capacity_entry = 'sand'
 
                     if 'dnv' in capacity_dict[sub_capacity_entry].lower():
-                        p_ii, p_ult_ii, save_parameter_ii = p_y_sand_dnv_static(y_i[idx], b_outer_diff_ii, z2_ii, phi_ii, p_0__ii)
+                        p_ii, p_ult_ii, save_parameter_ii = p_y_sand_dnv_static(y_i[idx], b_outer_diff_ii, z2_ii, phi_ii, sigv0__ii)
+                        save_parameter_ii = {f"{key}${"p_y_sand_dnv_static"}": value for key, value in save_parameter_ii.items()}
                         p_ult[idx] = p_ult_ii
                         p_i[idx] = p_ii
 
                     elif 'api' in capacity_dict[sub_capacity_entry].lower():
-                        p_ii, p_ult_ii, save_parameter_ii = p_y_sand_api_static(y_i[idx], b_outer_diff_ii, z2_ii, phi_ii, p_0__ii)
+                        p_ii, p_ult_ii, save_parameter_ii = p_y_sand_api_static(y_i[idx], b_outer_diff_ii, z2_ii, phi_ii, sigv0__ii)
+                        save_parameter_ii = {f"{key}${"p_y_sand_api_static"}": value for key, value in save_parameter_ii.items()}
                         p_ult[idx] = p_ult_ii
                         p_i[idx] = p_ii
 
                     elif 'iso' in capacity_dict[sub_capacity_entry].lower():
-                        p_ii, p_ult_ii, save_parameter_ii = p_y_sand_iso_static(y_i[idx], b_outer_diff_ii, z2_ii, phi_ii, p_0__ii)
+                        p_ii, p_ult_ii, save_parameter_ii = p_y_sand_iso_static(y_i[idx], b_outer_diff_ii, z2_ii, phi_ii, sigv0__ii)
+                        save_parameter_ii = {f"{key}${"p_y_sand_iso_static"}": value for key, value in save_parameter_ii.items()}
                         p_ult[idx] = p_ult_ii
                         p_i[idx] = p_ii
 
-            save_parameter_ii['z_section_1[input]'] = float(z1_ii)
+            save_parameter_ii['z_py_section_1[input_py]# z (m) ? -'] = float(z1_ii)
+            save_parameter_ii['soil_type_py_section_1[input_py]# - ? -'] = soil_type_ii
+            save_parameter_ii['pf_soil_mat[input_py]# γ<sub>m</sub> (-) ? -'] = pf_soil_mat
+
             save_parameter_inc.append(save_parameter_ii)
 
         p_i = p_i/pf_soil_mat_dis
@@ -941,6 +975,9 @@ def p_y_deflection(soil_data_dis_dict, dl_p_y, pf_soil_mat, capacity_dict,
 
         M[i] = -E_pile*I_annulus_ave/d_z_gdb**2*(ya - 2*yb +yc)
 
+    sig = np.full(N, V)/A_annulus_ave + np.abs(M*stree_lever_ave/I_annulus_ave)
+    sig_utilisation = sig/(steel_yield_strength/pf_steel_mat)
+
     Q[0] = (1/(2*d_z_gdb))*(-3*M[0] + 4*M[1] - M[2])
     for i in range(1, N-1):
         Q[i] = (1/(2*d_z_gdb))*(M[i+1] - M[i-1])
@@ -951,6 +988,7 @@ def p_y_deflection(soil_data_dis_dict, dl_p_y, pf_soil_mat, capacity_dict,
     for i in range(1, N-1):
         R[i] = (1/(2*d_z_gdb))*(y_i[i+1] - y_i[i-1])
     R[-1] = (1/(2*d_z_gdb))*(3*y_i[-1] - 4*y_i[-2] + y_i[-3])
+    R = np.degrees(R)
 
     part1 = np.linspace(0, 0.01 * b_outer_dis[-1], 200, endpoint=False)
     part2 = np.linspace(0.01 * b_outer_dis[-1], 0.05 * b_outer_dis[-1], 100, endpoint=False)
@@ -971,7 +1009,7 @@ def p_y_deflection(soil_data_dis_dict, dl_p_y, pf_soil_mat, capacity_dict,
             ip_ii = ip_dis[idx]
             ocr_ii = ocr_dis[idx]
             phi_ii = phi_dis[idx]
-            p_0__ii = p_0__dis[idx]
+            sigv0__ii = sigv0__dis[idx]
             b_outer_diff_ii = b_outer_dis[idx]
 
             if soil_type_ii.lower() in ['c', 'c_s']:
@@ -979,41 +1017,44 @@ def p_y_deflection(soil_data_dis_dict, dl_p_y, pf_soil_mat, capacity_dict,
                 sub_capacity_entry = 'clay'
 
                 if 'iso_old' in capacity_dict[sub_capacity_entry].lower():
-                    y_background.append([p_y_clay_iso_old_static(x_ii, b_outer_diff_ii, z2_ii, su_ii, p_0__ii)[0] for x_ii in x_background])
+                    y_background.append([p_y_clay_iso_old_static(x_ii, b_outer_diff_ii, z2_ii, su_ii, sigv0__ii)[0] for x_ii in x_background])
 
                 if 'iso' in capacity_dict[sub_capacity_entry].lower():
-                    y_background.append([p_y_clay_iso_static(x_ii, b_outer_diff_ii, z2_ii, su_ii, p_0__ii, ip_ii, ocr_ii, alpha_ave, start_clay_s_u, start_clay_depth)[0] for x_ii in x_background])
+                    y_background.append([p_y_clay_iso_static(x_ii, b_outer_diff_ii, z2_ii, su_ii, sigv0__ii, ip_ii, ocr_ii, alpha_ave, start_clay_s_u, start_clay_depth)[0] for x_ii in x_background])
                     
                 elif 'api' in capacity_dict[sub_capacity_entry].lower():
                     if su_ii <= su_api_thres:
-                        y_background.append([p_y_soft_clay_api_static(x_ii, b_outer_diff_ii, z2_ii, su_ii, p_0__ii)[0] for x_ii in x_background])
+                        y_background.append([p_y_soft_clay_api_static(x_ii, b_outer_diff_ii, z2_ii, su_ii, sigv0__ii)[0] for x_ii in x_background])
                     else:
-                        y_background.append([p_y_stiff_clay_api_static(x_ii, b_outer_diff_ii, z2_ii, su_ii, s_u_dis, depth_dis, p_0__ii)[0] for x_ii in x_background])
+                        y_background.append([p_y_stiff_clay_api_static(x_ii, b_outer_diff_ii, z2_ii, su_ii, s_u_dis, depth_dis, sigv0__ii)[0] for x_ii in x_background])
 
             elif soil_type_ii.lower() in ['s', 's_c', 'si']:
 
                 sub_capacity_entry = 'sand'
 
                 if 'dnv' in capacity_dict[sub_capacity_entry].lower():
-                    y_background.append([p_y_sand_dnv_static(x_ii, b_outer_diff_ii, z2_ii, phi_ii, p_0__ii)[0] for x_ii in x_background])
+                    y_background.append([p_y_sand_dnv_static(x_ii, b_outer_diff_ii, z2_ii, phi_ii, sigv0__ii)[0] for x_ii in x_background])
 
                 elif 'api' in capacity_dict[sub_capacity_entry].lower():
-                    y_background.append([p_y_sand_api_static(x_ii, b_outer_diff_ii, z2_ii, phi_ii, p_0__ii)[0] for x_ii in x_background])
+                    y_background.append([p_y_sand_api_static(x_ii, b_outer_diff_ii, z2_ii, phi_ii, sigv0__ii)[0] for x_ii in x_background])
 
                 elif 'iso' in capacity_dict[sub_capacity_entry].lower():
-                    y_background.append([p_y_sand_iso_static(x_ii, b_outer_diff_ii, z2_ii, phi_ii, p_0__ii)[0] for x_ii in x_background])
+                    y_background.append([p_y_sand_iso_static(x_ii, b_outer_diff_ii, z2_ii, phi_ii, sigv0__ii)[0] for x_ii in x_background])
                    
-    results_dict = {'z[input]': depth_dis,
-                    'soil_type[input]': soil_type_dis,
-                    'pf_soil_mat[input]': pf_soil_mat_dis,
-                    'p_ult[output]': p_ult,
-                    'p_calc[output]': p_i,
-                    'y_calc[output]': y_i,
-                    'P_s[output]': P_s_i,
-                    'M[output]': M,
-                    'Q[output]': Q,
-                    'R[output]': R,
+    results_dict = {'z[input]# z (m) ? -': depth_dis,
+                    'soil_type[input]# - ? -': soil_type_dis,
+                    'pf_soil_mat[input]# γ<sub>m</sub> (-) ? -': pf_soil_mat_dis,
+                    'p_ult[output_py]# p<sub>ult</sub> (MN/m) ? -': p_ult,
+                    'p_calc[output_py]# p (MN/m) ? -': p_i,
+                    'y_calc[output_py]# y (m) ? -': y_i,
+                    'P_s[output_py]# P<sub>s</sub> (MPa) ? -': P_s_i,
+                    'M[output_py]# M (MNm) ? -': M,
+                    'Q[output_py]# Q (MN) ? -': Q,
+                    'R[output_py]# R (deg) ? -': R,
+                    'sig[output_py]# σ (MPa) ? -': sig,
+                    'sig_utilisation[output_py]# UR (σ) (-) ? -': sig_utilisation,
                     'x_background': x_background,
-                    'y_background': y_background}
+                    'y_background': y_background,
+                    'p_y_parameter_inc': save_parameter_inc}
                                 
     return results_dict

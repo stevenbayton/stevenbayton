@@ -13,7 +13,7 @@ target_folder = os.path.join(parent_dir, '_axial_capacity')
 sys.path.append(target_folder)
 
 # multiconsult modules
-import _background_calculations as b_calc_t_z
+import _background_calculations_t_z as b_calc_t_z
 import _background_setup as b_setup
 import _axial_capacity_module as ax_cap
 
@@ -63,10 +63,10 @@ def calc(length_embedment, V, f_direction_i,
     for idx, z_i in enumerate(z_dis):
    
         for section_i in range(1, 10, 1):
-            z_section = [d['z_s_section_' + str(section_i) + '[calc_s]'] for d in output_shaft_inc_ii if 'z_s_section_' + str(section_i) + '[calc_s]' in d]
-            Q_s_inner_section = [d['Q_s_inner_section_' + str(section_i) + '[calc_s]'] for d in output_shaft_inc_ii if 'Q_s_inner_section_' + str(section_i) + '[calc_s]' in d]
-            Q_s_outer_section = [d['Q_s_outer_section_' + str(section_i) + '[calc_s]'] for d in output_shaft_inc_ii if 'Q_s_outer_section_' + str(section_i) + '[calc_s]' in d]
-            Q_b_section = [d['Q_b_section_' + str(section_i) + '[calc_b]'] for d in output_base_inc_ii if 'Q_b_section_' + str(section_i) + '[calc_b]' in d]   
+            z_section = [d['z_s_section_' + str(section_i) + '[input_s]#  z (m) ? Section'+str(section_i)] for d in output_shaft_inc_ii if 'z_s_section_' + str(section_i) + '[input_s]#  z (m) ? Section'+str(section_i) in d]
+            Q_s_inner_section = [d['Q_s_inner_section_' + str(section_i) + '[calc_s3]# ΔQ<sub>s,inner</sub> (MN) ? Section'+str(section_i)] for d in output_shaft_inc_ii if 'Q_s_inner_section_' + str(section_i) + '[calc_s3]# ΔQ<sub>s,inner</sub> (MN) ? Section'+str(section_i) in d]
+            Q_s_outer_section = [d['Q_s_outer_section_' + str(section_i) + '[calc_s3]# ΔQ<sub>s,outer</sub> (MN) ? Section'+str(section_i)] for d in output_shaft_inc_ii if 'Q_s_outer_section_' + str(section_i) + '[calc_s3]# ΔQ<sub>s,outer</sub> (MN) ? Section'+str(section_i) in d]
+            Q_b_section = [d['Q_b_section_' + str(section_i) + '[calc_b3]# Q<sub>b</sub> (MN) ? Section'+str(section_i)] for d in output_base_inc_ii if 'Q_b_section_' + str(section_i) + '[calc_b3]# Q<sub>b</sub> (MN) ? Section'+str(section_i) in d]   
             for z_ii, Q_s_inner_section_ii, Q_s_outer_section_ii, Q_b_section_ii in zip(z_section, Q_s_inner_section, Q_s_outer_section, Q_b_section):
                 if z_ii == z_i:
                     Q_s_inner_total[idx] += Q_s_inner_section_ii
@@ -78,7 +78,7 @@ def calc(length_embedment, V, f_direction_i,
     elif f_direction_i == 'tension':
         pf_load_perm = pf_load_perm_fav
 
-    results_dict = b_calc_t_z.t_z_deflection(soil_data_dis_dict, capacity_dict, calculation_method_ii,
+    results_dict = b_calc_t_z.t_z_deflection(soil_data_dis_dict, pf_soil_mat, capacity_dict, calculation_method_ii,
                                              length_embedment, V, calculation_method_i, pf_load_perm,
                                              a_base_annulus_dis, b_outer_dis, a_base_bi_dis, global_scour,
                                              d_z,
@@ -191,7 +191,8 @@ def task(calculation_name,
         if data_i[0] != 0:
             f_d_total_v -= f_d_total_my/len(pile_coords)/(data_i[1]) 
 
-        f_d_total_v_array = np.array([0, 0.2, 0.4, 0.6, 0.8, 1, 1.25, 1.5]) * f_d_total_v
+        # f_d_total_v_array = np.array([0, 0.2, 0.4, 0.6, 0.8, 1, 1.25, 1.5]) * f_d_total_v
+        f_d_total_v_array = np.array([0, 0.8, 1]) * f_d_total_v
     
         for calculation_method_i in calculation_method_list:
 
@@ -226,6 +227,7 @@ def task(calculation_name,
 
             output_result_plot['length_embedment'] = length_embedment
             output_result_plot['design_load'] = round(f_d_total_v, 2)
+            output_result_save['design_load'] = round(f_d_total_v, 2)
 
             output_dict[calculation_method_i]['plot_output'] = output_result_plot
             output_dict[calculation_method_i]['save_output'] = output_result_save

@@ -496,8 +496,7 @@ def execute_main(foundation_location_name,
                  input_file_array, 
                  output_file_array):
     
-    # url_login = "https://dev.casksoftware.com/login"
-    url_login = "https://app.casksoftware.com/login"
+    url_login = "https://app.casksoftware.com/login"  # try dev. if fails
     username = "ingerid.jahren@multiconsult.no"
     password = "Cgje7fLwUE7nsQJv"
     
@@ -512,7 +511,7 @@ def execute_main(foundation_location_name,
     print(f" ----- Password: {password}")        
     print(f" ----- Input files path: {input_file_array[0].parent}") 
 
-    subprocess.run([edge_location, url_login])     
+    subprocess.Popen([edge_location, url_login])   
 
     zip_file_name = input(f"------ Name of CAISSON project [{foundation_location_name}]: ") or foundation_location_name
     zip_path = os.path.join(downloads_location, (zip_file_name + '.zip'))

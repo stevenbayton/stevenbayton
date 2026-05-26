@@ -19,9 +19,9 @@ def run_CAP(main_folder, foundation_location_name,input_heading, b_save, b1, l1,
         angle_array = []
         output_file = {}
 
-    results_dict = {"SF[output]": SF_array,
-                    "z[output]": z_slip_array,
-                    "angle[output]": angle_array}
+    results_dict = {"SF[output]# SF (-) ? - ": SF_array,
+                    "z[output]# z (m) ? - ": z_slip_array,
+                    "angle[output]# α (deg) ? - ": angle_array}
         
     return results_dict, output_file
 
@@ -59,9 +59,9 @@ def run_CARL(main_folder, foundation_location_name, input_heading, b_save, b1, l
         x_slip_array = []
         output_file = {}
 
-    results_dict = {"SF[output]": SF_array,
-                    "z[output]": z_slip_array,
-                    "x[output]": x_slip_array}
+    results_dict = {"SF[output]# SF (-) ? - ": SF_array,
+                    "z[output]# z (m) ? - ": z_slip_array,
+                    "x[output]# x (m) ? - ": x_slip_array}
         
     return results_dict, output_file
 

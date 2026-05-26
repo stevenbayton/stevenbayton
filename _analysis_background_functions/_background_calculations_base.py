@@ -485,8 +485,8 @@ def almhamre_base_sand(q_c, sigv0_, case, calculation_dict, k_ts=0.15, beta=0.2)
 
     save_parameter = {'q_c[input_b]# q<sub>c</sub> (MPa) ? -': q_c,
                       "sigv0_[input_b]# σ'<sub>v</sub> (kPa) ? -": sigv0_,
-                      'k_ts[calc_b]': k_ts,
-                      'beta[calc_b]': beta,
+                      'k_ts[calc_b]# k<sub>t,s</sub> (-) ? -': k_ts,
+                      'beta[calc_b]# β (-) ? -': beta,
                       'mult[calc_b]# mult (-) ? -': multiplier,
                       'plug_output[output_b]# - ? -': plug_output}
     
@@ -621,10 +621,10 @@ def bc_api_base_deep_sand(d_r, sigv0_, calculation_dict):
     if q_b > q_b_lim:
         q_b = q_b_lim
 
-    save_parameter = {'d_r[input_b]': d_r,
+    save_parameter = {'d_r[input_b]# D<sub>r</sub> (%) ? -': d_r,
                       "sigv0_[input_b]# σ'<sub>v</sub> (kPa) ? -": sigv0_,
-                      'N_q[calc_b]': N_q,
-                      'q_b_lim[calc_b]': q_b_lim,
+                      'N_q[calc_b]# N<sub>q</sub> (-) ? -': N_q,
+                      'q_b_lim[calc_b]# q<sub>b,lim</sub> (MPa) ? -': q_b_lim,
                       'plug_output[output_b]# - ? -': plug_output}
     
     return q_b, a_base, base_influence, plug_output, save_parameter
@@ -691,11 +691,11 @@ def ucpt_base_sand(q_c_tot, z, z_tot, I_c, calculation_dict, d_cpt):
     q_p = np.average(q_c_tot[(z_tot >= z-1.5*D) & (z_tot <= z+1.5*D) & (z_tot >= 0)])
     q_b = (0.12 + 0.38*A_r_eff)*i_c_corr*q_p
 
-    save_parameter = {'I_c[input_b]': I_c,
-                      'PLR[calc_b]': PLR,
-                      'A_r_eff[calc_b]': A_r_eff,
-                      'i_c_corr[calc_b]': i_c_corr,
-                      'q_p[calc_b]': q_p,
+    save_parameter = {'I_c[input_b]# I<sub>c</sub> (-) ? -': I_c,
+                      'PLR[calc_b]# PLR (-) ? -': PLR,
+                      'A_r_eff[calc_b]# A<sub>r,eff</sub> (m<super>2</super>) ? -': A_r_eff,
+                      'i_c_corr[calc_b]# I<sub>c,corr</sub> (-) ? -': i_c_corr,
+                      'q_p[calc_b]# q<sub>p</sub> (MPa) ? -': q_p,
                       'plug_output[output_b]# - ? -': plug_output}
             
     return q_b, a_base, base_influence, plug_output, save_parameter
@@ -718,7 +718,7 @@ def ngi_base_sand(q_c, sigv0_, calculation_dict):
 
     save_parameter = {'q_c[input_b]# q<sub>c</sub> (MPa) ? -': q_c,
                       "sigv0_[input_b]# σ'<sub>v</sub> (kPa) ? -": sigv0_,
-                      'd_r_ngi[calc_b]# D<sub>r,NGI</sub> (-) ? -': d_r_ngi,
+                      'd_r_ngi[calc_b]# D<sub>r,NGI</sub> (%) ? -': 100*d_r_ngi,
                       'plug_output[output_b]# - ? -': plug_output}
             
     return q_b, a_base, base_influence, plug_output, save_parameter
@@ -749,7 +749,7 @@ def icp_base_sand(q_c_tot, z, z_tot, sigv0_, calculation_dict, d_cpt):
 
     save_parameter = {'q_p[input_b]# q<sub>p</sub> (MPa) ? -': q_p,
                       'd_cpt[calc_b]# d<sub>CPT</sub> (m) ? -': d_cpt,
-                      'd_r_icp[calc_b]# D<sub>r,ICP</sub> (-) ? -': d_r_icp,
+                      'd_r_icp[calc_b]# D<sub>r,ICP</sub> (%) ? -': 100*d_r_icp,
                       'A_r[calc_b]# A<sub>r</sub> (m<super>2</super>) ? -': A_r,
                       'plug_output[output_b]# - ? -': plug_output}
         
@@ -910,42 +910,52 @@ def base_resistance(depth_i, soil_data_dis_dict, dl_b,
                     # BEARING CAPACITY METHOD, DEEP FOUNDATION, DNV, CLAY
                     if 'bc_deep_dnv' in capacity_dict[sub_capacity_entry].lower():
                         q_b_ii, a_base_ii, base_influence_ii, plug_output_ii, save_parameter_ii = bc_dnv_base_deep_clay(s_u_c_b_ii, dss_suc_ii, sue_suc_ii, p_0__ii, calculation_dict)
+                        save_parameter_ii = {f"{key}${"bc_dnv_base_deep_clay"}": value for key, value in save_parameter_ii.items()}
 
                     # BEARING CAPACITY METHOD, DEEP FOUNDATION, API, CLAY
                     elif 'bc_deep_api' in capacity_dict[sub_capacity_entry].lower():
                         q_b_ii, a_base_ii, base_influence_ii, plug_output_ii, save_parameter_ii = bc_api_base_deep_clay(s_u_c_b_ii, dss_suc_ii, sue_suc_ii, calculation_dict)
+                        save_parameter_ii = {f"{key}${"bc_api_base_deep_clay"}": value for key, value in save_parameter_ii.items()}
 
                     # BEARING CAPACITY METHOD, DEEP FOUNDATION, ISO, CLAY
                     elif 'bc_deep_iso' in capacity_dict[sub_capacity_entry].lower():
                         q_b_ii, a_base_ii, base_influence_ii, plug_output_ii, save_parameter_ii = bc_iso_base_deep_clay(s_u_c_b_ii, dss_suc_ii, sue_suc_ii, calculation_dict)
+                        save_parameter_ii = {f"{key}${"bc_iso_base_deep_clay"}": value for key, value in save_parameter_ii.items()}
 
                     # ALM & HAMRE METHOD, CLAY
                     elif 'alm_hamre' in capacity_dict[sub_capacity_entry].lower():
                         q_b_ii, a_base_ii, base_influence_ii, plug_output_ii, save_parameter_ii = almhamre_base_clay(q_c_b_ii, capacity_dict[sub_capacity_entry].lower(), calculation_dict)
+                        save_parameter_ii = {f"{key}${"almhamre_base_clay"}": value for key, value in save_parameter_ii.items()}
 
                     # UNIFIED CPT METHOD, CLAY
                     elif 'ucpt' in capacity_dict[sub_capacity_entry].lower():
                         q_b_ii, a_base_ii, base_influence_ii, plug_output_ii, save_parameter_ii = ucpt_base_clay(q_t_b_total_dis, depth_ii_1, depth_total_dis, soil_type_total_dis, calculation_dict)
+                        save_parameter_ii = {f"{key}${"ucpt_base_clay"}": value for key, value in save_parameter_ii.items()}
                     
                     # CPT METHOD, CLAY
                     elif 'cpt' in capacity_dict[sub_capacity_entry].lower():
                         q_b_ii, a_base_ii, base_influence_ii, plug_output_ii, save_parameter_ii = cpt_base_clay(q_c_b_ii, sbt_ii, capacity_dict[sub_capacity_entry].lower(), calculation_dict)
+                        save_parameter_ii = {f"{key}${"cpt_base_clay"}": value for key, value in save_parameter_ii.items()}
 
                     # NGI-05 METHOD, CLAY
                     elif 'ngi' in capacity_dict[sub_capacity_entry].lower():
                         q_b_ii, a_base_ii, base_influence_ii, plug_output_ii, save_parameter_ii = ngi_base_clay(s_u_c_b_ii, uu_suc_ii, calculation_dict)
+                        save_parameter_ii = {f"{key}${"ngi_base_clay"}": value for key, value in save_parameter_ii.items()}
 
                     # ICP METHOD, CLAY
                     elif 'icp' in capacity_dict[sub_capacity_entry].lower():
                         q_b_ii, a_base_ii, base_influence_ii, plug_output_ii, save_parameter_ii = icp_base_clay(q_c_b_ii, calculation_dict, d_cpt)
+                        save_parameter_ii = {f"{key}${"icp_base_clay"}": value for key, value in save_parameter_ii.items()}
 
                     # UWA METHOD, CLAY
                     elif 'uwa' in capacity_dict[sub_capacity_entry].lower():
                         q_b_ii, a_base_ii, base_influence_ii, plug_output_ii, save_parameter_ii = uwa_base_clay(q_c_b_ii, calculation_dict, d_cpt)
+                        save_parameter_ii = {f"{key}${"uwa_base_clay"}": value for key, value in save_parameter_ii.items()}
 
                     # FUGRO METHOD, CLAY
                     elif 'fugro' in capacity_dict[sub_capacity_entry].lower():
                         q_b_ii, a_base_ii, base_influence_ii, plug_output_ii, save_parameter_ii = fugro_base_clay(q_t_b_total_dis, p0_total_dis, depth_ii_1, depth_total_dis, calculation_dict)
+                        save_parameter_ii = {f"{key}${"fugro_base_clay"}": value for key, value in save_parameter_ii.items()}
                                         
                     else:
                         q_b_ii, a_base_ii, base_influence_ii, plug_output_ii, save_parameter_ii = 0, 0, 0, calculation_method.lower(), {}
@@ -958,10 +968,12 @@ def base_resistance(depth_i, soil_data_dis_dict, dl_b,
                     # BEARING CAPACITY METHOD, DEEP FOUNDATION, DNV, SAND
                     if 'bc_deep_dnv' in capacity_dict[sub_capacity_entry].lower():
                         q_b_ii, a_base_ii, base_influence_ii, plug_output_ii, save_parameter_ii = bc_dnv_base_deep_sand(depth_ii_1, phi_b_ii, p_0__ii, calculation_dict)
+                        save_parameter_ii = {f"{key}${"bc_dnv_base_deep_sand"}": value for key, value in save_parameter_ii.items()}
                     
                     # BEARING CAPACITY METHOD, DEEP FOUNDATION, API, SAND
                     elif 'bc_deep_api' in capacity_dict[sub_capacity_entry].lower():
                         q_b_ii, a_base_ii, base_influence_ii, plug_output_ii, save_parameter_ii = bc_api_base_deep_sand(dr_b_ii, p_0__ii, calculation_dict)
+                        save_parameter_ii = {f"{key}${"bc_api_base_deep_sand"}": value for key, value in save_parameter_ii.items()}
 
                     # BEARING CAPACITY METHOD, DEEP FOUNDATION, ISO, SAND
                     ### No ISO base deep sand exists, uCPT recommended
@@ -969,30 +981,37 @@ def base_resistance(depth_i, soil_data_dis_dict, dl_b,
                     # ALM & HAMRE METHOD, SAND
                     elif 'alm_hamre' in capacity_dict[sub_capacity_entry].lower():
                         q_b_ii, a_base_ii, base_influence_ii, plug_output_ii, save_parameter_ii = almhamre_base_sand(q_c_b_ii, p_0__ii, capacity_dict[sub_capacity_entry].lower(), calculation_dict)
+                        save_parameter_ii = {f"{key}${"almhamre_base_sand"}": value for key, value in save_parameter_ii.items()}
 
                     # UNIFIED CPT METHOD, SAND
                     elif 'ucpt' in capacity_dict[sub_capacity_entry].lower():
                         q_b_ii, a_base_ii, base_influence_ii, plug_output_ii, save_parameter_ii = ucpt_base_sand(q_c_b_total_dis, depth_ii_1, depth_total_dis, i_c_ii, calculation_dict, d_cpt)
+                        save_parameter_ii = {f"{key}${"ucpt_base_sand"}": value for key, value in save_parameter_ii.items()}
                     
                     # CPT METHOD, SAND
                     elif 'cpt' in capacity_dict[sub_capacity_entry].lower():
                         q_b_ii, a_base_ii, base_influence_ii, plug_output_ii, save_parameter_ii = cpt_base_sand(q_c_b_ii, sbt_ii, capacity_dict[sub_capacity_entry].lower(), calculation_dict)
+                        save_parameter_ii = {f"{key}${"cpt_base_sand"}": value for key, value in save_parameter_ii.items()}
 
                     # NGI-99 METHOD, SAND
                     elif 'ngi' in capacity_dict[sub_capacity_entry].lower():
                         q_b_ii, a_base_ii, base_influence_ii, plug_output_ii, save_parameter_ii = ngi_base_sand(q_c_b_ii, p_0__ii, calculation_dict)
+                        save_parameter_ii = {f"{key}${"ngi_base_sand"}": value for key, value in save_parameter_ii.items()}
 
                     # ICP METHOD, SAND
                     elif 'icp' in capacity_dict[sub_capacity_entry].lower():
                         q_b_ii, a_base_ii, base_influence_ii, plug_output_ii, save_parameter_ii = icp_base_sand(q_c_b_total_dis, depth_ii_1, depth_total_dis, p_0__ii, calculation_dict, d_cpt)
+                        save_parameter_ii = {f"{key}${"icp_base_sand"}": value for key, value in save_parameter_ii.items()}
 
                     # UWA METHOD, SAND
                     elif 'uwa' in capacity_dict[sub_capacity_entry].lower():
                         q_b_ii, a_base_ii, base_influence_ii, plug_output_ii, save_parameter_ii = uwa_base_sand(q_c_b_total_dis, depth_ii_1, depth_total_dis, calculation_dict, l_s, Q_s_inner_clay)
+                        save_parameter_ii = {f"{key}${"uwa_base_sand"}": value for key, value in save_parameter_ii.items()}
 
                     # FUGRO METHOD, SAND
                     elif 'fugro' in capacity_dict[sub_capacity_entry].lower():
                         q_b_ii, a_base_ii, base_influence_ii, plug_output_ii, save_parameter_ii = fugro_base_sand(q_c_b_total_dis, depth_ii_1, depth_total_dis, calculation_dict, l_s, Q_s_inner_clay)
+                        save_parameter_ii = {f"{key}${"fugro_base_sand"}": value for key, value in save_parameter_ii.items()}
 
                     else:
                         q_b_ii, a_base_ii, base_influence_ii, plug_output_ii, save_parameter_ii = 0, 0, 0, calculation_method.lower(), {}
@@ -1035,6 +1054,7 @@ def base_resistance(depth_i, soil_data_dis_dict, dl_b,
                 save_parameter_ii['q_pb_section_' + str(idx+1) + '[calc_pb2]# q<sub>b,pb</sub> (MPa) ? Section'+str(idx+1)] = float(q_b_ii)
                 save_parameter_ii['a_pb_section_' + str(idx+1) + '[geometry_pb]# A<sub>b,pb</sub> (m<super>2</super>) ? Section'+str(idx+1)] = a_base_ii
                 save_parameter_ii['Q_pb_section_' + str(idx+1) + '[calc_pb3]# Q<sub>b,pb</sub> (MN) ? Section'+str(idx+1)] = float(Q_b_i)
+                save_parameter_ii['pf_soil_mat[input_pb]# γ<sub>m</sub> (-) ? -'] = pf_soil_mat
 
             else:
                 save_parameter_ii['soil_type_b_section_' + str(idx+1) + '[input_b]# - ? Section'+str(idx+1)] = soil_type_ii
@@ -1043,6 +1063,7 @@ def base_resistance(depth_i, soil_data_dis_dict, dl_b,
                 save_parameter_ii['a_b_section_' + str(idx+1) + '[geometry_b]# A<sub>b</sub> (m<super>2</super>) ? Section'+str(idx+1)] = a_base_ii
                 save_parameter_ii['base_influence_section_' + str(idx+1) + '[output_b]# t<sub>b</sub> (m) ? Section'+str(idx+1)] = base_influence_ii
                 save_parameter_ii['Q_b_section_' + str(idx+1) + '[calc_b3]# Q<sub>b</sub> (MN) ? Section'+str(idx+1)] = Q_b_i
+                save_parameter_ii['pf_soil_mat[input_b]# γ<sub>m</sub> (-) ? -'] = pf_soil_mat
             
             base_parameter_inc.append(save_parameter_ii)
 
@@ -1073,6 +1094,6 @@ def base_resistance(depth_i, soil_data_dis_dict, dl_b,
                              'plug_output[output_b]# - ? - ': plug_output_base,
                              'base_parameter_inc': base_parameter_inc,
                              'base_influence': base_influence_ii,
-                             'pf_soil_mat[input_b]# γ<sub>m</sub> (-) ? -': pf_soil_mat}
+                             'pf_soil_mat[input]# γ<sub>m</sub> (-) ? -': pf_soil_mat}
                 
     return results_dict_base, plug_output_base

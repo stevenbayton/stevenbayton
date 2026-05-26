@@ -2,6 +2,7 @@
 import copy
 from datetime import date
 import matplotlib.colors as mcolors
+import numpy as np
 from pathlib import Path
 import re
 from reportlab.graphics import renderPDF
@@ -152,7 +153,7 @@ def template_A4_landscape(c, info, pdf_type, today=date.today()):
     if pdf_type == 'figure':
         c.drawString(236.5*mm, 30*mm, 'Figure No.:')
         c.drawString(237*mm, 27*mm, info['fig_no'])
-    elif pdf_type == 'table':
+    elif pdf_type == 'table':        
         c.drawString(236.5*mm, 30*mm, 'Table No.:')
         c.drawString(237*mm, 27*mm, info['table_no'])
 
@@ -211,14 +212,22 @@ def parse_column(col):
         output_dict = {}
         ignore = True
     else:
+        if '$' in rest:
+            method = rest.split("$")[-1]
+            rest = rest.split("$")[0]
+
+        else:
+            method = None
+
         parts = rest.split("?")
         parameter_label = parts[0].strip()
         parameter_scope = parts[1].strip()
 
-        output_dict = {"symbol": parameter_symbol,
-                    "type": parameter_type,
-                    "label": parameter_label,
-                    "scope": parameter_scope}
+        output_dict = {"method": method,
+                       "symbol": parameter_symbol,
+                       "type": parameter_type,
+                       "label": parameter_label,
+                       "scope": parameter_scope}
         ignore = False
 
     return output_dict, ignore
@@ -227,8 +236,8 @@ def parse_column(col):
 def format_value(val, fmt):
 
     if str(fmt).lower() == "str":
-        if str(val).lower() == 'nan':
-            upd_val = 'N/A'
+        if str(val).lower() in ['nan', 'none']:
+            upd_val = '-'
         else:
             upd_val = str(val).replace("_", " ").title()
     else:
@@ -238,12 +247,15 @@ def format_value(val, fmt):
             fmt = fmt
 
         if type(fmt) is int:
-            if str(val).lower() == 'nan':
-                upd_val = 'N/A'
+            if str(val).lower() in ['nan', 'none']:
+                upd_val = '-'
             elif val == 0:
                 upd_val = f"{float(abs(val)):.{int(fmt)}f}"
             else:
-                upd_val = f"{float(val):.{int(fmt)}f}"
+                try:
+                    upd_val = f"{float(val):.{int(fmt)}f}"
+                except Exception:
+                    upd_val = val
         else:
             upd_val = val
         
@@ -289,8 +301,8 @@ def wrap_text(text, max_words=2):
 
 def split_col(col):
         
-    table_heading1 = col.split('#')[0]
-    table_heading2 = col.split('#')[-1]
+    table_heading1 = str(col).split('#')[0]
+    table_heading2 = str(col).split('#')[-1]
     match = re.match(r"(.*?)\[(.*?)\]", table_heading1)
     
     if match:
@@ -308,7 +320,8 @@ def custom_sort_key(col, param_priority, method_priority):
     except Exception:
         method = method
 
-    param_pri = param_priority.get(param, 999)
+    match = max((k for k in param_priority if k in param), key=len, default=None)
+    param_pri = param_priority.get(match, 999)
     method_pri = method_priority.get(method, 999)
     method_alpha = method
     param_alpha = param
@@ -318,7 +331,7 @@ def custom_sort_key(col, param_priority, method_priority):
     return sort_key
 
 
-def save_table_pdf(info, df, calc_symbol_info, parameter_symbol_info, method_order, parameter_first, top_margin=50, bottom_margin=125, left_right_margin=45, font_size_table=4):
+def save_table_pdf(info, df, global_pdf_info, section_pdf_info, parameter_pdf_info, method_order, parameter_first, top_margin=50, bottom_margin=125, left_right_margin=45, font_size_table=4, grid_gap=10):
 
     header_font_name = 'Helvetica-Bold'
     header_style = ParagraphStyle(name='Header1',
@@ -343,145 +356,178 @@ def save_table_pdf(info, df, calc_symbol_info, parameter_symbol_info, method_ord
     keep_cols = []
 
     for col in df2.columns:
+        
+        found = False
         meta, ignore = parse_column(col)
-
+       
         if not ignore:
-      
-            if ((calc_symbol_info["calc_symbol"] == meta["symbol"]) & (calc_symbol_info["calc_type"].fillna("").str.split(";").apply(lambda x: meta["type"] in [v.strip() for v in x]))).any():
-                
-                index = (calc_symbol_info["calc_symbol"] == meta["symbol"]) & (calc_symbol_info["calc_type"].fillna("").str.split(";").apply(lambda x: meta["type"] in [v.strip() for v in x]))
-                description = calc_symbol_info["calc_description"][index].iloc[0]
-                decimal = calc_symbol_info["calc_decimal_places"][index].iloc[0]
-                keep = calc_symbol_info["calc_include?"].fillna(False)[index].iloc[0]
+            
+            if not global_pdf_info.empty and not found:
+                if ((global_pdf_info["global_symbol"] == meta["symbol"]) & (global_pdf_info["global_type"].fillna("").str.split(";").apply(lambda x: meta["type"] in [v.strip() for v in x]))).any():
+                    
+                    index = (global_pdf_info["global_symbol"] == meta["symbol"]) & (global_pdf_info["global_type"].fillna("").str.split(";").apply(lambda x: meta["type"] in [v.strip() for v in x]))
+                    description = global_pdf_info["global_description"][index].iloc[0]
+                    decimal = global_pdf_info["global_decimal_places"][index].iloc[0]
+                    keep = global_pdf_info["global_include?"].fillna(False)[index].iloc[0]
 
-                save = (description,  meta["label"], meta["scope"])
+                    save = (description,  meta["label"], meta["scope"])
+                    found = True
 
-                if not keep:
-                    continue
+                    if not keep:
+                        continue
+            
+            if not section_pdf_info.empty and not found:
+                if ((section_pdf_info["section_symbol"] == meta["symbol"]) & (section_pdf_info["section_type"].fillna("").str.split(";").apply(lambda x: meta["type"] in [v.strip() for v in x]))).any():
+                    
+                    index = (section_pdf_info["section_symbol"] == meta["symbol"]) & (section_pdf_info["section_type"].fillna("").str.split(";").apply(lambda x: meta["type"] in [v.strip() for v in x]))
+                    description = section_pdf_info["section_description"][index].iloc[0]
+                    decimal = section_pdf_info["section_decimal_places"][index].iloc[0]
+                    keep = section_pdf_info["section_include?"].fillna(False)[index].iloc[0]
 
-            elif ((parameter_symbol_info["parameter_symbol"] == meta["symbol"]) & (parameter_symbol_info["parameter_type"].fillna("").str.split(";").apply(lambda x: meta["type"] in [v.strip() for v in x]))).any():
-                
-                index = (parameter_symbol_info["parameter_symbol"] == meta["symbol"]) & (parameter_symbol_info["parameter_type"].fillna("").str.split(";").apply(lambda x: meta["type"] in [v.strip() for v in x]))
-                description = parameter_symbol_info["parameter_description"][index].iloc[0]
-                decimal = parameter_symbol_info["parameter_decimal_places"][index].iloc[0]
-                keep = parameter_symbol_info["parameter_include?"].fillna(False)[index].iloc[0]
+                    save = (description,  meta["label"], meta["scope"])
+                    found = True
 
-                save = (description,  meta["label"], meta["scope"])
+                    if not keep:
+                        continue
+            
+            if not parameter_pdf_info.empty and not found:
+                if ((parameter_pdf_info["parameter_method_code"] == meta["method"]) & (parameter_pdf_info["parameter_symbol"] == meta["symbol"]) & (parameter_pdf_info["parameter_type"].fillna("").str.split(";").apply(lambda x: meta["type"] in [v.strip() for v in x]))).any():
+                    
+                    index = (parameter_pdf_info["parameter_method_code"] == meta["method"]) & (parameter_pdf_info["parameter_symbol"] == meta["symbol"]) & (parameter_pdf_info["parameter_type"].fillna("").str.split(";").apply(lambda x: meta["type"] in [v.strip() for v in x]))
+                    description = parameter_pdf_info["parameter_description"][index].iloc[0]
+                    decimal = parameter_pdf_info["parameter_decimal_places"][index].iloc[0]
+                    keep = parameter_pdf_info["parameter_include?"].fillna(False)[index].iloc[0]
 
-                if not keep:
-                    continue
+                    save = (description,  meta["label"], meta["scope"])
+                    found = True
 
-            else:
+                    if not keep:
+                        continue
 
-                print(f"{col} not in Excel input file, omitted")
+            if not found:
+                print(f" ----- {col} not in Excel input file, omitted")
                 continue
-
-        keep_cols.append(col)
-        new_cols.append(save)
-        formats[save] = decimal
+            
+            keep_cols.append(col)
+            new_cols.append(save)
+            formats[save] = decimal
 
     df2 = df2[keep_cols]
-    df2.columns = pd.MultiIndex.from_tuples(new_cols)
-    df2 = df2.loc[:, ~df2.columns.duplicated()]
 
-    formatted_data = []
+    if not df2.empty:
 
-    for idx, row in enumerate(df2.values.tolist()):
+        df2.columns = pd.MultiIndex.from_tuples(new_cols)
+        df2 = df2.T.groupby(level=list(range(df2.columns.nlevels)), sort=False).first().T
 
-        if row[0] > info['table_limit']:
-            continue
+        formatted_data = []
 
-        new_row = []
-        for col, val in zip(df2.columns, row):
+        for idx, row in enumerate(df2.values.tolist()):
 
-            fmt = formats.get(col)
-            new_row.append(format_value(val, fmt))
-        formatted_data.append(new_row)
+            if row[0] > info['table_limit']:
+                continue
 
-    header_rows = list(zip(*df2.columns))
-    header_rows = [list(row) for row in header_rows]
+            new_row = []
+            for col, val in zip(df2.columns, row):
 
-    col_widths = get_col_widths(df2, header_rows, font_size_table, header_font_name)
+                fmt = formats.get(col)
+                new_row.append(format_value(val, fmt))
+            formatted_data.append(new_row)
 
-    styles = [header_style]*len(header_rows)
+        header_rows = list(zip(*df2.columns))
+        header_rows = [list(row) for row in header_rows]
 
-    styled_headers = []
+        col_widths = get_col_widths(df2, header_rows, font_size_table, header_font_name)
 
-    for i, row in enumerate(header_rows):
-        styled_row = []
-        if i == 0:
-            max_words = 2
-        else:
-            max_words = 10
-        for cell in row:
-            txt = str(cell)
-            txt = wrap_text(txt, max_words=max_words)[0]
-            styled_row.append(Paragraph(txt, styles[i]))
-        styled_headers.append(styled_row)
+        styles = [header_style]*len(header_rows)
 
-    data = styled_headers + formatted_data
-    
-    table = Table(data, colWidths=col_widths, repeatRows=len(header_rows))
+        styled_headers = []
 
-    table.setStyle(TableStyle([('BACKGROUND', (0, 0), (-1, 0), colors.Color(0.75, 0.75, 0.75))]))
-    table.setStyle(TableStyle([('BACKGROUND', (0, 1), (-1, 1), colors.Color(0.85, 0.85, 0.85))]))    
-    table.setStyle(TableStyle([('BACKGROUND', (0, 2), (-1, 2), colors.Color(0.85, 0.85, 0.85))]))
+        for i, row in enumerate(header_rows):
+            styled_row = []
+            if i == 0:
+                max_words = 2
+            else:
+                max_words = 10
+            for cell in row:
+                txt = str(cell)
+                txt = wrap_text(txt, max_words=max_words)[0]
+                styled_row.append(Paragraph(txt, styles[i]))
+            styled_headers.append(styled_row)
 
-    table.setStyle(TableStyle([('FONTNAME', (0, 3), (-1, -1), 'Helvetica'),
-                               ('FONTSIZE', (0, 0), (-1, -1), font_size_table),
-                               ('GRID', (0, 0), (-1, -1), 0.25, colors.black),
-                               ('TOPPADDING', (0, 0), (-1, -1), 0),
-                               ('BOTTOMPADDING', (0, 0), (-1, -1), 0),
-                               ('LEFTPADDING', (0, 0), (-1, -1), 4),
-                               ('RIGHTPADDING', (0, 0), (-1, -1), 4),]))
-          
-    pdf_name = str(info['pdf_directory'])
-    orientation = info['orientation']
-
-    if orientation.lower() == 'landscape':  
-        page_width, page_height = landscape(A4)
-    elif orientation.lower() == 'portrait':
-        page_width, page_height = A4
-
-    y_start = page_height - top_margin
-    usable_width = page_width - 2*left_right_margin
-    usable_height = page_height - top_margin - bottom_margin
-    
-    parts = []
-    remaining = table
-
-    while remaining:
-        split_parts = remaining.split(usable_width, usable_height)
-
-        if len(split_parts) == 1:
-            parts.append(split_parts[0])
-            break
-        else:
-            parts.append(split_parts[0])
-            remaining = split_parts[1]
-
-    page_num = 1
-
-    c = canvas.Canvas(pdf_name)
+        data = styled_headers + formatted_data
         
-    if orientation.lower() == 'landscape':   
-        c.setPageSize(landscape(A4))   
-        for i, part in enumerate(parts):
-            if i > 0:
-                c.showPage()
-                page_num += 1
+        table = Table(data, colWidths=col_widths, repeatRows=len(header_rows))
 
-            c = template_A4_landscape(c, info, 'table')
+        table.setStyle(TableStyle([('BACKGROUND', (0, 0), (-1, 0), colors.Color(0.75, 0.75, 0.75))]))
+        table.setStyle(TableStyle([('BACKGROUND', (0, 1), (-1, 1), colors.Color(0.85, 0.85, 0.85))]))    
+        table.setStyle(TableStyle([('BACKGROUND', (0, 2), (-1, 2), colors.Color(0.85, 0.85, 0.85))]))
 
-            w, h = part.wrap(usable_width, usable_height)
+        table.setStyle(TableStyle([('FONTNAME', (0, 0), (-1, -1), 'Helvetica'),
+                                ('FONTSIZE', (0, 0), (-1, -1), font_size_table),
+                                ('GRID', (0, 0), (-1, -1), 0.25, colors.black),
+                                ('TOPPADDING', (0, 0), (-1, -1), 0),
+                                ('BOTTOMPADDING', (0, 0), (-1, -1), 0),
+                                ('LEFTPADDING', (0, 0), (-1, -1), 4),
+                                ('RIGHTPADDING', (0, 0), (-1, -1), 4)]))
+            
+        pdf_name = str(info['pdf_directory'])
+        orientation = info['orientation']
 
-            part.drawOn(c, left_right_margin, y_start - h)
+        if orientation.lower() == 'landscape':  
+            page_width, page_height = landscape(A4)
+        elif orientation.lower() == 'portrait':
+            page_width, page_height = A4
 
-    elif orientation.lower() == 'portrait':
-        c.setPageSize(A4)
-        c = template_A4_portrait(c, info, 'table')
-     
-    c.save()   
+        y_start = page_height - top_margin
+        usable_width = page_width - 2*left_right_margin
+        usable_height = page_height - top_margin - bottom_margin
+
+        width_table = sum(col_widths)
+        
+        parts = []
+        remaining = table
+
+        while remaining:
+            split_parts = remaining.split(usable_width, usable_height)
+
+            if len(split_parts) == 1:
+                parts.append(split_parts[0])
+                break
+            else:
+                parts.append(split_parts[0])
+                remaining = split_parts[1]
+
+        page_num = 1
+
+        c = canvas.Canvas(pdf_name)
+
+        no_columns = int(np.floor((usable_width - grid_gap) / width_table))
+        no_rows = int(np.ceil(len(parts)/no_columns))
+            
+        if orientation.lower() == 'landscape':   
+            c.setPageSize(landscape(A4))   
+            for i in range(no_rows):
+                if i > 0:
+                    c.showPage()
+                    page_num += 1
+
+                c = template_A4_landscape(c, info, 'table')
+
+                for j in range(no_columns):
+
+                    try:
+                        w, h = parts[no_columns*i+j].wrap(usable_width, usable_height)
+
+                        left_offset = left_right_margin + (usable_width - no_columns*width_table + (no_columns - 1)*grid_gap)/2 + (width_table + grid_gap)*j
+                        parts[no_columns*i+j].drawOn(c, left_offset, y_start - h)
+                    except Exception:
+                        continue
+    
+        elif orientation.lower() == 'portrait':
+            c.setPageSize(A4)
+            c = template_A4_portrait(c, info, 'table')
+        
+        c.save()   
 
 
 def scale_drawing(drawing, new_drawing_width):
@@ -495,6 +541,7 @@ def scale_drawing(drawing, new_drawing_width):
 
 
 def latex_to_reportlab(text):
+
     text = re.sub(r'_\{(.*?)\}', r'<sub>\1</sub>', text)
     text = re.sub(r'\^\{(.*?)\}', r'<sup>\1</sup>', text)
     

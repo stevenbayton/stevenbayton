@@ -55,10 +55,10 @@ def t_z_static(z, t_ult, t_res_norm, D, z_ult_norm=0.01):
     m = ((t2 - t1)*t_ult)/((z2 - z1)*z_ult)
     t = mult*(m*z + t1*t_ult - m*z1*z_ult)
 
-    save_parameter = {'t_ult[calc_tz]': t_ult,
-                      'z_ult[calc_tz]': z_ult,
-                      't[calc_tz]': t,
-                      'z[calc_tz]': z}
+    save_parameter = {'t_ult[calc_tz]# t<sub>ult</sub> (MN/m) ? -': t_ult,
+                      'z_ult[calc_tz]# z<sub>ult</sub> (m) ? -': z_ult,
+                      't_calc[calc_tz]# t (MN/m) ? -': t,
+                      'z_calc[input_tz]# z (m) ? -': z}
     
     return t, t_ult, save_parameter
 
@@ -109,10 +109,10 @@ def q_z_static(z, q_ult, D, z_ult=0.1):
     m = ((q2 - q1)*q_ult)/((z2 - z1)*z_ult)
     q = mult*(m*z + q1*q_ult - m*z1*z_ult)
 
-    save_parameter = {'q_ult[calc_qz]': q_ult,
-                      'z_ult[calc_qz]': z_ult,
-                      'q[calc_qz]': q,
-                      'z[calc_qz]': z}
+    save_parameter = {'q_ult[calc_qz]# Q<sub>ult</sub> (MN) ? -': q_ult,
+                      'z_ult[calc_qz]# z<sub>ult</sub> (m) ? -': z_ult,
+                      'q[calc_qz]# qQ (MN) ? -': q,
+                      'z_calc[calc_qz]# z (m) ? -': z}
     
     save_parameter = {**save_parameter}
 
@@ -121,7 +121,7 @@ def q_z_static(z, q_ult, D, z_ult=0.1):
 
 # %% --- T-Z DEFLECTION
 
-def t_z_deflection(soil_data_dis_dict, capacity_dict, calculation_method_ii,
+def t_z_deflection(soil_data_dis_dict, pf_soil_mat, capacity_dict, calculation_method_ii,
                    length_embedment_i, V, calculation_method_i, pf_load_perm,
                    a_base_annulus_dis, b_outer_dis, a_base_bi_dis, z_gs, 
                    d_z_gdb,
@@ -129,6 +129,10 @@ def t_z_deflection(soil_data_dis_dict, capacity_dict, calculation_method_ii,
                    conductor,
                    t_t_max_clay=0.9, t_t_max_sand=1, uw_s_steel=6850,
                    count_lim=1000, T_s_0=100, Q_s_0=100, E_pile=210e3):
+    
+    '''
+    Update to have AI(i) with depth
+    '''
        
     depth_dis = soil_data_dis_dict['depth'][(np.round(soil_data_dis_dict['depth'], 2) <= round(length_embedment_i, 2))]
     soil_type_dis = soil_data_dis_dict['Soil_Type'][(np.round(soil_data_dis_dict['depth'], 2) <= round(length_embedment_i, 2))]
@@ -142,6 +146,7 @@ def t_z_deflection(soil_data_dis_dict, capacity_dict, calculation_method_ii,
 
     T_s = [np.array([0 if depth_i < 0 else T_s_0 for depth_i in depth_dis])]
     Q_s = [np.array([0 if depth_i < 0 else Q_s_0 for depth_i in depth_dis])]
+    pf_soil_mat_dis = np.array([pf_soil_mat for depth_i in depth_dis])
 
     count = 1
     Err = [1]
@@ -230,6 +235,7 @@ def t_z_deflection(soil_data_dis_dict, capacity_dict, calculation_method_ii,
 
                 if 'api' in capacity_dict[sub_capacity_entry].lower() or 'iso' in capacity_dict[sub_capacity_entry].lower():
                     t_ii, t_ult_ii, save_parameter_tz_ii = t_z_static(z_i[idx], Q_s_total_i, t_t_max_sand, b_outer_diff_ii)
+                    save_parameter_tz_ii = {f"{key}${"t_z_static"}": value for key, value in save_parameter_tz_ii.items()}
                     t_ult[idx] = t_ult_ii
                     t_i[idx] = t_ii
 
@@ -237,6 +243,7 @@ def t_z_deflection(soil_data_dis_dict, capacity_dict, calculation_method_ii,
 
                     if 'api' in capacity_dict[sub_capacity_entry].lower() or 'iso' in capacity_dict[sub_capacity_entry].lower():
                         q_ii, q_ult_ii, save_parameter_qz_ii = q_z_static(z_i[idx], Q_b_i, b_outer_diff_ii)
+                        save_parameter_qz_ii = {f"{key}${"q_z_static"}": value for key, value in save_parameter_qz_ii.items()}
                         q_ult[idx] = q_ult_ii
                         q_i[idx] = q_ii
 
@@ -249,7 +256,9 @@ def t_z_deflection(soil_data_dis_dict, capacity_dict, calculation_method_ii,
                 t_ii, t_ult_ii, save_parameter_tz_ii = 0, 0, {}
                 q_ii, q_ult_ii, save_parameter_qz_ii = 0, 0, {}
 
-            save_parameter_tz_ii['z_section_1[input]'] = float(depth_i)
+            save_parameter_tz_ii['z_tz_section_1[input_tz]'] = float(depth_i)
+            save_parameter_tz_ii['soil_type_tz_section_1[input_tz]# - ? -'] = soil_type_ii
+            save_parameter_tz_ii['pf_soil_mat[input_tz]# γ<sub>m</sub> (-) ? -'] = pf_soil_mat
             save_parameter_ii = {**save_parameter_tz_ii, **save_parameter_qz_ii}
             save_parameter_inc.append(save_parameter_ii)
         
@@ -320,16 +329,17 @@ def t_z_deflection(soil_data_dis_dict, capacity_dict, calculation_method_ii,
         else:
             y_background.append(list(np.zeros(len(x_background))))
             
-    results_dict = {'z[input]': depth_dis,
-                    'soil_type[input]': soil_type_dis,
-                    't_ult[output]': t_ult,
-                    'q_ult[output]': q_ult,
-                    't_calc[output]': t_i,
-                    'q_calc[output]': q_i,
-                    'z_calc[output]': z_i,
-                    'T_s[output]': T_s_i,
-                    'Q_s[output]': Q_s_i,
-                    'N_ax[output]': N_ax,
+    results_dict = {'z[input]# z (m) ? -': depth_dis,
+                    'soil_type[input]# - ? -': soil_type_dis,
+                    'pf_soil_mat[input]# γ<sub>m</sub> (-) ? -': pf_soil_mat_dis,
+                    't_ult[output_tz]# t<sub>ult</sub> (MN/m) ? -': t_ult,
+                    'q_ult[output_tz]# Q<sub>ult</sub> (MN) ? -': q_ult,
+                    't_calc[output_tz]# t (MN/m) ? -': t_i,
+                    'q_calc[output_tz]# Q (MN) ? -': q_i,
+                    'z_calc[output_tz]# z (m) ? -': z_i,
+                    'T_s[output_tz]# T<sub>s</sub> (MPa) ? -': T_s_i,
+                    'Q_s[output_tz]# Q<sub>s</sub> (MN/m) ? -': Q_s_i,
+                    'N_ax[output_tz]# N (MN) ? -': N_ax,
                     'x_background': x_background,
                     'y_background': y_background}
                                 

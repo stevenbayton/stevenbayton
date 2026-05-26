@@ -11,8 +11,8 @@ import _background_execute as b_exe
 import _background_plot as b_plot
 import _background_save as b_save
 
-# calculations_location = r"\\nsv2-nasuni-01\Prosjekt\O10267\10267730-01\10267730-01-03 ARBEIDSOMRAADE\10267730-01 RIG\10267730-01-03 TEKNISKE PROGRAMFILER" # PPF
-calculations_location = r"\\nsv2-nasuni-01\Prosjekt\O10269\10269544-01\10269544-01-03 WORKSPACE\10269544-01 RIG\10269544-01-03 TECHNICAL WORK FILES" # CN
+calculations_location = r"\\nsv2-nasuni-01\Prosjekt\O10267\10267730-01\10267730-01-03 ARBEIDSOMRAADE\10267730-01 RIG\10267730-01-03 TEKNISKE PROGRAMFILER" # PPF
+# calculations_location = r"\\nsv2-nasuni-01\Prosjekt\O10269\10269544-01\10269544-01-03 WORKSPACE\10269544-01 RIG\10269544-01-03 TECHNICAL WORK FILES" # CN
 # calculations_location = r"\\nsv2-nasuni-01\Prosjekt\O10271\10271514-01\10271514-01-03 ARBEIDSOMRAADE\10271514-01 RIG\10271514-01-03 TEKNISKE PROGRAMFILER\Caisson" # PLEM
 setup_dict = b_exe.load_parent_input(calculations_location)
 setup_dict = b_exe.load_param_map(setup_dict)
@@ -20,8 +20,8 @@ gdb_dict = b_exe.load_gdb_input(setup_dict)
 cpt_dict, setup_dict = b_exe.load_cpt_input(setup_dict)
 
 # foundation_location_name_loop = ["CN_CPT_60"]
-# foundation_location_name_loop = ["PLEM"]
-foundation_location_name_loop = ["CIM6"]
+# foundation_location_name_loop = ["CIM6"]
+foundation_location_name_loop = ["VEDA"]
 # foundation_location_name_loop = ["ALUA", "ALUB", "TLGA", "VEDA"]
 # foundation_location_name_loop = ["ALUA_cond_clay", "ALUA_cond_sand", "ALUB_cond_clay", "ALUB_cond_sand", "TLGA_cond_clay", "TLGA_cond_sand", "VEDA_cond_clay", "VEDA_cond_sand"]
 # foundation_location_name_loop = ["Eirin_le"]
@@ -31,10 +31,10 @@ foundation_location_name_loop = ["CIM6"]
 # calculation_name_loop = ["_installation"]
 # calculation_name_loop = ["_removal"]
 # calculation_name_loop = ["_axial_capacity"]
-calculation_name_loop = ["_cap_capacity"]
+# calculation_name_loop = ["_cap_capacity"]
 # calculation_name_loop = ["_caisson_capacity"]
 # calculation_name_loop = ["_lateral_capacity"]
-# calculation_name_loop = ["_lateral_displacement"]
+calculation_name_loop = ["_lateral_displacement"]
 # calculation_name_loop = ["_axial_displacement"]
 # calculation_name_loop = ["_axial_capacity", "_axial_displacement"]
 # calculation_name_loop = ["_lateral_capacity", "_lateral_displacement"]

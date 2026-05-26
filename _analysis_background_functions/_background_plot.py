@@ -52,7 +52,7 @@ def execute_plot(input_heading, gdb_df, gdb_df_scour, scour_gdb, cpt_dict, setup
         plot_caisson_output(input_heading, output, setup_dict, calculation_name, foundation_location_name)
 
     if calculation_name in ['_axial_displacement', '_lateral_displacement']:
-        plot_spring_output(input_heading, output, setup_dict, calculation_name, foundation_location_name)
+        # plot_spring_output(input_heading, output, setup_dict, calculation_name, foundation_location_name)
         plot_global_spring_output(input_heading, output, setup_dict, calculation_name, foundation_location_name)
 
     if calculation_name in ['_installation']:
@@ -62,7 +62,7 @@ def execute_plot(input_heading, gdb_df, gdb_df_scour, scour_gdb, cpt_dict, setup
     plot_axes_task(cpts, input_heading, input, output, setup_dict, gdb_df, gdb_df_scour, scour_gdb, calculation_name, foundation_location_name)
                 
 
-def plot_axes_task(cpts, input_heading, input, output, setup_dict, gdb_df, gdb_df_scour, scour_gdb, calculation_name, foundation_location_name, output_folder='output'):
+def plot_axes_task(cpts, input_heading, input, output, setup_dict, gdb_df, gdb_df_scour, scour_gdb, calculation_name, foundation_location_name, output_folder='output', error=[]):
 
     default_ls = '-'
     default_marker = 'None'
@@ -151,7 +151,7 @@ def plot_axes_task(cpts, input_heading, input, output, setup_dict, gdb_df, gdb_d
 
             if 'depth' in ax_i.lower():
                 parts = ax_i.split("\n")
-                label = "\n".join(f'${p.replace(" ", "\\,")}$' if "\\" in p else p for p in parts) # HERE
+                label = "\n".join(f'${p.replace(" ", "\\,")}$' if "\\" in p else p for p in parts)
                 label = label + ' (' + info_i['unit'] + ')'
                 ax[idx_ax].set_ylabel(label, fontstyle='italic', fontsize=font_size_ylabel)
                 continue
@@ -162,11 +162,62 @@ def plot_axes_task(cpts, input_heading, input, output, setup_dict, gdb_df, gdb_d
 
             params = info_i['params'].replace(" ", "").split(";")
             xlim = info_i['limit'].replace(" ", "").split(",")
+                        
+            if 'legend_location' not in info_i:
+                legend_location = 'upper right'
+            else:
+                legend_location = info_i['legend_location']
+
+            if 'line_style' not in info_i:
+                info_i['line_style'] = [default_ls]*len(params)
+            else:
+                info_i['line_style'] = info_i['line_style'].replace(" ", "").split(";")
+                while len(info_i['line_style']) < len(params):
+                    info_i['line_style'].append(default_ls)
+
+            if 'marker_style' not in info_i:
+                info_i['marker_style'] = [default_marker]*len(params)
+            else:
+                info_i['marker_style'] = info_i['marker_style'].replace(" ", "").split(";")
+                while len(info_i['marker_style']) < len(params):
+                    info_i['marker_style'].append(default_marker)
+
+            if 'color_override' not in info_i:
+                info_i['color_override'] = [None]*len(params)
+            else:
+                info_i['color_override'] = info_i['color_override'].replace(" ", "").split(";")
+                while len(info_i['color_override']) < len(params):
+                    info_i['color_override'].append(default_color)
+
+            if 'legend_override' not in info_i:
+                info_i['legend_override'] = [None]*len(params)
+            else:
+                info_i['legend_override'] = info_i['legend_override'].split(";")
+                while len(info_i['legend_override']) < len(params):
+                    info_i['legend_override'].append('_nolegend_')
+
+            if 'multiplier' not in info_i:
+                info_i['multiplier'] = [1]*len(params)
+            else:
+                info_i['multiplier'] = str(info_i['multiplier']).split(";")
+                while len(info_i['legend_override']) < len(params):
+                    info_i['legend_override'].append(1)
+
+            if 'data_points' not in info_i:
+                info_i['data_points'] = [None]*len(params)
+            else:
+                info_i['data_points'] = info_i['data_points'].replace("; ", ";").split(";")
+                while len(info_i['data_points']) < len(params):
+                    info_i['data_points'].append(None)
 
             if info_i['data_type'] == 'input':
+
                 printed_params = []
-                for param_i in params:
+
+                for param_i, multiplier_i, color_override_i, ls_i, ms_i, legend_override_i, data_points_i in zip(params, info_i['multiplier'], info_i['color_override'], info_i['line_style'], info_i['marker_style'], info_i['legend_override'], info_i['data_points']):
+
                     for cpt_name_i, cpt_data_i in cpts.items():
+
                         if cpt_name_i in setup_dict['cpt_map']:
                             cpt_color_i = setup_dict['cpt_map'][cpt_name_i]['plot_color']
                         else:
@@ -179,12 +230,16 @@ def plot_axes_task(cpts, input_heading, input, output, setup_dict, gdb_df, gdb_d
                             param_ii = param_i.split('_high')[0]
                         else:
                             param_ii = param_i
-                        if param_ii not in printed_params:
+
+                        param_loc_ii = [cpt_name_i, param_ii]
+                        if param_loc_ii not in printed_params:
                             if param_ii in cpt_data_i:
                                 ax[ax_no].plot(cpt_data_i[param_ii], cpt_data_i['depth'], ls='-', color=cpt_color_i, alpha=0.5)
                             elif param_ii in setup_dict['param_map']:
                                 if setup_dict['param_map'][param_ii]['plot_param'] in cpt_data_i:
                                     ax[ax_no].plot(cpt_data_i[setup_dict['param_map'][param_ii]['plot_param']], cpt_data_i['depth'], ls='-', color=cpt_color_i, alpha=0.5)
+
+                            printed_params.append(param_loc_ii)
 
                     if gdb_df is not None:
 
@@ -193,8 +248,6 @@ def plot_axes_task(cpts, input_heading, input, output, setup_dict, gdb_df, gdb_d
                         else:
                             alpha = 1
 
-                        print_gdb = False
-
                         clay_unique = ['suc']
                         sand_unique = ['phi']
 
@@ -202,46 +255,53 @@ def plot_axes_task(cpts, input_heading, input, output, setup_dict, gdb_df, gdb_d
                         sand_unique = [x + y for x in sand_unique for y in ['', '_low', '_best', '_high']]
                         soil_type = np.array(gdb_df['Soil_Type'])
 
-                        if param_i in gdb_df and 'low' in param_i:
-                            x_plot = np.array(gdb_df[param_i])                            
-                            ls_gdb = '--'
-                            color_gdb = 'r'
-                            label_gdb = 'LE'
-                            print_gdb = True
-
-                        elif param_i in gdb_df and 'high' in param_i:
-                            x_plot = np.array(gdb_df[param_i])                            
-                            ls_gdb = '--'
-                            color_gdb = 'g'
-                            label_gdb = 'HE'
-                            print_gdb = True
-
-                        elif param_i in gdb_df and 'best' in param_i:
-                            x_plot = np.array(gdb_df[param_i])                            
-                            ls_gdb = '-'
-                            color_gdb = 'k'
-                            label_gdb = 'BE'
-                            print_gdb = True
-
-                        elif param_i in gdb_df:
-                            x_plot = np.array(gdb_df[param_i])                            
-                            ls_gdb = '--'
-                            color_gdb = 'k'
-                            label_gdb = 'None'
-                            print_gdb = True
-
-                        if print_gdb:
+                        if param_i + '_low' in gdb_df:
+                            x_plot = np.array(gdb_df[param_i + '_low'])
                             y_plot = np.array(gdb_df['depth'])
-                            
+                            nan_condition = np.array([str(x) == 'nan' for x in x_plot])
+                            x_plot_red = np.array([np.nan if nan_i else x_i for x_i, nan_i in zip(x_plot, nan_condition)])
+                            y_plot_red = np.array([np.nan if nan_i else y_i for y_i, nan_i in zip(y_plot, nan_condition)]) 
                             if param_i in clay_unique:
-                                x_plot = [np.nan if st_i.lower() not in ['c', 'clay', 'si', 'c_s'] else x_i for x_i, st_i in zip(x_plot, soil_type)]
+                                x_plot_red = [np.nan if st_i.lower() not in ['c', 'clay', 'si', 'c_s'] else x_i for x_i, st_i in zip(x_plot_red, soil_type)]
                             if param_i in sand_unique:
-                                x_plot = [np.nan if st_i.lower() not in ['s', 'sand', 'si', 's_c'] else x_i for x_i, st_i in zip(x_plot, soil_type)]
-                                                
+                                x_plot_red = [np.nan if st_i.lower() not in ['s', 'sand', 'si', 's_c'] else x_i for x_i, st_i in zip(x_plot_red, soil_type)]
+                            ax[ax_no].plot(x_plot_red, y_plot_red, ls='--', color='r', label="LE", alpha=alpha)
+
+                        if param_i + '_best' in gdb_df:
+                            x_plot = np.array(gdb_df[param_i + '_best'])
+                            y_plot = np.array(gdb_df['depth'])
                             nan_condition = np.array([str(x) == 'nan' for x in x_plot])
                             x_plot_red = np.array([np.nan if nan_i else x_i for x_i, nan_i in zip(x_plot, nan_condition)])
                             y_plot_red = np.array([np.nan if nan_i else y_i for y_i, nan_i in zip(y_plot, nan_condition)])
-                            ax[ax_no].plot(x_plot_red, y_plot_red, ls=ls_gdb, color=color_gdb, label=label_gdb, alpha=alpha)
+                            if param_i in clay_unique:
+                                x_plot_red = [np.nan if st_i.lower() not in ['c', 'clay', 'si', 'c_s'] else x_i for x_i, st_i in zip(x_plot_red, soil_type)]
+                            if param_i in sand_unique:
+                                x_plot_red = [np.nan if st_i.lower() not in ['s', 'sand', 'si', 's_c'] else x_i for x_i, st_i in zip(x_plot_red, soil_type)]
+                            ax[ax_no].plot(x_plot_red, y_plot_red, ls='-', color='k', label="BE", alpha=alpha)
+
+                        if param_i + '_high' in gdb_df:
+                            x_plot = np.array(gdb_df[param_i + '_high'])
+                            y_plot = np.array(gdb_df['depth'])
+                            nan_condition = np.array([str(x) == 'nan' for x in x_plot])
+                            x_plot_red = np.array([np.nan if nan_i else x_i for x_i, nan_i in zip(x_plot, nan_condition)])
+                            y_plot_red = np.array([np.nan if nan_i else y_i for y_i, nan_i in zip(y_plot, nan_condition)])
+                            if param_i in clay_unique:
+                                x_plot_red = [np.nan if st_i.lower() not in ['c', 'clay', 'si', 'c_s'] else x_i for x_i, st_i in zip(x_plot_red, soil_type)]
+                            if param_i in sand_unique:
+                                x_plot_red = [np.nan if st_i.lower() not in ['s', 'sand', 'si', 's_c'] else x_i for x_i, st_i in zip(x_plot_red, soil_type)]
+                            ax[ax_no].plot(x_plot_red, y_plot_red, ls='--', color='g', label="HE", alpha=alpha)
+
+                        if param_i in gdb_df:
+                            x_plot = np.array(gdb_df[param_i])
+                            y_plot = np.array(gdb_df['depth'])
+                            nan_condition = np.array([str(x) == 'nan' for x in x_plot])
+                            x_plot_red = np.array([np.nan if nan_i else x_i for x_i, nan_i in zip(x_plot, nan_condition)])
+                            y_plot_red = np.array([np.nan if nan_i else y_i for y_i, nan_i in zip(y_plot, nan_condition)]) 
+                            if param_i in clay_unique:
+                                x_plot_red = [np.nan if st_i.lower() not in ['c', 'clay', 'si', 'c_s'] else x_i for x_i, st_i in zip(x_plot_red, soil_type)]
+                            if param_i in sand_unique:
+                                x_plot_red = [np.nan if st_i.lower() not in ['s', 'sand', 'si', 's_c'] else x_i for x_i, st_i in zip(x_plot_red, soil_type)]
+                            ax[ax_no].plot(x_plot_red, y_plot_red, ls='-', color='k', alpha=alpha)
                         
                     if gdb_df_scour is not None and scour_gdb and param_i in [x + y for x in ['qc', 'qt', 'sigv_rep', 'sigveff_rep'] for y in ['', '_low', '_best', '_high']]:
                         if param_i + '_low' in gdb_df_scour:
@@ -278,53 +338,10 @@ def plot_axes_task(cpts, input_heading, input, output, setup_dict, gdb_df, gdb_d
 
             elif info_i['data_type'] == 'output':
 
-                if 'line_style' not in info_i:
-                    info_i['line_style'] = [default_ls]*len(params)
-                else:
-                    info_i['line_style'] = info_i['line_style'].replace(" ", "").split(";")
-                    while len(info_i['line_style']) < len(params):
-                        info_i['line_style'].append(default_ls)
-
-                if 'marker_style' not in info_i:
-                    info_i['marker_style'] = [default_marker]*len(params)
-                else:
-                    info_i['marker_style'] = info_i['marker_style'].replace(" ", "").split(";")
-                    while len(info_i['marker_style']) < len(params):
-                        info_i['marker_style'].append(default_marker)
-
-                if 'color_override' not in info_i:
-                    info_i['color_override'] = [None]*len(params)
-                else:
-                    info_i['color_override'] = info_i['color_override'].replace(" ", "").split(";")
-                    while len(info_i['color_override']) < len(params):
-                        info_i['color_override'].append(default_color)
-
-                if 'legend_override' not in info_i:
-                    info_i['legend_override'] = [None]*len(params)
-                else:
-                    info_i['legend_override'] = info_i['legend_override'].split(";")
-                    while len(info_i['legend_override']) < len(params):
-                        info_i['legend_override'].append('_nolegend_')
-
-                if 'multiplier' not in info_i:
-                    info_i['multiplier'] = [1]*len(params)
-                else:
-                    info_i['multiplier'] = str(info_i['multiplier']).split(";")
-                    while len(info_i['legend_override']) < len(params):
-                        info_i['legend_override'].append(1)
-
-                if 'data_points' not in info_i:
-                    info_i['data_points'] = [None]*len(params)
-                else:
-                    info_i['data_points'] = info_i['data_points'].replace("; ", ";").split(";")
-                    while len(info_i['data_points']) < len(params):
-                        info_i['data_points'].append(None)
-
                 for param_i, multiplier_i, color_override_i, ls_i, ms_i, legend_override_i, data_points_i in zip(params, info_i['multiplier'], info_i['color_override'], info_i['line_style'], info_i['marker_style'], info_i['legend_override'], info_i['data_points']):
 
                     calculation_method_total = []
                     count_color = 0
-
                     calc_idx = -1
                     
                     for calculation_method_i in output.keys():
@@ -374,8 +391,15 @@ def plot_axes_task(cpts, input_heading, input, output, setup_dict, gdb_df, gdb_d
 
                             if param_i in input_dict:
                                 output_i = input_dict
-                            else:
+                            elif param_i in output_dict:
                                 output_i = output_dict
+                            elif 'incremental' in info_i:
+                                output_i = output_dict
+                            else:
+                                error_i = f' ----- Parameter "{param_i}" not in input or output dictionaries, did not add to plot'
+                                if error_i not in error:
+                                    error.append(error_i)
+                                continue
                             
                             if calculation_name not in ['_cap_capacity', '_caisson_capacity']:
                                 index_length = [i for i, j in enumerate(output_i['z']) if j >= length_embedment][0]
@@ -398,16 +422,19 @@ def plot_axes_task(cpts, input_heading, input, output, setup_dict, gdb_df, gdb_d
                                 elif '_b' in param_i:
                                     z_inc_param = 'z_b'
                                     calc_suf = '[calc_b]'
+                                    z_suf = '[input_b]'
                                     output_inc_i = output_i['base_parameter_inc']
 
                                 elif '_s' in param_i:
                                     z_inc_param = 'z_s'
                                     calc_suf = '[calc_s]'
+                                    z_suf = '[input_s]'
                                     output_inc_i = output_i['shaft_parameter_inc']
 
                                 elif 'p_ult' in param_i:
-                                    z_inc_param = 'z'
-                                    calc_suf = '[calc]'
+                                    z_inc_param = 'z_py'
+                                    calc_suf = '[calc_py]'
+                                    z_suf = '[input_py]'
                                     output_inc_i = output_i['p_ult_parameter_inc']
                                                             
                                 plot_interval = input["incremental_save_plot"]
@@ -443,9 +470,9 @@ def plot_axes_task(cpts, input_heading, input, output, setup_dict, gdb_df, gdb_d
                                         x_data = [float(multiplier_i) * (d[key1] if key1 in d else d[key2] if key2 in d else d[key3]) for d in output_inc_ii if key1 in d or key2 in d or key3 in d]
                        
                                         key_base = z_inc_param + '_section_' + str(section_i)
-                                        key1 = key_base + calc_suf
-                                        key2 = key_base + calc_suf[:-1] + '2]'
-                                        key3 = key_base + calc_suf[:-1] + '3]'
+                                        key1 = key_base + z_suf
+                                        key2 = key_base + z_suf[:-1] + '2]'
+                                        key3 = key_base + z_suf[:-1] + '3]'
                                         y_data = [(d[key1] if key1 in d else d[key2] if key2 in d else d[key3]) for d in output_inc_ii if key1 in d or key2 in d or key3 in d]
                                         x_total += x_data
                                         y_total += y_data
@@ -458,7 +485,7 @@ def plot_axes_task(cpts, input_heading, input, output, setup_dict, gdb_df, gdb_d
 
                                 if legend_override_i is not None:
                                     legend_i = legend_override_i.strip()
-                                    legend_i = f'${legend_i.replace(" ", "\\,")}$'  # HERE
+                                    legend_i = f'${legend_i.replace(" ", "\\,")}$'
                                 else:
                                     legend_i = calculation_method_i
                                 
@@ -488,11 +515,15 @@ def plot_axes_task(cpts, input_heading, input, output, setup_dict, gdb_df, gdb_d
                                             ax[ax_no].plot(x_plot, y_plot, ls='-', marker='None', color=color_i)
 
                             else:
+
+                                print_ = True
                                 
                                 if plot_load == design_load:
                                     alpha_i = 1
                                 else:
                                     alpha_i = 0.25
+                                    if 'ult' in param_i:
+                                        print_ = False
 
                                 if calculation_method_i not in calculation_method_total:
                                     calculation_method_total.append(calculation_method_i)
@@ -512,17 +543,19 @@ def plot_axes_task(cpts, input_heading, input, output, setup_dict, gdb_df, gdb_d
                                 if legend_override_i is not None:
 
                                     legend_i = legend_override_i.strip()
-                                    legend_i = f'${legend_i.replace(" ", "\\,")}$' # HERE
+                                    legend_i = f'${legend_i.replace(" ", "\\,")}$'
 
                                     if '[method]' in legend_override_i:
                                         legend_i = calculation_method_i + ' ' + legend_i.split(']')[-1]
                                     else:
                                         if plot_load == design_load and calculation_name in ['_lateral_displacement', '_axial_displacement']:
-                                            legend_i = legend_i + ' (design load)'                                    
+                                            if 'ult' not in param_i:
+                                                legend_i = legend_i + ' (design load)'                                    
                                     
                                 else:
                                     if plot_load == design_load and calculation_name in ['_lateral_displacement', '_axial_displacement']:
-                                        legend_i = calculation_method_i + ' (design load)'
+                                        if 'ult' not in param_i:
+                                            legend_i = calculation_method_i + ' (design load)'
                                     else:
                                         legend_i = calculation_method_i
 
@@ -540,13 +573,14 @@ def plot_axes_task(cpts, input_heading, input, output, setup_dict, gdb_df, gdb_d
                                     if calculation_name in ['_cap_capacity'] and param_i == 'SF' and length_embedment == 0:
                                         x_plot1 = x_plot1[1:]
                                         y_plot1 = y_plot1[1:]
-
-                                if legend_toggle:                    
-                                    ax[ax_no].plot(x_plot1, y_plot1, ls=ls_i, marker=ms_i, color=color_i, label=legend_i, alpha=alpha_i)
-                                    ax[ax_no].plot(x_plot2, y_plot2, ls=ls_i, marker=ms_i, color=color_i, alpha=0.25)
-                                else:
-                                    ax[ax_no].plot(x_plot1, y_plot1, ls=ls_i, marker=ms_i, color=color_i, alpha=alpha_i)
-                                    ax[ax_no].plot(x_plot2, y_plot2, ls=ls_i, marker=ms_i, color=color_i, alpha=0.25)
+                                
+                                if print_:
+                                    if legend_toggle:                    
+                                        ax[ax_no].plot(x_plot1, y_plot1, ls=ls_i, marker=ms_i, color=color_i, label=legend_i, alpha=alpha_i)
+                                        ax[ax_no].plot(x_plot2, y_plot2, ls=ls_i, marker=ms_i, color=color_i, alpha=0.25)
+                                    else:
+                                        ax[ax_no].plot(x_plot1, y_plot1, ls=ls_i, marker=ms_i, color=color_i, alpha=alpha_i)
+                                        ax[ax_no].plot(x_plot2, y_plot2, ls=ls_i, marker=ms_i, color=color_i, alpha=0.25)
 
                                 if data_points_i is not None:
                                     data_points_red_i = data_points_i[1:-1]
@@ -634,12 +668,12 @@ def plot_axes_task(cpts, input_heading, input, output, setup_dict, gdb_df, gdb_d
             labels_final = []
 
             for handle_i, label_i in zip(handles, labels):
-                if label_i not in labels_final:
+                if label_i not in labels_final and '_nolegend_' not in label_i:
                     handles_final.append(handle_i)
                     labels_final.append(label_i)
 
             if info_i['legend'] and len(labels) > 0:
-                ax[ax_no].legend(handles=handles_final, labels=labels_final, loc='upper right', fontsize=font_size_legend, prop={'style': 'italic'})
+                ax[ax_no].legend(handles=handles_final, labels=labels_final, loc=legend_location, fontsize=font_size_legend, prop={'style': 'italic'})
 
             if 'vlines' in info_i or 'hlines' in info_i:
 
@@ -767,6 +801,9 @@ def plot_axes_task(cpts, input_heading, input, output, setup_dict, gdb_df, gdb_d
         os.remove(info_pdf['svg_path'])
 
         plt.close()
+
+    for error_i in error:
+        print(error_i)
 
 
 def plot_caisson_output(input_heading, output_dict, setup_dict, calculation_name, foundation_location_name, output_folder='output'):
@@ -1159,10 +1196,10 @@ def plot_caisson_output(input_heading, output_dict, setup_dict, calculation_name
 
 def plot_spring_output(input_heading, output_dict, setup_dict, calculation_name, foundation_location_name, output_folder='output', no_rows=2, no_cols=3, kN=True):
 
-    font_size_legend = 5
-    font_size_xlabel = font_size_ylabel = 8
-    font_size_text = 6
-    font_size_ticks = 6
+    font_size_legend = 8
+    font_size_xlabel = font_size_ylabel = 10
+    font_size_text = 10
+    font_size_ticks = 8
 
     length_embedment = 0
     for key in output_dict.keys():
@@ -1238,7 +1275,11 @@ def plot_spring_output(input_heading, output_dict, setup_dict, calculation_name,
             y_data = y_background[idx_depth]
             max_y_main = max(max_y_main, y_mult*max(y_data))
 
-        fig_main, ax_main = plt.subplots(1, 2, figsize=(22, 12))
+        if calculation_name == '_axial_displacement' and base_spring:
+            fig_main, ax_main = plt.subplots(1, 2, figsize=(22, 12))
+        else:
+            fig_main, ax_main = plt.subplots(1, 1, figsize=(14, 12))
+            ax_main = [ax_main]
 
         if base_spring:
             no_plots = int(np.ceil((len(spring_depth_intervals)+1) / (no_rows*no_cols)))
@@ -1274,7 +1315,7 @@ def plot_spring_output(input_heading, output_dict, setup_dict, calculation_name,
                     else:
                         ax_main[0].plot(x_data, [y_mult*y_i for y_i in y_data], ls='--', color='darkblue')
                         ax_main[0].plot([abs(x_i) for x_i in x_data if x_i <= x_limit_mob], [y_mult*abs(y_i) for x_i, y_i in zip(x_data, y_data) if x_i <= x_limit_mob], ls='-', color='darkblue')
-                    ax_main[0].text(float(xlim[-1]), y_mult*y_data[np.abs(np.array(x_data) - float(xlim[-1])).argmin()], str(round(depth_extract, 1))+" m", ha='right', va='bottom', fontsize=font_size_text)
+                    ax_main[0].text(min(float(xlim[-1]), float(xlim[-1])), y_mult*y_data[np.abs(np.array(x_data) - float(xlim[-1])).argmin()], str(round(depth_extract, 1))+" m", ha='right', va='bottom', fontsize=font_size_text)
                     count_spring += 1
 
                 ax[idx_ax].grid('on')
@@ -1282,7 +1323,7 @@ def plot_spring_output(input_heading, output_dict, setup_dict, calculation_name,
 
                 ax[idx_ax].legend(loc='upper right', fontsize=font_size_legend, prop={'style': 'italic'})
                 if spring_depth_interval_i in spring_depth_intervals_combined:
-                    ax_main[0].legend(loc='upper right', fontsize=font_size_legend, prop={'style': 'italic'})
+                    ax_main[0].legend(loc='upper left', fontsize=font_size_legend, prop={'style': 'italic'})
 
                 ax[idx_ax].set_xlim([float(xlim[0]), float(xlim[-1])])
                 ax[idx_ax].set_ylim(0, 1.05*max_y)
@@ -1294,12 +1335,12 @@ def plot_spring_output(input_heading, output_dict, setup_dict, calculation_name,
                 ax[idx_ax].tick_params(axis='both', labelsize=font_size_ticks)
                                                 
                 if calculation_name == '_lateral_displacement':
-                    ax[idx_ax].set_xlabel("Displacement, y$ (m)", fontstyle='italic', fontsize=font_size_xlabel)
+                    ax[idx_ax].set_xlabel("Displacement, y (m)", fontstyle='italic', fontsize=font_size_xlabel)
                     ax[idx_ax].text(0.05*(float(xlim[-1])-float(xlim[0])), 0.95*1.05*max_y, "p-y curve at " + str(round(depth_extract, 1))+" m", ha='left', va='top', fontsize=font_size_text)
                     if idx_ax % no_cols == 0:
-                        ax[idx_ax].set_ylabel("SLateral resistance,\n p (" + unit +"/m)", fontstyle='italic', fontsize=font_size_ylabel)
+                        ax[idx_ax].set_ylabel("Lateral resistance,\n p (" + unit +"/m)", fontstyle='italic', fontsize=font_size_ylabel)
 
-                    ax_main[0].set_xlabel("Displacement,\\ y (m)", fontstyle='italic', fontsize=font_size_xlabel)
+                    ax_main[0].set_xlabel("Displacement, y (m)", fontstyle='italic', fontsize=font_size_xlabel)
                     ax_main[0].set_ylabel("Lateral resistance,\n p (" + unit +"/m)", fontstyle='italic', fontsize=font_size_ylabel)
 
                 elif calculation_name == '_axial_displacement':
@@ -1323,15 +1364,14 @@ def plot_spring_output(input_heading, output_dict, setup_dict, calculation_name,
                     ax_main[1].plot([abs(x_i) for x_i in x_data if x_i <= x_limit_mob], [y_mult*abs(y_i) for x_i, y_i in zip(x_data, y_data) if x_i <= x_limit_mob], ls='-', color='darkblue', label="Mobilised at design load")
                     
                     ax_main[1].grid('on')
-                    ax_main[1].legend(loc='upper right', fontsize=font_size_legend, prop={'style': 'italic'})
+                    ax_main[1].legend(loc='upper left', fontsize=font_size_legend, prop={'style': 'italic'})
 
                     ax_main[1].set_xlim([float(xlim[0]), float(xlim[-1])])
                     ax_main[1].set_ylim(bottom=0)
 
                     ax_main[1].set_xlabel("Displacement, z (m)", fontstyle='italic', fontsize=font_size_xlabel)
                     ax_main[1].set_ylabel("Base axial resistance,\n Q (" + unit +")", fontstyle='italic', fontsize=font_size_ylabel)
-                    ax_main[1].text(x_data[-1], [y_mult*y_i for y_i in y_data][-1], str(round(z_background[-1], 1))+" m", ha='left', va='top', fontsize=font_size_text)
-
+                    
                     ax_main[1].tick_params(axis='both', labelsize=font_size_ticks)
 
                 if idx_ax < (no_rows*no_cols) - 1:
@@ -1390,28 +1430,109 @@ def plot_spring_output(input_heading, output_dict, setup_dict, calculation_name,
 
             spring_depth_intervals = spring_depth_intervals[(no_rows*no_cols):]
 
-            save_file_name = foundation_location_name.lower() + '_' + input_heading.lower() + '_' + calculation_method_i + '_springs' + str(idx_fig)
+            save_file_name = foundation_location_name.lower() + '_' + input_heading.lower() + '_' + calculation_method_i + '_springs' + str(idx_fig+1)
 
-            os.makedirs(Path(setup_dict["parent_input"]["calculations_location"])/setup_dict["parent_input"]["python_calculation_folder"]/setup_dict["parent_input"]["foundation_calculation_folder"]/output_folder/calculation_name, exist_ok=True)
-            fig.savefig(Path(setup_dict["parent_input"]["calculations_location"])/setup_dict["parent_input"]["python_calculation_folder"]/setup_dict["parent_input"]["foundation_calculation_folder"]/output_folder/calculation_name/(save_file_name + '.svg'), bbox_inches='tight', pad_inches=0.1)
-            fig.savefig(Path(setup_dict["parent_input"]["calculations_location"])/setup_dict["parent_input"]["python_calculation_folder"]/setup_dict["parent_input"]["foundation_calculation_folder"]/output_folder/calculation_name/(save_file_name+'.png'), bbox_inches='tight', pad_inches=0.1)
+            os.makedirs(os.path.join(Path(setup_dict["parent_input"]["calculations_location"]), setup_dict["parent_input"]["python_calculation_folder"], setup_dict["parent_input"]["foundation_calculation_folder"], output_folder, calculation_name), exist_ok=True)
+            fig.savefig(os.path.join(Path(setup_dict["parent_input"]["calculations_location"]), setup_dict["parent_input"]["python_calculation_folder"], setup_dict["parent_input"]["foundation_calculation_folder"], output_folder, calculation_name, (save_file_name + '.svg')), bbox_inches='tight', pad_inches=0.1)
+            fig.savefig(os.path.join(Path(setup_dict["parent_input"]["calculations_location"]), setup_dict["parent_input"]["python_calculation_folder"], setup_dict["parent_input"]["foundation_calculation_folder"], output_folder, calculation_name, (save_file_name+'.png')), bbox_inches='tight', pad_inches=0.1)
+
+            plt.close(fig)
+
+            plot_for_input = setup_dict[calculation_name][input_heading]['plot'].replace(" ", "").split(";")[0]
+            fig_no_for_input = str(setup_dict[calculation_name][input_heading]['fig_no']).split(";")
+            sub_title3_for_input = str(setup_dict[calculation_name][input_heading]['sub_title3']).split(";")
+            
+            if len(fig_no_for_input) == 0:
+                fig_no_for_input = [""]*len(plot_for_input)
+            else:
+                while len(fig_no_for_input) < len(plot_for_input):
+                    fig_no_for_input.append(fig_no_for_input[-1])
+
+            if len(sub_title3_for_input) == 0:
+                sub_title3_for_input = [""]*len(plot_for_input)
+            else:
+                while len(sub_title3_for_input) < len(plot_for_input):
+                    sub_title3_for_input.append(sub_title3_for_input[-1])
+
+            fig_no_for_input = pdf.clean_fig_no(fig_no_for_input[0])
+            sub_title3_for_input = sub_title3_for_input[0]
+            plot_info = copy.deepcopy(setup_dict['plotting'][plot_for_input])["plot_info"]
+
+            info_pdf = {}
+            info_pdf['svg_path'] = os.path.join(Path(setup_dict["parent_input"]["calculations_location"]), setup_dict["parent_input"]["python_calculation_folder"], setup_dict["parent_input"]["foundation_calculation_folder"], output_folder, calculation_name, (save_file_name + '.svg'))
+            info_pdf['orientation'] = plot_info.get("orientation", "")
+            info_pdf['main_title'] = plot_info.get("main_title", "")
+            info_pdf['sub_title1'] = plot_info.get("sub_title1", "")
+            info_pdf['sub_title2'] = "Local springs"
+
+            if plot_info["sub_title3"].lower() == "input":
+                info_pdf['sub_title3'] = sub_title3_for_input
+            else:
+                info_pdf['sub_title3'] = plot_info["sub_title3"]
+
+            info_pdf['doc_no'] = plot_info.get("doc_no", "")
+
+            if plot_info["fig_no"].lower() == "input":
+                info_pdf['fig_no'] = fig_no_for_input + '-' + str(idx_fig+1)
+            else:
+                info_pdf['fig_no'] = pdf.clean_fig_no(plot_info["fig_no"] + '-' + str(idx_fig+1))
+
+            info_pdf['calc_by'] = plot_info.get("calc_by", "")
+            info_pdf['check_by'] = plot_info.get("check_by", "")
+            info_pdf['approv_by'] = plot_info.get("approv_by", "")
+            
+            info_pdf['pdf_directory'] = os.path.join(Path(setup_dict["parent_input"]["calculations_location"]), setup_dict["parent_input"]["python_calculation_folder"], setup_dict["parent_input"]["foundation_calculation_folder"], output_folder, calculation_name, (str(info_pdf['fig_no']) + '_' + save_file_name + '.pdf'))
+            
+            pdf.save_figure_pdf(info_pdf)
+            os.remove(info_pdf['svg_path'])
 
             save_file_name = foundation_location_name.lower() + '_' + input_heading.lower() + '_' + calculation_method_i + '_all_springs'
 
-            os.makedirs(Path(setup_dict["parent_input"]["calculations_location"])/setup_dict["parent_input"]["python_calculation_folder"]/setup_dict["parent_input"]["foundation_calculation_folder"]/output_folder/calculation_name, exist_ok=True)
-            fig_main.savefig(Path(setup_dict["parent_input"]["calculations_location"])/setup_dict["parent_input"]["python_calculation_folder"]/setup_dict["parent_input"]["foundation_calculation_folder"]/output_folder/calculation_name/(save_file_name + '.svg'), bbox_inches='tight', pad_inches=0.1)  
-            fig_main.savefig(Path(setup_dict["parent_input"]["calculations_location"])/setup_dict["parent_input"]["python_calculation_folder"]/setup_dict["parent_input"]["foundation_calculation_folder"]/output_folder/calculation_name/(save_file_name+'.png'), bbox_inches='tight', pad_inches=0.1)
-
-            plt.close(fig)
+            os.makedirs(os.path.join(Path(setup_dict["parent_input"]["calculations_location"]), setup_dict["parent_input"]["python_calculation_folder"], setup_dict["parent_input"]["foundation_calculation_folder"], output_folder, calculation_name), exist_ok=True)
+            fig_main.savefig(os.path.join(Path(setup_dict["parent_input"]["calculations_location"]), setup_dict["parent_input"]["python_calculation_folder"], setup_dict["parent_input"]["foundation_calculation_folder"], output_folder, calculation_name, (save_file_name + '.svg')), bbox_inches='tight', pad_inches=0.1)  
+            fig_main.savefig(os.path.join(Path(setup_dict["parent_input"]["calculations_location"]), setup_dict["parent_input"]["python_calculation_folder"], setup_dict["parent_input"]["foundation_calculation_folder"], output_folder, calculation_name, (save_file_name+'.png')), bbox_inches='tight', pad_inches=0.1)
+            
             plt.close(fig_main)
 
+            info_pdf = {}
+            info_pdf['svg_path'] = os.path.join(Path(setup_dict["parent_input"]["calculations_location"]), setup_dict["parent_input"]["python_calculation_folder"], setup_dict["parent_input"]["foundation_calculation_folder"], output_folder, calculation_name, (save_file_name + '.svg'))
+            info_pdf['orientation'] = plot_info.get("orientation", "")
+            info_pdf['main_title'] = plot_info.get("main_title", "")
+            info_pdf['sub_title1'] = plot_info.get("sub_title1", "")
+            info_pdf['sub_title2'] = "Global springs"
+
+            if plot_info["sub_title3"].lower() == "input":
+                info_pdf['sub_title3'] = sub_title3_for_input
+            else:
+                info_pdf['sub_title3'] = plot_info["sub_title3"]
+
+            info_pdf['doc_no'] = plot_info.get("doc_no", "")
+
+            if plot_info["fig_no"].lower() == "input":
+                info_pdf['fig_no'] = fig_no_for_input
+            else:
+                info_pdf['fig_no'] = pdf.clean_fig_no(plot_info["fig_no"])
+
+            info_pdf['calc_by'] = plot_info.get("calc_by", "")
+            info_pdf['check_by'] = plot_info.get("check_by", "")
+            info_pdf['approv_by'] = plot_info.get("approv_by", "")
+            
+            info_pdf['pdf_directory'] = os.path.join(Path(setup_dict["parent_input"]["calculations_location"]), setup_dict["parent_input"]["python_calculation_folder"], setup_dict["parent_input"]["foundation_calculation_folder"], output_folder, calculation_name, (str(info_pdf['fig_no']) + '_' + save_file_name + '.pdf'))
+            
+            if len(ax_main) == 1:
+                pdf.save_figure_pdf(info_pdf, scale_ls=175, start_x_ls=55)
+            elif len(ax_main) == 2:
+                pdf.save_figure_pdf(info_pdf, scale_ls=250, start_x_ls=20)
+
+            os.remove(info_pdf['svg_path'])
+            
 
 def plot_global_spring_output(input_heading, output_dict, setup_dict, calculation_name, foundation_location_name, output_folder='output'):
 
-    font_size_legend = 5
-    font_size_xlabel = font_size_ylabel = 8
-    font_size_text = 6
-    font_size_ticks = 6
+    font_size_legend = 8
+    font_size_xlabel = font_size_ylabel = 10
+    font_size_text = 8
+    font_size_ticks = 8
 
     colors_calculation_method = ['darkblue', 'darkred', 'darkgreen', 'grey', 'grey', 'grey', 'grey', 'grey']
 
@@ -1516,11 +1637,14 @@ def plot_global_spring_output(input_heading, output_dict, setup_dict, calculatio
 
                 ax[0].set_ylim([float(ylim[-1]), float(ylim[0])])  
                 ax[0].set_xlabel("Moment\n(MNm)", fontstyle='italic', fontsize=font_size_xlabel)
-                ax[0].set_ylabel("Depth from mudline$ (m)", fontstyle='italic', fontsize=font_size_ylabel)
+                ax[0].set_ylabel("Depth from mudline (m)", fontstyle='italic', fontsize=font_size_ylabel)
 
                 ax[0].tick_params(axis='both', labelsize=font_size_ticks)
 
         max_disp = 0
+
+        min_stiff = 1e10
+        max_stiff = 0
 
         for idx, spring_depth_interval_i in enumerate(spring_depth_intervals):
 
@@ -1558,12 +1682,15 @@ def plot_global_spring_output(input_heading, output_dict, setup_dict, calculatio
                     secant_stiffness_array.append(abs((load_array[-1] - load_array[0])/(displacement_array[-1] - displacement_array[0])))
                     tangent_stiffness_array.append(abs((load_array[-1] - load_array[-2])/(displacement_array[-1] - displacement_array[-2])))
 
+            min_stiff = min(min_stiff, min(min(secant_stiffness_array), min(tangent_stiffness_array)))
+            max_stiff = max(max_stiff, max(max(secant_stiffness_array), max(tangent_stiffness_array)))
+
             color_i = colors_calculation_method[idx]
 
-            ax[-2].plot(displacement_array, load_array, ls='-', color=color_i, label="Load-displacement at depth " + str(round(spring_depth_interval_i, 1)) + ' m')
+            ax[-2].plot(displacement_array, load_array, ls='-', color=color_i, label="Load-displacement " + str(round(spring_depth_interval_i, 1)) + ' m')
             
-            ax[-1].plot(displacement_array[1:], secant_stiffness_array, ls='-', color=color_i, label="Secant stiffness at depth " + str(round(spring_depth_interval_i, 1)) + ' m')
-            ax[-1].plot(displacement_array[1:], tangent_stiffness_array, ls='--', color=color_i, label="Tangent stiffness at depth " + str(round(spring_depth_interval_i, 1)) + ' m')
+            ax[-1].plot(displacement_array[1:], secant_stiffness_array, ls='-', color=color_i, label="Secant stiffness " + str(round(spring_depth_interval_i, 1)) + ' m')
+            ax[-1].plot(displacement_array[1:], tangent_stiffness_array, ls='--', color=color_i, label="Tangent stiffness " + str(round(spring_depth_interval_i, 1)) + ' m')
 
             max_disp = max(max_disp, max(displacement_array))
         
@@ -1602,13 +1729,61 @@ def plot_global_spring_output(input_heading, output_dict, setup_dict, calculatio
 
         plt.close()
 
+        plot_for_input = setup_dict[calculation_name][input_heading]['plot'].replace(" ", "").split(";")[0]
+        fig_no_for_input = str(setup_dict[calculation_name][input_heading]['fig_no']).split(";")
+        sub_title3_for_input = str(setup_dict[calculation_name][input_heading]['sub_title3']).split(";")
+        
+        if len(fig_no_for_input) == 0:
+            fig_no_for_input = [""]*len(plot_for_input)
+        else:
+            while len(fig_no_for_input) < len(plot_for_input):
+                fig_no_for_input.append(fig_no_for_input[-1])
+
+        if len(sub_title3_for_input) == 0:
+            sub_title3_for_input = [""]*len(plot_for_input)
+        else:
+            while len(sub_title3_for_input) < len(plot_for_input):
+                sub_title3_for_input.append(sub_title3_for_input[-1])
+
+        fig_no_for_input = pdf.clean_fig_no(fig_no_for_input[0])
+        sub_title3_for_input = sub_title3_for_input[0]
+        plot_info = copy.deepcopy(setup_dict['plotting'][plot_for_input])["plot_info"]
+
+        info_pdf = {}
+        info_pdf['svg_path'] = os.path.join(Path(setup_dict["parent_input"]["calculations_location"]), setup_dict["parent_input"]["python_calculation_folder"], setup_dict["parent_input"]["foundation_calculation_folder"], output_folder, calculation_name, (save_file_name + '.svg'))
+        info_pdf['orientation'] = plot_info.get("orientation", "")
+        info_pdf['main_title'] = plot_info.get("main_title", "")
+        info_pdf['sub_title1'] = plot_info.get("sub_title1", "")
+        info_pdf['sub_title2'] = "Global spring and stiffness"
+
+        if plot_info["sub_title3"].lower() == "input":
+            info_pdf['sub_title3'] = sub_title3_for_input
+        else:
+            info_pdf['sub_title3'] = plot_info["sub_title3"]
+
+        info_pdf['doc_no'] = plot_info.get("doc_no", "")
+
+        if plot_info["fig_no"].lower() == "input":
+            info_pdf['fig_no'] = fig_no_for_input
+        else:
+            info_pdf['fig_no'] = pdf.clean_fig_no(plot_info["fig_no"])
+
+        info_pdf['calc_by'] = plot_info.get("calc_by", "")
+        info_pdf['check_by'] = plot_info.get("check_by", "")
+        info_pdf['approv_by'] = plot_info.get("approv_by", "")
+        
+        info_pdf['pdf_directory'] = os.path.join(Path(setup_dict["parent_input"]["calculations_location"]), setup_dict["parent_input"]["python_calculation_folder"], setup_dict["parent_input"]["foundation_calculation_folder"], output_folder, calculation_name, (str(info_pdf['fig_no']) + '_' + save_file_name + '.pdf'))
+        
+        pdf.save_figure_pdf(info_pdf)
+        os.remove(info_pdf['svg_path'])
+
 
 def plot_stress_fatigue(input_heading, output_dict, setup_dict, calculation_name, foundation_location_name, output_folder='output'):
 
-    font_size_legend = 5
-    font_size_xlabel = font_size_ylabel = 8
-    font_size_text = 6
-    font_size_ticks = 6
+    font_size_legend = 8
+    font_size_xlabel = font_size_ylabel = 10
+    font_size_text = 10
+    font_size_ticks = 8
 
     length_embedment = 0
     for key in output_dict.keys():

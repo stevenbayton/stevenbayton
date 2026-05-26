@@ -189,7 +189,7 @@ def load_cpt_input(setup_dict):
     cpt_dict = {}
     for cpt_file_i in cpt_files:
         cpt_name_i = cpt_file_i.split("_CPT_processed")[0]
-        cpt_dict[cpt_name_i] = pd.read_csv(cpt_files_location/cpt_file_i, skiprows=[1])
+        cpt_dict[cpt_name_i] = pd.read_csv(os.path.join(cpt_files_location, cpt_file_i), skiprows=[1])
    
     return cpt_dict, setup_dict
 
@@ -291,13 +291,16 @@ def load_calculation_input(setup_dict, calculation_name, foundation_location_nam
             tables_input["table_info"] = table_main_info
             
             try:
-                calc_symbol_info = calculation_input_file[sheet][["calc_symbol", "calc_type", "calc_description", "calc_decimal_places", "calc_include?"]].dropna(subset=['calc_symbol'])
-                parameter_symbol_info = calculation_input_file[sheet][["parameter_symbol", "parameter_type", "parameter_description", "parameter_decimal_places", "parameter_include?"]].dropna(subset=['parameter_symbol'])
-                tables_input["calc_symbol_info"] = calc_symbol_info
-                tables_input["parameter_symbol_info"] = parameter_symbol_info
+                global_pdf_info = calculation_input_file[sheet][["global_symbol", "global_type", "global_description", "global_decimal_places", "global_include?"]].dropna(subset=['global_symbol'])
+                section_pdf_info = calculation_input_file[sheet][["section_symbol", "section_type", "section_description", "section_decimal_places", "section_include?"]].dropna(subset=['section_symbol'])
+                parameter_pdf_info = calculation_input_file[sheet][["parameter_method_code", "parameter_symbol", "parameter_type", "parameter_description", "parameter_decimal_places", "parameter_include?"]].dropna(subset=['parameter_symbol'])
+                tables_input["global_pdf_info"] = global_pdf_info
+                tables_input["section_pdf_info"] = section_pdf_info
+                tables_input["parameter_pdf_info"] = parameter_pdf_info
             except Exception:
-                tables_input["calc_symbol_info"] = pd.DataFrame()
-                tables_input["parameter_symbol_info"] = pd.DataFrame()
+                tables_input["global_pdf_info"] = pd.DataFrame()
+                tables_input["section_pdf_info"] = pd.DataFrame()
+                tables_input["parameter_pdf_info"] = pd.DataFrame()
             
             setup_dict['tables'][sheet] = remove_nan_values(tables_input)
 
